@@ -1,0 +1,530 @@
+<section class="section_product-header5">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="product-header5_component">
+        <div class="w-layout-grid product-header5_layout">
+          <div class="product-header5_gallery">
+            <div class="product-header5_main-image-wrapper">
+              {% if product.featured_image %}
+                <img src="{{ product.featured_image | img_url: 'master' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="product-header5_main-image">
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'product-header5_main-image' }}
+              {% endif %}
+            </div>
+            {% if product.images.size > 1 %}
+              <div class="product-header5_list-wrapper hide-tablet">
+                <div class="product-header5_list">
+                  {% for image in product.images %}
+                    <a href="{{ image | img_url: 'master' }}" class="product-header5_lightbox-link w-inline-block w-lightbox">
+                      <div class="product-header5_image-wrapper">
+                        <img src="{{ image | img_url: 'medium' }}" loading="lazy" alt="{{ image.alt | escape }}" class="product-header5_image">
+                      </div>
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="product-header5_product-details">
+            <div class="product-header5_breadcrumb">
+              <a href="/" class="breadcrumb-link w-inline-block">
+                <div>Home</div>
+              </a>
+              <div class="breadcrumb-divider w-embed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 3L11 8L6 13" stroke="CurrentColor" stroke-width="1.5"></path>
+                </svg></div>
+              {% if product.collections.size > 0 %}
+                <a href="{{ product.collections.first.url }}" class="breadcrumb-link w-inline-block">
+                  <div>{{ product.collections.first.title }}</div>
+                </a>
+                <div class="breadcrumb-divider w-embed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 3L11 8L6 13" stroke="CurrentColor" stroke-width="1.5"></path>
+                  </svg></div>
+              {% endif %}
+              <a href="{{ product.url }}" aria-current="page" class="breadcrumb-link active w-inline-block w--current">
+                <div class="text-block-6">{{ product.title }}</div>
+              </a>
+            </div>
+            <div class="produto-content">
+              <div class="info-produto-detalhes">
+                <h1 class="heading-style-h4">{{ product.title }}</h1>
+                <div class="text-rich-text w-richtext">
+                  {{ product.description }}
+                </div>
+              </div>
+              <div class="produto-precos">
+                <div>
+                  {% if product.compare_at_price > product.price %}
+                    <div class="text-preco-antigo is-big">{{ product.compare_at_price | money }}</div>
+                  {% endif %}
+                  <div class="text-size-large"><strong>{{ product.price | money }}</strong> à vista</div>
+                </div>
+                {% if product.price_varies %}
+                  <div class="text-parcelas is-big">ou em até {{ product.selected_or_first_available_variant.price | divided_by: 5 | money }}</div>
+                {% endif %}
+              </div>
+
+              <div class="product-form-wrapper">
+                {% form 'product', product, id: 'product-form-product-template-02' %}
+                  <select name="id" id="product-select-{{ product.id }}" style="display:none;">
+                    {% for variant in product.variants %}
+                      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                        {{ variant.title }}
+                      </option>
+                    {% endfor %}
+                  </select>
+
+                  {% for option in product.options_with_values %}
+                    {% assign option_name_handle = option.name | handleize %}
+                    {% if option_name_handle == 'letras' or option_name_handle == 'tipo-de-letra' %}
+                      {% continue %}
+                    {% endif %}
+                    <div class="option-component divisao-itens">
+                      <div class="text-style-allcaps text-color-primary">{{ option.name }}</div>
+                      <div class="filters1_list is-checkbox2">
+                        {% for value in option.values %}
+                          {% assign variant_available = false %}
+                          {% for variant in product.variants %}
+                            {% if variant.options[forloop.parentloop.index0] == value and variant.available %}
+                              {% assign variant_available = true %}
+                              {% break %}
+                            {% endif %}
+                          {% endfor %}
+                          <div class="select_iten {% if variant_available == false %}desativado{% endif %} {% if option.selected_value == value %}active{% endif %}">
+                            <input type="radio" id="{{ option.name | handleize }}-{{ value | handleize }}" name="{{ option.name | handleize }}" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} {% if variant_available == false %}disabled{% endif %} style="display:none;">
+                            <label for="{{ option.name | handleize }}-{{ value | handleize }}" class="filters_form-checkbox-label">{{ value }}</label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+
+                  <div class="option-component">
+                    <div class="text-style-allcaps text-color-primary">Quantidade</div>
+                    <div class="quanditade">
+                      <button type="button" class="icon-remove" onclick="this.parentNode.querySelector('input[name="quantity"]').stepDown()"><img loading="lazy" src="{{ 'icon-menos.svg' | asset_url }}" alt="" class="icon-menos"></button>
+                      <div class="div-block-12">
+                        <input type="number" name="quantity" value="1" min="1" class="w-input" style="width: 50px; text-align: center;">
+                      </div>
+                      <button type="button" class="add-icon-quant" onclick="this.parentNode.querySelector('input[name="quantity"]').stepUp()"><img loading="lazy" src="{{ 'icon-menos.svg' | asset_url }}" alt="" class="icon-menos" style="-webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); -o-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg);"></button>
+                    </div>
+                  </div>
+
+                  <button type="submit" name="add" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %} class="button-carrinho w-inline-block">
+                    <div class="icon-sacola-wrapper"><img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="" class="icon-sacola"></div>
+                    <div class="rt-hover-in-text">
+                      {% if product.selected_or_first_available_variant.available %}
+                        Adicionar ao Carrinho
+                      {% else %}
+                        Esgotado
+                      {% endif %}
+                    </div>
+                  </button>
+                {% endform %}
+              </div>
+
+              <div class="infos-uteis">
+                <div class="text-align-center">
+                  <div class="infos-uteis-group">
+                    <div class="infos-uteis-compra"><img loading="lazy" src="{{ 'delivery.svg' | asset_url }}" alt="" class="icon-vantagens-compra">
+                      <div class="text-size-tiny-2">Frete grátis acima de R$ 299,99<br></div>
+                    </div>
+                    <div class="infos-uteis-compra"><img loading="lazy" src="{{ 'garantido.svg' | asset_url }}" alt="" class="icon-vantagens-compra">
+                      <div class="text-size-tiny-2">Garantia vitalícia RIOCAPRIA<br></div>
+                    </div>
+                    <div class="infos-uteis-compra"><img loading="lazy" src="{{ 'retornar.svg' | asset_url }}" alt="" class="icon-vantagens-compra">
+                      <div class="text-size-tiny-2">Troca grátis em 30 dias<br></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-combo">
+  <img src="{{ 'curvas02.svg' | asset_url }}" loading="lazy" alt="" class="curvas12">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-small">
+        <div class="titulo-combo">
+          <div class="margin-bottom-2 margin-xsmall">
+            <h2 class="heading-style-h2">Monte seu combo</h2>
+          </div>
+          <div class="margin-bottom-2 margin-xsmall">
+            <p class="text-size-large">Combine suas joias favoritas e economize até <strong>15% no combo completo</strong></p>
+          </div>
+        </div>
+        <div class="content-combo">
+          <div class="produto-principal">
+            <div class="produto-principal-video">
+              {% comment %} This video section is static in the HTML, consider making it dynamic if needed {% endcomment %}
+              <div data-poster-url="videos/video-produto-poster-00001.jpg" data-video-urls="videos/video-produto-transcode.mp4,videos/video-produto-transcode.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-9 w-background-video w-background-video-atom">
+                <video id="d00927cd-d583-8a75-caa9-ca99172c1db1-video" autoplay="" loop="" style="background-image:url(&quot;videos/video-produto-poster-00001.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+                  <source src="videos/video-produto-transcode.mp4" data-wf-ignore="true">
+                  <source src="videos/video-produto-transcode.webm" data-wf-ignore="true">
+                </video>
+              </div>
+            </div>
+          </div>
+          <div class="combo-container">
+            <div class="combo-component">
+              <div class="select-product-content">
+                <div class="select-product-info">
+                  <img src="{{ 'check-box.svg' | asset_url }}" loading="lazy" alt="" class="icon-check is-select-product">
+                  <div class="text-style-allcaps text-color-alternate">Produto Principal selecionado</div>
+                </div>
+                <a href="{{ product.url }}" class="card-product-combo is-small-card product-select w-inline-block">
+                  <div class="img-minicard-wrapper">
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | img_url: 'medium' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="image-39">
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'image-39' }}
+                    {% endif %}
+                  </div>
+                  <div class="product-card-top-combo">
+                    <div class="product-card-info-combo">
+                      <div class="info-card-top">
+                        <div class="text-card-produtos is-small">{{ product.title }}<br></div>
+                        {% comment %} Variant options for combo product - this would need more complex Liquid to be dynamic {% endcomment %}
+                        {% for option in product.options_with_values %}
+                          {% if option.name == 'Tamanhos' or option.name == 'Cores' %}
+                            <div class="option-component-combo">
+                              <div class="text-size-tiny text-color-secondary">{{ option.name }}</div>
+                              <div class="filters1_list is-checkbox2">
+                                {% for value in option.values %}
+                                  <div class="select_iten {% if option.selected_value == value %}active{% endif %}">
+                                    <div swatch="title" class="filters_form-checkbox-label">{{ value }}</div>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      <div class="product-header1_price-wrapper-copy is-vertical">
+                        <div class="text-weight-semibold">{{ product.price | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="div-block-25">
+                <div class="text-style-allcaps text-color-secondary">Adicione ao Combo</div>
+              </div>
+              {% comment %} Related products for combo - this would need to be dynamic {% endcomment %}
+              {% for product in collections.all.products limit:3 offset:1 %}
+                <a href="{{ product.url }}" class="card-product-combo is-small-card w-inline-block">
+                  <div class="check-icon-wrapper"><img src="{{ 'check-box.svg' | asset_url }}" loading="lazy" alt="" class="icon-check"></div>
+                  <div class="img-minicard-wrapper">
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | img_url: 'medium' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="image-39">
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'image-39' }}
+                    {% endif %}
+                  </div>
+                  <div class="product-card-top-combo">
+                    <div class="product-card-info-combo">
+                      <div class="info-card-top">
+                        <div class="text-card-produtos is-small">{{ product.title }}<br></div>
+                      </div>
+                      <div class="product-header1_price-wrapper-copy is-vertical">
+                        <div class="text-weight-semibold">{{ product.price | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+              <div class="price-combo">
+                <div class="cart_summary">
+                  <div class="cart_subtotal-row">
+                    <div>Preço individual:</div>
+                    <div class="cart-subtotal">{{ product.price | money }}</div>
+                  </div>
+                  <div class="cart_discounts-and-total">
+                    <div class="discount-code-iten">
+                      <div>Desconto combo (15%):</div>
+                      <div class="order-discount-cod-amount">-{{ product.price | times: 0.15 | money }}</div>
+                    </div>
+                    <div class="cart_total-row">
+                      <div class="text-size-medium text-weight-semibold">Total do combo:</div>
+                      <div class="text-size-large text-weight-semibold">{{ product.price | times: 0.85 | money }}</div>
+                    </div>
+                  </div>
+                  <div class="w-layout-hflex cart_cart-actions">
+                    <div class="text-color-secondary">Selecione produtos relacionados para ativar o combo</div>
+                    <a href="#" role="button" class="button-carrinho w-inline-block">
+                      <div class="icon-sacola-wrapper"><img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="" class="icon-sacola"></div>
+                      <div class="rt-hover-in-text">Adicionar Combo ao Carrinho</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-detalhes-produtos">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="detalhes-produtos">
+        <div class="margin-bottom-2 margin-xsmall">
+          <h2 class="heading-style-h3">Detalhes</h2>
+        </div>
+        <div class="product-header9_accordion-wrapper">
+          <div class="product-header9_accordion">
+            <div class="product-header9_heading">
+              <div class="text-size-large text-weight-semibold">Descrição</div>
+              <div class="product-header9_accordion-icon">
+                <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.3977 16.1629C12.178 16.3826 11.8219 16.3826 11.6022 16.1629L5.86739 10.428C5.64772 10.2084 5.64772 9.85227 5.86739 9.63259L6.13256 9.36739C6.35222 9.14772 6.70838 9.14772 6.92805 9.36739L12 14.4393L17.0719 9.36739C17.2916 9.14772 17.6477 9.14772 17.8674 9.36739L18.1326 9.63259C18.3522 9.85227 18.3522 10.2084 18.1326 10.428L12.3977 16.1629Z" fill="currentColor"></path>
+                  </svg></div>
+              </div>
+            </div>
+            <div class="product-header9_details">
+              <div class="margin-bottom-2 margin-small">
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+          <div class="product-header9_accordion">
+            <div class="product-header9_heading">
+              <div class="text-size-large text-weight-semibold">Informação adicional</div>
+              <div class="product-header9_accordion-icon">
+                <div class="icon-embed-xsmall w-embed"><svg width="100%" height="100%" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.3977 16.1629C12.178 16.3826 11.8219 16.3826 11.6022 16.1629L5.86739 10.428C5.64772 10.2084 5.64772 9.85227 5.86739 9.63259L6.13256 9.36739C6.35222 9.14772 6.70838 9.14772 6.92805 9.36739L12 14.4393L17.0719 9.36739C17.2916 9.14772 17.6477 9.14772 17.8674 9.36739L18.1326 9.63259C18.3522 9.85227 18.3522 10.2084 18.1326 10.428L12.3977 16.1629Z" fill="currentColor"></path>
+                  </svg></div>
+              </div>
+            </div>
+            <div class="product-header9_details">
+              <div class="margin-bottom-2 margin-small">
+                <p class="text-weight-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. </p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section_produtos">
+  <div class="padding-global">
+    <div class="padding-section-small">
+      <div class="margin-bottom margin-medium">
+        <div class="product11_heading-wrapper">
+          <div class="product11_heading align-center">
+            <h2>Produtos relacionados</h2>
+          </div>
+        </div>
+      </div>
+      <div data-delay="700" data-animation="slide" class="product11_component w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+        <div class="product11_mask w-slider-mask">
+          {% for product in collections.all.products limit:6 %}
+            <div class="product11_slide w-slide">
+              <a href="{{ product.url }}" class="product-card w-inline-block">
+                <div class="card-image-wrapper">
+                  <div class="card-img x-large">
+                    <div class="background-product">
+                      {% if product.compare_at_price > product.price %}
+                        <div class="tag-promo">{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}% OFF</div>
+                      {% endif %}
+                      <div class="button-cards">Ver Detalhes</div>
+                      {% if product.featured_image %}
+                        <img src="{{ product.featured_image | img_url: 'master' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="image-card one">
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'image-card one' }}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="card-info">
+                  <div class="product-card-top">
+                    <div class="product-card-info">
+                      <div class="text-card-produtos">{{ product.title }}<br></div>
+                      <div class="product-header1_price-wrapper is-vertical">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+                        {% endif %}
+                        <div class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+                        <div class="text-parcelas">ou em até {{ product.price | divided_by: 5 | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="product11_slide-nav w-slider-nav w-slider-nav-invert w-round"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const productForm = document.getElementById('product-form-product-template-02');
+  const productSelect = document.getElementById('product-select-{{ product.id }}');
+
+  if (!productForm) return;
+
+  // Variant selection logic
+  const variantOptions = productForm.querySelectorAll('.select_iten input[type="radio"]');
+
+  variantOptions.forEach(radio => {
+    radio.addEventListener('change', function() {
+      // Update active state visually
+      const parent = this.closest('.filters1_list');
+      parent.querySelectorAll('.select_iten').forEach(item => item.classList.remove('active'));
+      this.closest('.select_iten').classList.add('active');
+
+      // Find matching variant
+      updateVariant();
+    });
+  });
+
+  function updateVariant() {
+    const selectedOptions = [];
+    const optionGroups = productForm.querySelectorAll('.option-component');
+
+    optionGroups.forEach(group => {
+      const checkedRadio = group.querySelector('input[type="radio"]:checked');
+      if (checkedRadio) {
+        selectedOptions.push(checkedRadio.value);
+      }
+    });
+
+    // Find variant that matches selected options
+    const variants = {{ product.variants | json }};
+    const matchingVariant = variants.find(variant => {
+      return selectedOptions.every((option, index) => {
+        return variant.options[index] === option;
+      });
+    });
+
+    if (matchingVariant) {
+      productSelect.value = matchingVariant.id;
+
+      // Update price
+      const priceElement = productForm.querySelector('.produto-precos .text-size-large strong');
+      if (priceElement) {
+        priceElement.textContent = formatMoney(matchingVariant.price);
+      }
+
+      // Update availability
+      const submitButton = productForm.querySelector('button[type="submit"]');
+      const buttonText = submitButton.querySelector('.rt-hover-in-text');
+
+      if (matchingVariant.available) {
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+        buttonText.textContent = 'Adicionar ao Carrinho';
+      } else {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.5';
+        buttonText.textContent = 'Esgotado';
+      }
+    }
+  }
+
+  function formatMoney(cents) {
+    return 'R$ ' + (cents / 100).toFixed(2).replace('.', ',');
+  }
+
+  // AJAX Add to Cart
+  productForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = {
+      id: productSelect.value,
+      quantity: parseInt(productForm.querySelector('input[name="quantity"]').value)
+    };
+
+    const submitButton = this.querySelector('button[type="submit"]');
+    const buttonText = submitButton.querySelector('.rt-hover-in-text');
+    const originalText = buttonText.textContent;
+
+    // Loading state
+    submitButton.disabled = true;
+    buttonText.textContent = 'Adicionando...';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Success - update cart count and show feedback
+      buttonText.textContent = 'Adicionado! ✓';
+
+      // Update cart count if exists
+      const cartCount = document.querySelector('[cart="count"]');
+      if (cartCount) {
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            cartCount.textContent = cart.item_count;
+          });
+      }
+
+      // Reset button after 2 seconds
+      setTimeout(() => {
+        submitButton.disabled = false;
+        buttonText.textContent = originalText;
+      }, 2000);
+
+      // Optional: Open cart drawer if exists
+      const cartDropdown = document.querySelector('.mini-cart_dropdown');
+      if (cartDropdown && cartDropdown.classList.contains('w-dropdown')) {
+        const dropdownToggle = cartDropdown.querySelector('.w-dropdown-toggle');
+        if (dropdownToggle) {
+          dropdownToggle.click();
+        }
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      buttonText.textContent = 'Erro - Tente novamente';
+
+      setTimeout(() => {
+        submitButton.disabled = false;
+        buttonText.textContent = originalText;
+      }, 2000);
+    });
+  });
+
+  // Initial variant update
+  updateVariant();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Main Product 02",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product 02"
+    }
+  ]
+}
+{% endschema %}

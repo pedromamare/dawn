@@ -212,12 +212,25 @@
       "reset": "Reinicializar",
       "sort_button": "Organizar",
       "sort_by_label": "Ordenar por:",
-      "to": "Para",
+      "to": "Até",
       "clear_filter": "Remover filtro",
       "filter_selected_accessibility": "{{ type }} ({{ count }} filtros selecionados)",
       "show_more": "Exibir mais",
       "show_less": "Exibir menos",
-      "filter_and_operator_subtitle": "Corresponder todos"
+      "filter_and_operator_subtitle": "Corresponder todos",
+      "price_label": "Preço",
+      "color_label": "Cor",
+      "size_label": "Tamanho",
+      "brand_label": "Marca",
+      "all_brands": "Todas as marcas",
+      "featured": "Em destaque",
+      "best_selling": "Mais vendidos",
+      "alphabetically_az": "Ordem alfabética, A-Z",
+      "alphabetically_za": "Ordem alfabética, Z-A",
+      "price_low_high": "Preço, menor para maior",
+      "price_high_low": "Preço, maior para menor",
+      "date_old_new": "Data, mais antiga para mais recente",
+      "date_new_old": "Data, mais recente para mais antiga"
     }
   },
   "templates": {

@@ -1,0 +1,132 @@
+{% comment %}
+  Categories Grid
+  Grid de categorias com imagens
+{% endcomment %}
+
+<section class="section_categorias">
+  <div class="padding-global">
+    <div class="padding-section-medium">
+      <div class="margin-bottom-2 margin-medium">
+        <div class="text-align-center">
+          <div class="max-width-large-2 align-center">
+            <div class="margin-bottom-2 margin-small">
+              <h2>{{ section.settings.title | default: 'Pesquise por Categorias' }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="home8-customers_component">
+        {% for block in section.blocks %}
+          <a href="{{ block.settings.link }}" class="categorias-iten w-inline-block" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 577 }}"
+                   loading="lazy"
+                   alt="{{ block.settings.title }}"
+                   sizes="(max-width: 577px) 100vw, 577px"
+                   srcset="{{ block.settings.image | image_url: width: 500 }} 500w,
+                           {{ block.settings.image | image_url: width: 577 }} 577w"
+                   class="icon-categorias">
+            {% endif %}
+            <p class="text-categorias">{{ block.settings.title }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grid de Categorias",
+  "tag": "section",
+  "class": "section-categories-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Pesquise por Categorias"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagem"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nome da Categoria",
+          "default": "Categoria"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grid de Categorias",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Anéis"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Brincos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Colares"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Pulseiras"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Acessórios"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Combos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Relógios"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Chokers"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,510 @@
+{% comment %}
+  Section: Riocapria Collection Products - FUNCIONAL
+  Filtros dinâmicos + Ordenação + Paginação integrados com Shopify
+{% endcomment %}
+
+{%- liquid
+  assign products_per_page = section.settings.products_per_page | default: 12
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+{%- paginate collection.products by products_per_page -%}
+
+<main class="main-wrapper">
+  <section class="section_listing1 background-color-gray">
+    <div class="padding-global">
+      <div class="div-block-7">
+        <div class="max-width-large-2">
+          <div swatch="title" class="titulo-produtos-lista text-color-primary">{{ collection.title }}</div>
+        </div>
+        <div class="filters1_tags-wrapper">
+          {% if collection.description != blank %}
+            <p class="text-size-medium">{{ collection.description }}<br></p>
+          {% endif %}
+          <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count">{{ collection.products_count }}</span><br></p>
+        </div>
+      </div>
+
+      <div class="filters1_component">
+        <div class="filters1_layout">
+          <!-- SIDEBAR DE FILTROS -->
+          <div id="w-node-_60575cb0-71b8-df62-c1b3-37dfdcf4cd62-5f3c681c" data-w-id="60575cb0-71b8-df62-c1b3-37dfdcf4cd62" class="filters1_filters-wrapper">
+            <div id="w-node-_60575cb0-71b8-df62-c1b3-37dfdcf4cd63-5f3c681c" class="filters1_form-header">
+              <div class="filters1_heading">Filtros</div>
+              <div class="div-block-9">
+                <a href="{{ collection.url }}" class="text-size-small color-brand" id="clear-filters">Limpar</a>
+              </div>
+            </div>
+
+            <div class="filters1_filter-group-list">
+              <!-- FILTROS ATIVOS -->
+              {%- assign active_filters = false -%}
+              {%- for filter in collection.filters -%}
+                {%- if filter.active_values.size > 0 -%}
+                  {%- assign active_filters = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if active_filters -%}
+              <div class="filters1_filter-group">
+                <div class="filters1_results-wrapper">
+                  <div class="display-flex-5 is-vertical">
+                    {%- for filter in collection.filters -%}
+                      {%- for value in filter.active_values -%}
+                        <button type="button" filter="active" class="filters5_tag" data-filter-remove="{{ value.url_to_remove }}">
+                          <div filter="active-label" class="filter-result-label">{{ value.label }}</div>
+                          <div class="filters5_close-icon w-embed">
+                            <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17.1266 16.773L16.7729 17.1266C16.5777 17.3218 16.2611 17.3218 16.0658 17.1266L12 13.0607L7.9341 17.1265C7.73888 17.3218 7.42229 17.3218 7.22702 17.1265L6.87347 16.773C6.6782 16.5777 6.6782 16.2612 6.87347 16.0659L10.9394 12L6.87347 7.93413C6.6782 7.73891 6.6782 7.42232 6.87347 7.22705L7.22702 6.8735C7.42228 6.67824 7.73888 6.67824 7.9341 6.8735L12 10.9394L16.0658 6.8735C16.2611 6.67824 16.5777 6.67824 16.7729 6.8735L17.1266 7.22705C17.3218 7.42231 17.3218 7.73891 17.1266 7.93413L13.0607 12L17.1266 16.0659C17.3218 16.2612 17.3218 16.5777 17.1266 16.773Z" fill="currentColor"></path>
+                            </svg>
+                          </div>
+                        </button>
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+              {%- endif -%}
+
+              <!-- FILTRO DE CATEGORIAS/TIPO - DINÂMICO -->
+              <div class="filters1_filter-group">
+                <div>
+                  <div data-w-id="filter-categoria" class="filters1_filter-group-heading" style="cursor: pointer;">
+                    <div class="text-size-medium-22 text-weight-semibold">Categorias<br></div>
+                    <div class="filters1_accordion-icon w-embed">
+                      <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.3977 15.6629C12.178 15.8826 11.8219 15.8826 11.6022 15.6629L5.86739 9.92804C5.64772 9.70837 5.64772 9.35227 5.86739 9.13259L6.13256 8.86739C6.35222 8.64772 6.70838 8.64772 6.92805 8.86739L12 13.9393L17.0719 8.86739C17.2916 8.64772 17.6477 8.64772 17.8674 8.86739L18.1326 9.13259C18.3522 9.35227 18.3522 9.70837 18.1326 9.92804L12.3977 15.6629Z" fill="currentColor"></path>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div class="filters1_filter-options" data-filter-options="categoria" style="height: 0px; overflow: hidden;">
+                    <div class="filters1_list-wrapper">
+                      <div class="filters1_list">
+                        {%- assign main_collections = 'aneis,brincos,colares,pulseiras,acessorios,combos,relogios,chokers' | split: ',' -%}
+                        {%- for coll_handle in main_collections -%}
+                          {%- assign target_collection = collections[coll_handle] -%}
+                          {%- if target_collection -%}
+                            <div class="filters1_item">
+                              <a href="{{ target_collection.url }}" class="filters1_form-radio1-label category-link {% if collection.handle == coll_handle %}is-active-category{% endif %}">
+                                {{ target_collection.title }}
+                                {%- if target_collection.all_products_count > 0 -%}
+                                  <span class="category-count">({{ target_collection.all_products_count }})</span>
+                                {%- endif -%}
+                              </a>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FILTROS DINÂMICOS DO SHOPIFY -->
+              <form id="FacetFiltersForm">
+                {%- for filter in collection.filters -%}
+                  <div class="filters1_filter-group">
+                    <div>
+                      <div data-w-id="filter-{{ filter.label | handle }}" class="filters1_filter-group-heading" style="cursor: pointer;">
+                        <div class="text-size-medium-22 text-weight-semibold">{{ filter.label }}<br></div>
+                        <div class="filters1_accordion-icon w-embed">
+                          <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.3977 15.6629C12.178 15.8826 11.8219 15.8826 11.6022 15.6629L5.86739 9.92804C5.64772 9.70837 5.64772 9.35227 5.86739 9.13259L6.13256 8.86739C6.35222 8.64772 6.70838 8.64772 6.92805 8.86739L12 13.9393L17.0719 8.86739C17.2916 8.64772 17.6477 8.64772 17.8674 8.86739L18.1326 9.13259C18.3522 9.35227 18.3522 9.70837 18.1326 9.92804L12.3977 15.6629Z" fill="currentColor"></path>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <div class="filters1_filter-options" data-filter-options="{{ filter.label | handle }}" style="height: 0px; overflow: hidden;">
+                        <div class="filters1_list-wrapper">
+                          <div class="filters1_list">
+                            {%- case filter.type -%}
+                              {%- when 'list' -%}
+                                {%- for value in filter.values -%}
+                                  <div class="filters1_item">
+                                    <label class="filters1_form-radio1 w-radio {% if value.active %}is-active{% endif %}">
+                                      <input
+                                        type="checkbox"
+                                        name="{{ value.param_name }}"
+                                        value="{{ value.value }}"
+                                        id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                                        {% if value.active %}checked{% endif %}
+                                        class="w-form-formradioinput filters1_form-radio1-icon w-radio-input filter-checkbox"
+                                        data-filter-url="{{ value.url_to_add }}"
+                                      >
+                                      <span class="filters1_form-radio1-label w-form-label" for="Filter-{{ filter.label | escape }}-{{ forloop.index }}">
+                                        {{ value.label }} ({{ value.count }})
+                                      </span>
+                                    </label>
+                                  </div>
+                                {%- endfor -%}
+
+                              {%- when 'price_range' -%}
+                                {%- assign min_price = filter.min_value.value | divided_by: 100.0 -%}
+                                {%- assign max_price = filter.max_value.value | divided_by: 100.0 -%}
+                                <div class="filters1_item">
+                                  <label>Preço Mínimo: R$ <span id="price-min-display">{{ min_price }}</span></label>
+                                  <input
+                                    type="range"
+                                    name="{{ filter.min_value.param_name }}"
+                                    min="{{ min_price }}"
+                                    max="{{ max_price }}"
+                                    value="{{ filter.range_min | default: min_price }}"
+                                    step="10"
+                                    class="filter-price-range"
+                                    data-display="price-min-display"
+                                  >
+                                  <label>Preço Máximo: R$ <span id="price-max-display">{{ max_price }}</span></label>
+                                  <input
+                                    type="range"
+                                    name="{{ filter.max_value.param_name }}"
+                                    min="{{ min_price }}"
+                                    max="{{ max_price }}"
+                                    value="{{ filter.range_max | default: max_price }}"
+                                    step="10"
+                                    class="filter-price-range"
+                                    data-display="price-max-display"
+                                  >
+                                </div>
+                            {%- endcase -%}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </form>
+            </div>
+
+            <a data-w-id="60575cb0-71b8-df62-c1b3-37dfdcf4ce1c" href="#" class="filters1_tablet-modal-close-button w-inline-block">
+              <img alt="" src="https://cdn.prod.website-files.com/672b44d5debab2f68c00b937/672b44f4f70d66721dcf591a_icon_close-modal.svg" class="icon-1x1-small-3">
+            </a>
+          </div>
+
+          <!-- BOTÃO MOBILE DE FILTROS -->
+          <a data-w-id="60575cb0-71b8-df62-c1b3-37dfdcf4ce1e" href="#" class="filters1_tablet-filters-button w-inline-block">
+            <img loading="lazy" src="https://cdn.prod.website-files.com/672b44d5debab2f68c00b937/672b44f4f70d66721dcf593a_icon-filters.svg" alt="" class="button-icon-left">
+            <div>Filters</div>
+          </a>
+
+          <!-- ÁREA DE PRODUTOS -->
+          <div id="w-node-_60575cb0-71b8-df62-c1b3-37dfdcf4ce22-5f3c681c" class="filters1_feed">
+            <!-- HEADER COM ORDENAÇÃO -->
+            <div class="filters1_feed-header">
+              <div class="sort-dropdown">
+                <form method="get" action="{{ collection.url }}" id="SortForm">
+                  <div data-delay="0" data-hover="false" class="dropdown1_component w-dropdown">
+                    <div class="dropdown1_toggle w-dropdown-toggle" id="w-dropdown-toggle-7" aria-controls="w-dropdown-list-7" aria-haspopup="menu" aria-expanded="false" role="button" tabindex="0">
+                      <div id="sort-by-label">Ordenar por</div>
+                      <div class="dropdown-chevron-3 w-embed">
+                        <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.55806 6.29544C2.46043 6.19781 2.46043 6.03952 2.55806 5.94189L3.44195 5.058C3.53958 4.96037 3.69787 4.96037 3.7955 5.058L8.00001 9.26251L12.2045 5.058C12.3021 4.96037 12.4604 4.96037 12.5581 5.058L13.4419 5.94189C13.5396 6.03952 13.5396 6.19781 13.4419 6.29544L8.17678 11.5606C8.07915 11.6582 7.92086 11.6582 7.82323 11.5606L2.55806 6.29544Z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <nav class="dropdown1_dropdown-list is-right w-dropdown-list" id="w-dropdown-list-7" aria-labelledby="w-dropdown-toggle-7">
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="manual" tabindex="0">Relevância</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="best-selling" tabindex="0">Mais vendidos</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="price-ascending" tabindex="0">Menor preço</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="price-descending" tabindex="0">Maior preço</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="created-descending" tabindex="0">Novidades</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="title-ascending" tabindex="0">A-Z</a>
+                    </nav>
+                  </div>
+                  <input type="hidden" name="sort_by" id="sort_by" value="{{ sort_by }}">
+                </form>
+              </div>
+            </div>
+
+            <!-- GRID DE PRODUTOS -->
+            <div class="w-layout-grid _3columns-grid-large" id="product-grid">
+              {%- for product in collection.products -%}
+              <a bind="16b67dd1-2aca-8b2f-e5d8-8a2a224c1e0e" href="{{ product.url | within: collection }}" class="product-card w-inline-block">
+                <div class="card-image-wrapper">
+                  <div class="card-img x-large">
+                    <div class="background-product">
+                      {%- if product.compare_at_price > product.price -%}
+                        {%- assign discount_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                        <div product="title" class="tag-promo">{{ discount_percent }}% OFF</div>
+                      {%- endif -%}
+                      <div product="title" class="button-cards">Ver Detalhes</div>
+                      <img src="{{ product.featured_image | image_url: width: 1201 }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.featured_image | image_url: width: 500 }} 500w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1080 }} 1080w, {{ product.featured_image | image_url: width: 1201 }} 1201w" class="image-card one">
+                      {%- if product.images.size > 1 -%}
+                        <img src="{{ product.images[1] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[1].alt | escape }}" sizes="100vw" srcset="{{ product.images[1] | image_url: width: 500 }} 500w, {{ product.images[1] | image_url: width: 800 }} 800w, {{ product.images[1] | image_url: width: 1080 }} 1080w, {{ product.images[1] | image_url: width: 1201 }} 1201w" class="image-card two">
+                      {%- endif -%}
+                      {%- if product.images.size > 2 -%}
+                        <img src="{{ product.images[2] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[2].alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.images[2] | image_url: width: 500 }} 500w, {{ product.images[2] | image_url: width: 800 }} 800w, {{ product.images[2] | image_url: width: 1080 }} 1080w, {{ product.images[2] | image_url: width: 1201 }} 1201w" class="image-card three">
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+                <div class="card-info">
+                  <div id="w-node-_16b67dd1-2aca-8b2f-e5d8-8a2a224c1e1a-224c1e0e" class="product-card-top">
+                    <div class="product-card-info">
+                      <div class="product-header2_rating-wrapper align-center">
+                        {%- for i in (1..5) -%}
+                          <div class="product-header2_rating-icon">
+                            <div class="icon-embed-xxsmall w-embed">
+                              <svg width="100%" height="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.201432 8.35425C0.0324796 8.23123 -0.0397528 8.01452 0.021606 7.81473L0.101529 7.56496C0.159961 7.36756 0.335635 7.22781 0.541103 7.21527L6.92493 6.70573L9.37256 0.821007C9.45466 0.614853 9.66074 0.485543 9.88206 0.501294H10.1418C10.3505 0.496866 10.539 0.62523 10.6114 0.821007L13.069 6.70573L19.4528 7.21527C19.6583 7.22781 19.8339 7.36756 19.8924 7.56496L19.9723 7.81473C20.0403 8.00821 19.9805 8.22355 19.8224 8.35425L15.0071 12.4905L16.4857 18.695C16.5344 18.8936 16.4596 19.1021 16.2959 19.2245L16.0061 19.3843C15.8371 19.4986 15.6157 19.4986 15.4467 19.3843L10.0119 16.0873L4.54723 19.4143C4.37823 19.5286 4.15676 19.5286 3.98777 19.4143L3.76798 19.2645C3.60419 19.142 3.52945 18.9335 3.57816 18.7349L5.01677 12.4905L0.201432 8.35425Z" fill="CurrentColor"></path>
+                              </svg>
+                            </div>
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                      <div product="title" class="text-card-produtos">{{ product.title }}</div>
+                      <div class="product-header1_price-wrapper is-vertical">
+                        {%- if product.compare_at_price > product.price -%}
+                          <div product="title" class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+                        {%- endif -%}
+                        <div product="title" class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+                        <div product="title" class="text-parcelas">à vista ou 5x de {{ product.price | divided_by: 5 | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              {%- else -%}
+                <div class="no-results">
+                  <p>Nenhum produto encontrado com os filtros selecionados.</p>
+                </div>
+              {%- endfor -%}
+            </div>
+
+            <!-- PAGINAÇÃO -->
+            <div filter="empty-state" class="filters1_empty">
+              <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count-bottom">{{ collection.products_count }}</span><br></p>
+              {%- if paginate.pages > 1 -%}
+              <div class="div-block-8">
+                {%- if paginate.previous -%}
+                  <a href="{{ paginate.previous.url }}">
+                    <img loading="lazy" src="{{ 'arrow-left24x242x-5.svg' | asset_url }}" alt="Anterior" class="arrow-pags">
+                  </a>
+                {%- else -%}
+                  <img loading="lazy" src="{{ 'arrow-left24x242x-5.svg' | asset_url }}" alt="" class="arrow-pags" style="opacity: 0.3;">
+                {%- endif -%}
+
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="numero-paginacao-df">
+                      <div swatch="title" class="filters_form-checkbox-label">{{ part.title | prepend: '0' | slice: -2, 2 }}</div>
+                    </a>
+                  {%- elsif part.title == paginate.current_page -%}
+                    <div class="numero-paginacao active">
+                      <div swatch="title" class="filters_form-checkbox-label">{{ part.title | prepend: '0' | slice: -2, 2 }}</div>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}">
+                    <img loading="lazy" src="{{ 'arrow-right24x242x-5.svg' | asset_url }}" alt="Próxima" class="arrow-pags">
+                  </a>
+                {%- else -%}
+                  <img loading="lazy" src="{{ 'arrow-right24x242x-5.svg' | asset_url }}" alt="" class="arrow-pags" style="opacity: 0.3;">
+                {%- endif -%}
+              </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE CATEGORIAS -->
+  <section class="section_categorias">
+    <div class="padding-global">
+      <div class="padding-section-medium">
+        <div class="margin-bottom-2 margin-medium">
+          <div class="text-align-center">
+            <div class="max-width-large-2 align-center">
+              <div class="margin-bottom-2 margin-small">
+                <h2>Pesquise por Categorias</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home8-customers_component">
+          <a href="/collections/aneis" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-30_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Anéis</p>
+          </a>
+          <a href="/collections/brincos" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-31_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Brincos</p>
+          </a>
+          <a href="/collections/colares" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-32_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Colares</p>
+          </a>
+          <a href="/collections/pulseiras" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-34_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Pulseiras</p>
+          </a>
+          <a href="/collections/acessorios" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-37_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Acessórios</p>
+          </a>
+          <a href="/collections/combos" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-36_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Combos</p>
+          </a>
+          <a href="/collections/relogios" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-35_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Relógios</p>
+          </a>
+          <a href="/collections/chokers" class="categorias-iten w-inline-block">
+            <img src="{{ 'Rectangle-38_1.avif' | asset_url }}" loading="lazy" alt="" class="icon-categorias">
+            <p class="text-categorias">Chokers</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE FEATURES -->
+  <section class="section_features">
+    <div class="features_component">
+      <div class="w-layout-grid features_list">
+        <div id="w-node-de10e410-aec1-c326-c089-146e13e30e11-5f3c681c" class="features_item">
+          <div class="layout282_item-icon-wrapper">
+            <img src="{{ 'entrega.svg' | asset_url }}" loading="lazy" alt="" class="image">
+          </div>
+          <div class="layout282_item-text-wrapper">
+            <div class="text-size-medium-21">Frete Grátis acima de R$299,99</div>
+          </div>
+        </div>
+        <div id="w-node-de10e410-aec1-c326-c089-146e13e30e18-5f3c681c" class="features_item">
+          <div class="layout282_item-icon-wrapper">
+            <img src="{{ 'qualidade1.svg' | asset_url }}" loading="lazy" alt="" class="image">
+          </div>
+          <div class="layout282_item-text-wrapper">
+            <div class="text-size-medium-21">Produtos com garantia de qualidade<br></div>
+          </div>
+        </div>
+        <div id="w-node-de10e410-aec1-c326-c089-146e13e30e20-5f3c681c" class="features_item">
+          <div class="layout282_item-icon-wrapper">
+            <img src="{{ 'presente01.svg' | asset_url }}" loading="lazy" alt="" class="image">
+          </div>
+          <div class="layout282_item-text-wrapper">
+            <div class="text-size-medium-21">Presenteie quem você ama com Riocapria</div>
+          </div>
+        </div>
+        <div id="w-node-de10e410-aec1-c326-c089-146e13e30e27-5f3c681c" class="features_item">
+          <div class="layout282_item-icon-wrapper">
+            <img src="{{ 'credit-card-6.svg' | asset_url }}" loading="lazy" alt="" class="image">
+          </div>
+          <div class="layout282_item-text-wrapper">
+            <div class="text-size-medium-21">Até 10x sem juros</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+{%- endpaginate -%}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ACCORDION DE FILTROS
+  document.querySelectorAll('[data-w-id^="filter-"]').forEach(function(heading) {
+    heading.addEventListener('click', function() {
+      const filterId = this.getAttribute('data-w-id').replace('filter-', '');
+      const filterOptions = document.querySelector('[data-filter-options="' + filterId + '"]');
+      const icon = this.querySelector('.filters1_accordion-icon');
+
+      if (filterOptions) {
+        if (filterOptions.style.height === '0px' || filterOptions.style.height === '') {
+          filterOptions.style.height = 'auto';
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          filterOptions.style.height = '0px';
+          icon.style.transform = 'rotate(0deg)';
+        }
+      }
+    });
+  });
+
+  // APLICAR FILTROS - Usar URL nativa do Shopify
+  const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+  filterCheckboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      const filterUrl = this.getAttribute('data-filter-url');
+      if (filterUrl) {
+        window.location.href = filterUrl;
+      }
+    });
+  });
+
+  // REMOVER FILTROS ATIVOS
+  const removeFilterButtons = document.querySelectorAll('[data-filter-remove]');
+  removeFilterButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const removeUrl = this.getAttribute('data-filter-remove');
+      if (removeUrl) {
+        window.location.href = removeUrl;
+      }
+    });
+  });
+
+  // ORDENAÇÃO
+  const sortOptions = document.querySelectorAll('.sort-option');
+  sortOptions.forEach(function(option) {
+    option.addEventListener('click', function(e) {
+      e.preventDefault();
+      const sortValue = this.getAttribute('data-sort');
+      const sortInput = document.getElementById('sort_by');
+      const sortLabel = document.getElementById('sort-by-label');
+
+      sortInput.value = sortValue;
+      sortLabel.textContent = this.textContent;
+
+      // Manter filtros atuais
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('sort_by', sortValue);
+
+      window.location.href = currentUrl.toString();
+    });
+  });
+
+  // PRICE RANGE
+  const priceRanges = document.querySelectorAll('.filter-price-range');
+  priceRanges.forEach(function(range) {
+    range.addEventListener('input', function() {
+      const displayId = this.getAttribute('data-display');
+      const displayElement = document.getElementById(displayId);
+      if (displayElement) {
+        displayElement.textContent = this.value;
+      }
+    });
+
+    range.addEventListener('change', function() {
+      // Construir URL com price range
+      const currentUrl = new URL(window.location.href);
+      const paramName = this.getAttribute('name');
+      currentUrl.searchParams.set(paramName, this.value);
+      window.location.href = currentUrl.toString();
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Riocapria Collection",
+  "class": "section-collection-riocapria",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12,
+      "label": "Products per page"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,401 @@
+{% comment %}
+  Product Main
+  Galeria de imagens + Informações do produto + Formulário de compra
+{% endcomment %}
+
+<section class="section_product-header5">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="product-header5_component">
+        <div class="w-layout-grid product-header5_layout">
+
+          {%- comment -%} Product Gallery {%- endcomment -%}
+          <div class="product-header5_gallery">
+            {%- comment -%} Main Image {%- endcomment -%}
+            <div class="product-header5_main-image-wrapper">
+              {% if product.featured_media %}
+                <img src="{{ product.featured_media | image_url: width: 1201 }}"
+                     alt="{{ product.title }}"
+                     loading="lazy"
+                     sizes="(max-width: 1201px) 100vw, 1201px"
+                     srcset="{{ product.featured_media | image_url: width: 500 }} 500w,
+                             {{ product.featured_media | image_url: width: 1201 }} 1201w"
+                     class="product-header5_main-image"
+                     id="main-product-image"
+                     data-product-main-image>
+              {% endif %}
+            </div>
+
+            {%- comment -%} Thumbnail Images {%- endcomment -%}
+            {% if product.media.size > 1 %}
+              <div class="product-header5_list-wrapper hide-tablet">
+                <div class="product-header5_list">
+                  {% for media in product.media limit: 4 %}
+                    <div class="product-header5_image-wrapper {% if forloop.first %}select-img{% endif %}"
+                         data-media-id="{{ media.id }}"
+                         onclick="changeMainImage('{{ media | image_url: width: 1201 }}', this)">
+                      <img src="{{ media | image_url: width: 200 }}"
+                           alt="{{ product.title }}"
+                           loading="lazy"
+                           class="product-header5_image">
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          {%- comment -%} Product Details {%- endcomment -%}
+          <div class="product-header5_product-details">
+            {%- comment -%} Breadcrumbs {%- endcomment -%}
+            <div class="product-header5_breadcrumb">
+              <a href="{{ routes.root_url }}" class="breadcrumb-link w-inline-block">
+                <div>{{ shop.name }}</div>
+              </a>
+              <div class="breadcrumb-divider w-embed">
+                <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 3L11 8L6 13" stroke="CurrentColor" stroke-width="1.5"></path>
+                </svg>
+              </div>
+              {% if product.collections.size > 0 %}
+                <a href="{{ product.collections.first.url }}" class="breadcrumb-link w-inline-block">
+                  <div>{{ product.collections.first.title }}</div>
+                </a>
+                <div class="breadcrumb-divider w-embed">
+                  <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 3L11 8L6 13" stroke="CurrentColor" stroke-width="1.5"></path>
+                  </svg>
+                </div>
+              {% endif %}
+              <div class="breadcrumb-link active">
+                <div class="text-block-6">{{ product.title }}</div>
+              </div>
+            </div>
+
+            <div class="produto-content">
+              {%- comment -%} Product Info {%- endcomment -%}
+              <div class="info-produto-detalhes">
+                {%- comment -%} Rating {%- endcomment -%}
+                <div class="product-header2_reviews-wrapper">
+                  <div class="product-header2_rating-wrapper">
+                    {% for i in (1..5) %}
+                      <div class="product-header2_rating-icon">
+                        <div class="icon-embed-xxsmall w-embed">
+                          {% if i <= 3 %}
+                            <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M0.201432 8.35425C0.0324796 8.23123 -0.0397528 8.01452 0.021606 7.81473L0.101529 7.56496C0.159961 7.36756 0.335635 7.22781 0.541103 7.21527L6.92493 6.70573L9.37256 0.821007C9.45466 0.614853 9.66074 0.485543 9.88206 0.501294H10.1418C10.3505 0.496866 10.539 0.62523 10.6114 0.821007L13.069 6.70573L19.4528 7.21527C19.6583 7.22781 19.8339 7.36756 19.8924 7.56496L19.9723 7.81473C20.0403 8.00821 19.9805 8.22355 19.8224 8.35425L15.0071 12.4905L16.4857 18.695C16.5344 18.8936 16.4596 19.1021 16.2959 19.2245L16.0061 19.3843C15.8371 19.4986 15.6157 19.4986 15.4467 19.3843L10.0119 16.0873L4.54723 19.4143C4.37823 19.5286 4.15676 19.5286 3.98777 19.4143L3.76798 19.2645C3.60419 19.142 3.52945 18.9335 3.57816 18.7349L5.01677 12.4905L0.201432 8.35425Z" fill="CurrentColor"></path>
+                            </svg>
+                          {% elsif i == 4 %}
+                            <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M19.8928 7.56999L19.9725 7.81999C20.0381 8.00868 19.9829 8.21839 19.8329 8.34999L14.9863 12.5L16.4223 18.72C16.4709 18.9188 16.3963 19.1275 16.2328 19.25L16.0134 19.4C15.9282 19.467 15.8225 19.5023 15.7143 19.5C15.6229 19.5019 15.533 19.4776 15.455 19.43L9.99999 16.1L4.57492 19.43C4.49692 19.4776 4.40695 19.5019 4.31563 19.5C4.20738 19.5023 4.10167 19.467 4.01646 19.4L3.76714 19.25C3.60364 19.1275 3.52904 18.9188 3.57766 18.72L5.01371 12.5L0.177024 8.35999C0.0192942 8.22917 -0.0404113 8.01364 0.027436 7.81999L0.137134 7.56999C0.195462 7.37241 0.370823 7.23254 0.575926 7.21999L6.94839 6.70999L9.39166 0.819989C9.46995 0.624384 9.66017 0.497222 9.87035 0.499989H10.1296C10.3379 0.495557 10.5261 0.624037 10.5983 0.819989L13.0815 6.70999L19.454 7.21999C19.6591 7.23254 19.8344 7.37241 19.8928 7.56999ZM14.1087 16.56L12.9918 11.88L16.6517 8.74999L11.8549 8.36999L9.99999 3.90999V14.05L14.1087 16.56Z" fill="CurrentColor"></path>
+                            </svg>
+                          {% else %}
+                            <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.39166 0.819989C9.46995 0.624384 9.66017 0.497222 9.87035 0.499989H10.1296C10.3379 0.495557 10.5261 0.624037 10.5983 0.819989L13.0815 6.70999L19.454 7.21999C19.6591 7.23254 19.8344 7.37241 19.8928 7.56999L19.9725 7.81999C20.0381 8.00868 19.9829 8.21839 19.8329 8.34999L14.9863 12.5L16.4223 18.72C16.4709 18.9188 16.3963 19.1275 16.2328 19.25L16.0134 19.4C15.9282 19.467 15.8225 19.5023 15.7143 19.5C15.6229 19.5019 15.533 19.4776 15.455 19.43L9.99999 16.1L4.57492 19.43C4.49692 19.4776 4.40695 19.5019 4.31563 19.5C4.20738 19.5023 4.10167 19.467 4.01646 19.4L3.76714 19.25C3.60364 19.1275 3.52904 18.9188 3.57766 18.72L5.01371 12.5L0.177024 8.35999C0.0192942 8.22917 -0.0404113 8.01364 0.027436 7.81999L0.137134 7.56999C0.195462 7.37241 0.370823 7.23254 0.575926 7.21999L6.94839 6.70999L9.39166 0.819989ZM16.6517 8.74999L11.8549 8.36999L9.99999 3.90999L8.14509 8.36999L3.3483 8.74999L7.00822 11.88L5.88132 16.56L9.99999 14.05L14.1087 16.56L12.9918 11.88L16.6517 8.74999Z" fill="CurrentColor"></path>
+                            </svg>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="text-size-tiny text-color-secondary">• {{ product.metafields.reviews.rating_count | default: '0' }} reviews</div>
+                </div>
+
+                <h1 class="heading-style-h4">{{ product.title }}</h1>
+
+                {% if product.description != blank %}
+                  <div class="text-rich-text w-richtext">
+                    {{ product.description }}
+                  </div>
+                {% endif %}
+              </div>
+
+              {%- comment -%} Price {%- endcomment -%}
+              <div class="produto-precos">
+                <div>
+                  {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+                    <div class="text-preco-antigo is-big" data-product-compare-price>{{ product.selected_or_first_available_variant.compare_at_price | money }}</div>
+                  {% endif %}
+                  <div class="text-size-large">
+                    <strong id="product-price" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</strong> {{section.settings.price_text | default: 'à vista'}}
+                  </div>
+                </div>
+                {% assign installments = section.settings.installments | default: 10 %}
+                {% assign installment_value = product.selected_or_first_available_variant.price | divided_by: installments %}
+                <div class="text-parcelas is-big">ou {{ installments }}x de {{ installment_value | money }}</div>
+              </div>
+
+              {%- comment -%} Product Form {%- endcomment -%}
+              {% form 'product', product, id: 'product-form', data-product-form: '' %}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+                {%- comment -%} Product JSON for JavaScript {%- endcomment -%}
+                <script type="application/json" data-product-json>
+                  {{ product | json }}
+                </script>
+
+                {%- comment -%} Variant Options {%- endcomment -%}
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    {% liquid
+                      assign option_name = option.name | downcase
+                      assign is_letter_option = false
+                      assign is_numeric_option = false
+                      assign is_color_option = false
+                      assign is_font_option = false
+                      assign use_button_style = false
+
+                      # Detectar tipo de opção pelo nome
+                      if option_name contains 'letra' or option_name contains 'letter' or option_name contains 'inicial'
+                        assign is_letter_option = true
+                      elsif option_name contains 'cor' or option_name contains 'color' or option_name contains 'pedra' or option_name contains 'stone'
+                        assign is_color_option = true
+                      elsif option_name contains 'fonte' or option_name contains 'font' or option_name contains 'estilo'
+                        assign is_font_option = true
+                      elsif option_name contains 'tamanho' or option_name contains 'size' or option_name contains 'aro'
+                        # Verificar se o primeiro valor é numérico
+                        assign first_value = option.values.first
+                        assign test_numeric = first_value | times: 1
+                        # Se multiplicar por 1 der resultado diferente de 0, é numérico
+                        if test_numeric != 0
+                          assign is_numeric_option = true
+                        elsif first_value == "0"
+                          assign is_numeric_option = true
+                        endif
+                      else
+                        # Outras opções usam estilo de botão (Banho, Material, etc)
+                        assign use_button_style = true
+                      endif
+                    %}
+
+                    {% if is_letter_option %}
+                      {% render 'variant-selector-letters',
+                        product: product,
+                        option_name: option.name
+                      %}
+                    {% elsif is_numeric_option %}
+                      {% render 'variant-selector-numeric',
+                        product: product,
+                        option_name: option.name
+                      %}
+                    {% elsif is_color_option %}
+                      {% render 'variant-selector-colors',
+                        product: product,
+                        option_name: option.name
+                      %}
+                    {% elsif is_font_option %}
+                      {% render 'variant-selector-fonts',
+                        product: product,
+                        option_name: option.name
+                      %}
+                    {% elsif use_button_style %}
+                      {%- comment -%} Opções com dropdown select (Banho, Material, etc) {%- endcomment -%}
+                      {% liquid
+                        assign option_index = forloop.index0
+                      %}
+                      <div class="option-component">
+                        <label for="option-{{ option_index }}" class="text-style-allcaps text-color-primary">{{ option.name }}</label>
+                        <select
+                          id="option-{{ option_index }}"
+                          name="options[{{ option.name }}]"
+                          class="variant-select"
+                          data-option-index="{{ option_index }}"
+                          style="width: 100%; padding: 12px; border: 1px solid #e5e5e5; border-radius: 4px; font-size: 14px; margin-top: 8px;">
+                          {% for value in option.values %}
+                            {% liquid
+                              assign is_available = false
+                              assign matching_variant = nil
+
+                              for variant in product.variants
+                                if option_index == 0 and variant.option1 == value
+                                  assign matching_variant = variant
+                                elsif option_index == 1 and variant.option2 == value
+                                  assign matching_variant = variant
+                                elsif option_index == 2 and variant.option3 == value
+                                  assign matching_variant = variant
+                                endif
+
+                                if matching_variant != nil
+                                  if matching_variant.available
+                                    assign is_available = true
+                                  endif
+                                  break
+                                endif
+                              endfor
+                            %}
+                            <option
+                              value="{{ value }}"
+                              {% if option.selected_value == value %}selected{% endif %}
+                              {% unless is_available %}disabled{% endunless %}
+                              data-option-value="{{ value }}"
+                              {% if matching_variant %}data-variant-id="{{ matching_variant.id }}"{% endif %}>
+                              {{ value }}{% unless is_available %} (Esgotado){% endunless %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% else %}
+                      {%- comment -%} Fallback para opções genéricas (não deve ser usado) {%- endcomment -%}
+                      <div class="option-component divisao-itens">
+                        <div class="text-style-allcaps text-color-primary">{{ option.name }}</div>
+                        <div class="filters1_list is-checkbox2">
+                          {% for value in option.values %}
+                            <div class="select_iten {% if option.selected_value == value %}active{% endif %}"
+                                 data-option-value="{{ value }}"
+                                 data-option-name="{{ option.name }}"
+                                 onclick="selectVariantOption(this, '{{ option.name }}', '{{ value }}')">
+                              <div class="filters_form-checkbox-label">{{ value }}</div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endunless %}
+
+                {%- comment -%} Quantity {%- endcomment -%}
+                <div class="option-component">
+                  <div class="text-style-allcaps text-color-primary">{{ section.settings.quantity_label | default: 'Quantidade' }}</div>
+                  <div class="quanditade">
+                    <div class="icon-remove" onclick="decrementQuantity()">
+                      <img loading="lazy" src="{{ 'icon-menos.svg' | asset_url }}" alt="" class="icon-menos">
+                    </div>
+                    <div class="div-block-12">
+                      <input type="number"
+                             name="quantity"
+                             value="1"
+                             min="1"
+                             id="quantity-input"
+                             style="border: none; text-align: center; width: 50px; font-size: inherit;">
+                    </div>
+                    <div class="add-icon-quant" onclick="incrementQuantity()">
+                      <img loading="lazy" src="{{ 'icon-menos.svg' | asset_url }}" alt="" class="icon-menos" style="transform: rotate(180deg);">
+                    </div>
+                  </div>
+                </div>
+
+                {%- comment -%} Add to Cart Button {%- endcomment -%}
+                <button type="submit"
+                        name="add"
+                        class="button is-primary w-button add-to-cart-btn"
+                        data-add-to-cart
+                        data-add-to-cart-text="{{ section.settings.add_to_cart_text | default: 'Adicionar ao Carrinho' }}"
+                        data-add-text="{{ section.settings.add_to_cart_text | default: 'Adicionar ao Carrinho' }}"
+                        data-sold-out-text="{{ section.settings.sold_out_text | default: 'Esgotado' }}"
+                        {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                  <span data-add-to-cart-text>
+                    {% if product.selected_or_first_available_variant.available %}
+                      {{ section.settings.add_to_cart_text | default: 'Adicionar ao Carrinho' }}
+                    {% else %}
+                      {{ section.settings.sold_out_text | default: 'Esgotado' }}
+                    {% endif %}
+                  </span>
+                </button>
+              {% endform %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/**
+ * Product Page Functions
+ * Variant selection is handled by riocapria-variants.js
+ * This script only handles thumbnails and quantity controls
+ */
+
+// Change main image when clicking thumbnails
+function changeMainImage(imageUrl, element) {
+  const mainImage = document.getElementById('main-product-image');
+  if (mainImage) {
+    mainImage.src = imageUrl;
+
+    // Update active thumbnail
+    document.querySelectorAll('.product-header5_image-wrapper').forEach(el => {
+      el.classList.remove('select-img');
+    });
+    element.classList.add('select-img');
+  }
+}
+
+// Quantity controls
+function incrementQuantity() {
+  const input = document.getElementById('quantity-input');
+  if (input) {
+    input.value = parseInt(input.value) + 1;
+  }
+}
+
+function decrementQuantity() {
+  const input = document.getElementById('quantity-input');
+  if (input && parseInt(input.value) > 1) {
+    input.value = parseInt(input.value) - 1;
+  }
+}
+
+// Legacy function for fallback variant selector (if riocapria-variants.js not loaded)
+function selectVariantOption(element, optionName, value) {
+  console.warn('Using fallback variant selector. riocapria-variants.js should handle this.');
+
+  // Update UI
+  element.parentElement.querySelectorAll('.select_iten').forEach(el => {
+    el.classList.remove('active');
+  });
+  element.classList.add('active');
+}
+</script>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "tag": "section",
+  "class": "section-product-main",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Configurações de Preço"
+    },
+    {
+      "type": "text",
+      "id": "price_text",
+      "label": "Texto após o preço",
+      "default": "à vista",
+      "info": "Exemplo: 'à vista', 'no PIX', etc."
+    },
+    {
+      "type": "range",
+      "id": "installments",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Número de parcelas",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Textos Editáveis"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Label de Quantidade",
+      "default": "Quantidade"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Texto do botão Adicionar",
+      "default": "Adicionar ao Carrinho"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Texto quando esgotado",
+      "default": "Esgotado"
+    }
+  ]
+}
+{% endschema %}

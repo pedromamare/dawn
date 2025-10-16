@@ -1,0 +1,78 @@
+{% comment %}
+  Seletor de letras A-Z
+  Baseado em detalhes-do-produto-01.html e detalhes-do-produto-02.html
+  Para produtos personalizáveis com letras
+
+  Uso:
+  {% render 'variant-selector-letters',
+    product: product,
+    option_name: 'Letra',
+    show_message: true,
+    custom_message: 'Prazo de 5 dias úteis para peças personalizadas'
+  %}
+{% endcomment %}
+
+{% liquid
+  assign option_index = nil
+  for option in product.options_with_values
+    if option.name == option_name
+      assign option_index = forloop.index0
+      break
+    endif
+  endfor
+%}
+
+{% if option_index != nil %}
+  <div class="option-component divisao-itens">
+    <div product="title" class="text-style-allcaps text-color-primary">{{ option_name }}</div>
+
+    <div class="filters1_list is-checkbox2">
+      {% liquid
+        assign alphabet = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ','
+      %}
+
+      {% for letter in alphabet %}
+        {% liquid
+          assign is_available = false
+          assign matching_variant = nil
+
+          for variant in product.variants
+            assign variant_letter = nil
+
+            if option_index == 0
+              assign variant_letter = variant.option1
+            elsif option_index == 1
+              assign variant_letter = variant.option2
+            elsif option_index == 2
+              assign variant_letter = variant.option3
+            endif
+
+            if variant_letter == letter
+              assign matching_variant = variant
+              if variant.available
+                assign is_available = true
+              endif
+              break
+            endif
+          endfor
+        %}
+
+        {% if matching_variant %}
+          <div
+            class="select_iten {% unless is_available %}desativado{% endunless %}"
+            data-option-index="{{ option_index }}"
+            data-option-value="{{ letter }}"
+            data-variant-id="{{ matching_variant.id }}"
+            data-variant-available="{{ matching_variant.available }}"
+          >
+            <div swatch="title" class="filters_form-checkbox-label">{{ letter }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if show_message and custom_message %}
+      <div class="text-size-tiny text-color-brand2">{{ custom_message }}<br></div>
+    {% endif %}
+  </div>
+{% endif %}

@@ -1,0 +1,162 @@
+<section class="section_outlet">
+        <div class="padding-global">
+          <div class="padding-section-small">
+            <div class="outlet_heading-wrapper">
+              <div class="product11_heading align-center">
+                <div class="margin-bottom-2 margin-xsmall">
+                  <h2 class="text-color-secondary">{{ section.settings.title }}</h2>
+                </div>
+                <p class="text-card-produtos">{{ section.settings.subtitle }}</p>
+                <div class="oferta-valida-component"><img src="{{ 'flash-sale.svg' | asset_url }}" loading="lazy" alt="" class="icon-outlet">
+                  <p class="txt-tempo-limitado">{{ section.settings.countdown_text }}</p>
+                </div>
+              </div>
+            </div>
+            <div data-delay="700" data-animation="slide" class="product_component w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+              <div class="product11_mask w-slider-mask">
+                {% assign collection_products = collections[section.settings.collection].products %}
+                {% for product in collection_products limit: section.settings.products_limit %}
+                <div class="product11_slide w-slide">
+                  <a href="{{ product.url | within: collection }}" class="product-card w-inline-block">
+                    <div class="card-image-wrapper">
+                      <div class="card-img x-large">
+                        <div class="background-product">
+                          <div product="title" class="tag-promo">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | money_without_trailing_zeros | replace: ',', '.' }}% OFF</div>
+                          <div product="title" class="button-cards">Ver Detalhes</div><img src="{{ product.featured_image | image_url: width: 500 }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="image-card one">
+                           {% if product.images.size > 1 %}
+                          <img src="{{ product.images[1] | image_url: width: 500 }}" loading="lazy" alt="{{ product.images[1].alt | escape }}" class="image-card two">
+                          {% endif %}
+                           {% if product.images.size > 2 %}
+                          <img src="{{ product.images[2] | image_url: width: 500 }}" loading="lazy" alt="{{ product.images[2].alt | escape }}" class="image-card three">
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-info">
+                      <div class="product-card-top">
+                        <div class="product-card-info">
+                          <div product="title" class="text-card-produtos">{{ product.title }}</div>
+                          <div class="product-header1_price-wrapper is-vertical">
+                            {% if product.compare_at_price > product.price %}
+                              <div product="title" class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+                            {% endif %}
+                            <div product="title" class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+                            {% assign installments = 10 %}
+                            {% assign installment_value = product.price | divided_by: installments %}
+                            <div product="title" class="text-parcelas">à vista ou {{ installments }}x de {{ installment_value | money }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="countdown" data-countdown-target="{{ forloop.index }}">
+                        <div class="countdown-component">
+                          <div product="title" class="number-contdown countdown-hours">48</div>
+                          <div product="title" class="txt-countdown">Horas</div>
+                        </div>
+                        <div class="divisao-countdown"></div>
+                        <div class="countdown-component">
+                          <div product="title" class="number-contdown countdown-minutes">42</div>
+                          <div product="title" class="txt-countdown">Minutos</div>
+                        </div>
+                        <div class="divisao-countdown"></div>
+                        <div class="countdown-component">
+                          <div product="title" class="number-contdown countdown-seconds">17</div>
+                          <div product="title" class="txt-countdown">Segundos</div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="product11_arrow left w-slider-arrow-left"><img loading="lazy" src="{{ 'arrow-left.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+              <div class="product11_arrow w-slider-arrow-right"><img loading="lazy" src="{{ 'arrow-right.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+              <div class="product11_slide-nav w-slider-nav w-slider-nav-invert w-round"></div>
+            </div>
+          </div>
+        </div><img src="{{ 'curva4.svg' | asset_url }}" loading="lazy" alt="" class="curvas12 is-bottom"><img src="{{ 'curvas02.svg' | asset_url }}" loading="lazy" alt="" class="curvas12">
+      </section>
+
+<script>
+(function() {
+  // Countdown timer - renova a cada 48 horas
+  function initCountdown() {
+    const countdowns = document.querySelectorAll('.countdown');
+
+    countdowns.forEach(countdown => {
+      function updateTimer() {
+        // Countdown de 48 horas que reseta quando chega a zero
+        const now = new Date().getTime();
+        const cycleTime = 48 * 60 * 60 * 1000; // 48 horas em ms
+        const timeInCycle = now % cycleTime;
+        const timeRemaining = cycleTime - timeInCycle;
+
+        const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        const hoursEl = countdown.querySelector('.countdown-hours');
+        const minutesEl = countdown.querySelector('.countdown-minutes');
+        const secondsEl = countdown.querySelector('.countdown-seconds');
+
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCountdown);
+  } else {
+    initCountdown();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Home Outlet",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "OUTLET"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Aproveite descontos de até 70% em peças selecionadas. Estoque limitado!"
+    },
+    {
+      "type": "text",
+      "id": "countdown_text",
+      "label": "Countdown Text",
+      "default": "Oferta válida por tempo limitado"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Outlet"
+    }
+  ]
+}
+{% endschema %}

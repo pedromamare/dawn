@@ -1,0 +1,106 @@
+{% comment %}
+  Product Card
+  Card de produto com 3 imagens hover, rating, preço e parcelas
+
+  Uso: {% render 'product-card', product: product %}
+{% endcomment %}
+
+<a href="{{ product.url }}" class="product-card w-inline-block">
+  <div class="card-image-wrapper">
+    <div class="card-img x-large">
+      <div class="background-product">
+        {%- comment -%} Tag promocional {%- endcomment -%}
+        {% if product.compare_at_price > product.price %}
+          {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+          <div class="tag-promo">{{ discount_percentage }}% OFF</div>
+        {% endif %}
+
+        <div class="button-cards">Ver Detalhes</div>
+
+        {%- comment -%} 3 imagens com hover effect {%- endcomment -%}
+        {% if product.images.size > 0 %}
+          <img src="{{ product.images[0] | image_url: width: 1201 }}"
+               loading="lazy"
+               alt="{{ product.title }}"
+               sizes="(max-width: 1201px) 100vw, 1201px"
+               srcset="{{ product.images[0] | image_url: width: 500 }} 500w,
+                       {{ product.images[0] | image_url: width: 800 }} 800w,
+                       {{ product.images[0] | image_url: width: 1080 }} 1080w,
+                       {{ product.images[0] | image_url: width: 1201 }} 1201w"
+               class="image-card one">
+        {% endif %}
+
+        {% if product.images.size > 1 %}
+          <img src="{{ product.images[1] | image_url: width: 1201 }}"
+               loading="lazy"
+               alt="{{ product.title }}"
+               sizes="100vw"
+               srcset="{{ product.images[1] | image_url: width: 500 }} 500w,
+                       {{ product.images[1] | image_url: width: 800 }} 800w,
+                       {{ product.images[1] | image_url: width: 1080 }} 1080w,
+                       {{ product.images[1] | image_url: width: 1201 }} 1201w"
+               class="image-card two">
+        {% endif %}
+
+        {% if product.images.size > 2 %}
+          <img src="{{ product.images[2] | image_url: width: 1201 }}"
+               loading="lazy"
+               alt="{{ product.title }}"
+               sizes="(max-width: 1201px) 100vw, 1201px"
+               srcset="{{ product.images[2] | image_url: width: 500 }} 500w,
+                       {{ product.images[2] | image_url: width: 800 }} 800w,
+                       {{ product.images[2] | image_url: width: 1080 }} 1080w,
+                       {{ product.images[2] | image_url: width: 1201 }} 1201w"
+               class="image-card three">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card-info">
+    <div class="product-card-top">
+      <div class="product-card-info">
+        {%- comment -%} Rating Stars {%- endcomment -%}
+        <div class="product-header2_rating-wrapper align-center">
+          {% for i in (1..5) %}
+            <div class="product-header2_rating-icon">
+              <div class="icon-embed-xxsmall w-embed">
+                {% if i <= 3 %}
+                  {%- comment -%} Full star {%- endcomment -%}
+                  <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.201432 8.35425C0.0324796 8.23123 -0.0397528 8.01452 0.021606 7.81473L0.101529 7.56496C0.159961 7.36756 0.335635 7.22781 0.541103 7.21527L6.92493 6.70573L9.37256 0.821007C9.45466 0.614853 9.66074 0.485543 9.88206 0.501294H10.1418C10.3505 0.496866 10.539 0.62523 10.6114 0.821007L13.069 6.70573L19.4528 7.21527C19.6583 7.22781 19.8339 7.36756 19.8924 7.56496L19.9723 7.81473C20.0403 8.00821 19.9805 8.22355 19.8224 8.35425L15.0071 12.4905L16.4857 18.695C16.5344 18.8936 16.4596 19.1021 16.2959 19.2245L16.0061 19.3843C15.8371 19.4986 15.6157 19.4986 15.4467 19.3843L10.0119 16.0873L4.54723 19.4143C4.37823 19.5286 4.15676 19.5286 3.98777 19.4143L3.76798 19.2645C3.60419 19.142 3.52945 18.9335 3.57816 18.7349L5.01677 12.4905L0.201432 8.35425Z" fill="CurrentColor"></path>
+                  </svg>
+                {% elsif i == 4 %}
+                  {%- comment -%} Half star {%- endcomment -%}
+                  <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.8928 7.56999L19.9725 7.81999C20.0381 8.00868 19.9829 8.21839 19.8329 8.34999L14.9863 12.5L16.4223 18.72C16.4709 18.9188 16.3963 19.1275 16.2328 19.25L16.0134 19.4C15.9282 19.467 15.8225 19.5023 15.7143 19.5C15.6229 19.5019 15.533 19.4776 15.455 19.43L9.99999 16.1L4.57492 19.43C4.49692 19.4776 4.40695 19.5019 4.31563 19.5C4.20738 19.5023 4.10167 19.467 4.01646 19.4L3.76714 19.25C3.60364 19.1275 3.52904 18.9188 3.57766 18.72L5.01371 12.5L0.177024 8.35999C0.0192942 8.22917 -0.0404113 8.01364 0.027436 7.81999L0.137134 7.56999C0.195462 7.37241 0.370823 7.23254 0.575926 7.21999L6.94839 6.70999L9.39166 0.819989C9.46995 0.624384 9.66017 0.497222 9.87035 0.499989H10.1296C10.3379 0.495557 10.5261 0.624037 10.5983 0.819989L13.0815 6.70999L19.454 7.21999C19.6591 7.23254 19.8344 7.37241 19.8928 7.56999ZM14.1087 16.56L12.9918 11.88L16.6517 8.74999L11.8549 8.36999L9.99999 3.90999V14.05L14.1087 16.56Z" fill="CurrentColor"></path>
+                  </svg>
+                {% else %}
+                  {%- comment -%} Empty star {%- endcomment -%}
+                  <svg width="100%" height="100%" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.39166 0.819989C9.46995 0.624384 9.66017 0.497222 9.87035 0.499989H10.1296C10.3379 0.495557 10.5261 0.624037 10.5983 0.819989L13.0815 6.70999L19.454 7.21999C19.6591 7.23254 19.8344 7.37241 19.8928 7.56999L19.9725 7.81999C20.0381 8.00868 19.9829 8.21839 19.8329 8.34999L14.9863 12.5L16.4223 18.72C16.4709 18.9188 16.3963 19.1275 16.2328 19.25L16.0134 19.4C15.9282 19.467 15.8225 19.5023 15.7143 19.5C15.6229 19.5019 15.533 19.4776 15.455 19.43L9.99999 16.1L4.57492 19.43C4.49692 19.4776 4.40695 19.5019 4.31563 19.5C4.20738 19.5023 4.10167 19.467 4.01646 19.4L3.76714 19.25C3.60364 19.1275 3.52904 18.9188 3.57766 18.72L5.01371 12.5L0.177024 8.35999C0.0192942 8.22917 -0.0404113 8.01364 0.027436 7.81999L0.137134 7.56999C0.195462 7.37241 0.370823 7.23254 0.575926 7.21999L6.94839 6.70999L9.39166 0.819989ZM16.6517 8.74999L11.8549 8.36999L9.99999 3.90999L8.14509 8.36999L3.3483 8.74999L7.00822 11.88L5.88132 16.56L9.99999 14.05L14.1087 16.56L12.9918 11.88L16.6517 8.74999Z" fill="CurrentColor"></path>
+                  </svg>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        {%- comment -%} Product Title {%- endcomment -%}
+        <div class="text-card-produtos">{{ product.title }}</div>
+
+        {%- comment -%} Price {%- endcomment -%}
+        <div class="product-header1_price-wrapper is-vertical">
+          {% if product.compare_at_price > product.price %}
+            <div class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+          {% endif %}
+          <div class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+
+          {%- comment -%} Parcelamento {%- endcomment -%}
+          {% assign installment_value = product.price | divided_by: 7 %}
+          <div class="text-parcelas">à vista ou 7x de {{ installment_value | money }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

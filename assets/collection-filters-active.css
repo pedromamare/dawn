@@ -1,0 +1,126 @@
+/* ========================================
+   FILTROS ATIVOS - VISUAL FEEDBACK
+   Arquivo: collection-filters-active.css
+   ======================================== */
+
+/* Destacar checkbox quando ativo */
+.filters1_form-radio1.is-active {
+  background-color: rgba(253, 53, 88, 0.1);
+  border-left: 3px solid var(--brand--coral, #fd3558);
+  padding-left: 0.75rem;
+}
+
+/* Checkbox marcado */
+.filters1_form-radio1-icon:checked {
+  background-color: var(--brand--coral, #fd3558);
+  border-color: var(--brand--coral, #fd3558);
+}
+
+/* Label do filtro ativo */
+.filters1_form-radio1.is-active .filters1_form-radio1-label {
+  font-weight: 600;
+  color: var(--brand--coral, #fd3558);
+}
+
+/* Tags de filtros ativos no topo */
+.filters5_tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--brand--coral, #fd3558);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.filters5_tag:hover {
+  background-color: var(--brand--magenta, #d31f57);
+  transform: scale(0.98);
+}
+
+.filters5_close-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-result-label {
+  font-weight: 500;
+}
+
+/* Container de filtros ativos */
+.filters1_results-wrapper {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.display-flex-5.is-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+/* Animação ao adicionar/remover filtro */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filters5_tag {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Estilo para links de categoria */
+.filters1_item a.filters1_form-radio1-label {
+  display: block;
+  padding: 0.5rem 0;
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.filters1_item a.filters1_form-radio1-label:hover {
+  color: var(--brand--coral, #fd3558);
+  font-weight: 600;
+}
+
+/* Categoria ativa */
+.filters1_item a.is-active-category {
+  color: var(--brand--coral, #fd3558);
+  font-weight: 700;
+  background-color: rgba(253, 53, 88, 0.1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border-left: 3px solid var(--brand--coral, #fd3558);
+  position: relative;
+}
+
+/* Ícone de check na categoria ativa */
+.filters1_item a.is-active-category::before {
+  content: '✓';
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+/* Contador de produtos na categoria */
+.category-count {
+  font-size: 0.875em;
+  opacity: 0.7;
+  font-weight: normal;
+  margin-left: 0.25rem;
+}

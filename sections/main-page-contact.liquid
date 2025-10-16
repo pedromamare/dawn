@@ -1,0 +1,87 @@
+<header class="section_contact3-header">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="w-layout-grid contact3-header_component">
+                <div id="w-node-_606f2ab7-335a-11b4-cb12-01bd36d12849-34860085" class="contact3-header_content">
+                  <div class="margin-bottom-2 margin-medium">
+                    <div class="margin-bottom-2 margin-small">
+                      <h1 class="text-color-brand">{{ page.title }}</h1>
+                    </div>
+                    <p class="text-size-medium-22">{{ page.content }}</p>
+                  </div>
+                  <div class="contact3-header_form-block w-form">
+                    {%- form 'contact', id: 'ContactForm' -%}
+                      <div class="form_field-wrapper"><label for="ContactForm-name" class="form_field-label">{{ section.settings.form_name_label }}</label><input class="form_input-6 w-input" maxlength="256" name="contact[name]" data-name="nome" placeholder="" type="text" id="ContactForm-name" required=""></div>
+                      <div class="form_field-wrapper"><label for="ContactForm-email" class="form_field-label">{{ section.settings.form_email_label }}</label><input class="form_input-6 w-input" maxlength="256" name="contact[email]" data-name="email" placeholder="" type="email" id="ContactForm-email" required=""></div>
+                      <div class="form_field-wrapper"><label for="ContactForm-phone" class="form_field-label">{{ section.settings.form_phone_label }}</label><input class="form_input-6 w-input" maxlength="256" name="contact[phone]" data-name="telefone" placeholder="" type="tel" id="ContactForm-phone" required=""></div>
+                      <div class="form_field-wrapper"><label for="ContactForm-body" class="form_field-label">{{ section.settings.form_message_label }}</label><textarea id="ContactForm-body" name="contact[body]" maxlength="5000" data-name="mensagem" placeholder="{{ section.settings.form_message_placeholder }}" required="" class="form_input-6 is-text-area w-input"></textarea></div>
+                      <input type="submit" data-wait="{{ section.settings.form_sending_message }}" id="w-node-_606f2ab7-335a-11b4-cb12-01bd36d12865-34860085" class="button w-button" value="{{ section.settings.form_submit_button_text }}">
+                    {%- endform -%}
+                  </div>
+                </div>
+                <div class="contact-header_image-wrapper"><img src="{{ section.settings.image | image_url: width: 1720 }}" loading="eager" class="contact3-header_image"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+{% schema %}
+{
+  "name": "Main Page Contact",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Contact Form"
+    },
+    {
+      "type": "text",
+      "id": "form_name_label",
+      "label": "Name Label",
+      "default": "Nome"
+    },
+    {
+      "type": "text",
+      "id": "form_email_label",
+      "label": "Email Label",
+      "default": "E-mail"
+    },
+    {
+      "type": "text",
+      "id": "form_phone_label",
+      "label": "Phone Label",
+      "default": "Telefone"
+    },
+    {
+      "type": "text",
+      "id": "form_message_label",
+      "label": "Message Label",
+      "default": "Mensagem"
+    },
+    {
+      "type": "text",
+      "id": "form_message_placeholder",
+      "label": "Message Placeholder",
+      "default": "Digite sua mensagem"
+    },
+    {
+      "type": "text",
+      "id": "form_sending_message",
+      "label": "Sending Message",
+      "default": "Enviando..."
+    },
+    {
+      "type": "text",
+      "id": "form_submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Enviar mensagem"
+    }
+  ]
+}
+{% endschema %}

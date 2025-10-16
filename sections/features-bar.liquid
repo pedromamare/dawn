@@ -1,0 +1,85 @@
+{% comment %}
+  Features Bar
+  Barra de benefícios com ícones (frete grátis, qualidade, etc)
+{% endcomment %}
+
+<section class="section_features">
+  <div class="features_component">
+    <div class="w-layout-grid features_list">
+      {% for block in section.blocks %}
+        <div class="features_item" {{ block.shopify_attributes }}>
+          <div class="layout282_item-icon-wrapper">
+            {% if block.settings.icon != blank %}
+              <img src="{{ block.settings.icon | image_url: width: 100 }}"
+                   loading="lazy"
+                   alt="{{ block.settings.text }}"
+                   class="image">
+            {% endif %}
+          </div>
+          <div class="layout282_item-text-wrapper">
+            <div class="text-size-medium-21">{{ block.settings.text }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Barra de Benefícios",
+  "tag": "section",
+  "class": "section-features-bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Benefício",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Ícone"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Benefício"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de Benefícios",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Frete Grátis acima de R$299,99"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Produtos com garantia de qualidade"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Presenteie quem você ama"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "text": "Até 10x sem juros"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

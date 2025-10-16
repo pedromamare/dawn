@@ -1,0 +1,120 @@
+{% comment %}
+  Outlet Products
+  Seção de produtos do outlet com slider
+{% endcomment %}
+
+<section class="section_outlet">
+  <div class="padding-global">
+    <div class="padding-section-small">
+      <div class="outlet_heading-wrapper">
+        <div class="product11_heading align-center">
+          <div class="margin-bottom-2 margin-xsmall">
+            <h2 class="text-color-secondary">{{ section.settings.title | default: 'OUTLET' }}</h2>
+          </div>
+          <p class="text-card-produtos">{{ section.settings.subtitle | default: 'Aproveite descontos de até 70% em peças selecionadas. Estoque limitado!' }}</p>
+          <div class="oferta-valida-component">
+            <img src="{{ 'flash-sale.svg' | asset_url }}" loading="lazy" alt="" class="icon-outlet">
+            <p class="txt-tempo-limitado">{{ section.settings.promo_text | default: 'Oferta válida por tempo limitado' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div data-delay="700"
+           data-animation="slide"
+           class="product_component w-slider"
+           data-autoplay="false"
+           data-easing="ease"
+           data-hide-arrows="false"
+           data-disable-swipe="false"
+           data-autoplay-limit="0"
+           data-nav-spacing="3"
+           data-duration="500"
+           data-infinite="true">
+
+        <div class="product11_mask w-slider-mask">
+          {% assign collection = collections[section.settings.collection] %}
+
+          {% if collection != blank and collection.products.size > 0 %}
+            {% for product in collection.products limit: section.settings.products_limit %}
+              <div class="product11_slide w-slide">
+                {% render 'product-card', product: product %}
+              </div>
+            {% endfor %}
+          {% else %}
+            {%- comment -%} Fallback - produtos com desconto {%- endcomment -%}
+            {% for product in collections.all.products %}
+              {% if product.compare_at_price > product.price and forloop.index <= section.settings.products_limit %}
+                <div class="product11_slide w-slide">
+                  {% render 'product-card', product: product %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        {%- comment -%} Slider Navigation {%- endcomment -%}
+        <div class="dark-slide-arrow left w-slider-arrow-left">
+          <div class="slider-arrow-wrapper">
+            <img loading="lazy" src="{{ 'arrow-left24x242x-5.svg' | asset_url }}" alt="Previous" class="slider-arrow-2">
+          </div>
+        </div>
+        <div class="dark-slide-arrow right w-slider-arrow-right">
+          <div class="slider-arrow-wrapper">
+            <img loading="lazy" src="{{ 'arrow-right24x242x-5.svg' | asset_url }}" alt="Next" class="slider-arrow-2">
+          </div>
+        </div>
+
+        {%- comment -%} Pagination Dots {%- endcomment -%}
+        <div class="w-slider-nav w-slider-nav-invert w-round"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Outlet Products",
+  "tag": "section",
+  "class": "section-outlet",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "OUTLET"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Aproveite descontos de até 70% em peças selecionadas. Estoque limitado!"
+    },
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Texto da Promoção",
+      "default": "Oferta válida por tempo limitado"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Coleção Outlet",
+      "info": "Selecione a coleção de produtos do outlet"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Número de Produtos",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Outlet Products"
+    }
+  ]
+}
+{% endschema %}

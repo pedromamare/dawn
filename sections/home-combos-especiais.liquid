@@ -1,0 +1,98 @@
+<section class="section_produtos">
+        <div class="padding-global">
+          <div class="padding-section-small">
+            <div class="margin-bottom-2 margin-xxlarge">
+              <div class="product11_heading-wrapper">
+                <div class="product11_heading align-center">
+                  <div class="margin-bottom-2 margin-xsmall">
+                    <h2>{{ section.settings.title }}</h2>
+                  </div>
+                  <p class="text-card-produtos">{{ section.settings.subtitle }}<br></p>
+                </div>
+              </div>
+            </div>
+            <div data-delay="700" data-animation="slide" class="product11_component w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="false">
+              <div class="product11_mask w-slider-mask">
+                {% assign collection_products = collections[section.settings.collection].products %}
+                {% for product in collection_products limit: section.settings.products_limit %}
+                <div class="product11_slide w-slide">
+                  <a href="{{ product.url | within: collection }}" class="product-card w-inline-block">
+                    <div class="card-image-wrapper">
+                      <div class="card-img x-large">
+                        <div class="background-product">
+                          <div class="button-cards">Ver Detalhes</div><img src="{{ product.featured_image | image_url: width: 500 }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" class="image-card one">
+                           {% if product.images.size > 1 %}
+                          <img src="{{ product.images[1] | image_url: width: 500 }}" loading="lazy" alt="{{ product.images[1].alt | escape }}" class="image-card two">
+                          {% endif %}
+                           {% if product.images.size > 2 %}
+                          <img src="{{ product.images[2] | image_url: width: 500 }}" loading="lazy" alt="{{ product.images[2].alt | escape }}" class="image-card three">
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-info">
+                      <div class="product-card-top">
+                        <div class="product-card-info">
+                          <div product="title" class="text-card-produtos">{{ product.title }}</div>
+                          <div class="product-header1_price-wrapper is-vertical">
+                            {% if product.compare_at_price > product.price %}
+                              <div product="title" class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+                            {% endif %}
+                            <div product="title" class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+                            {% assign installments = 10 %}
+                            {% assign installment_value = product.price | divided_by: installments %}
+                            <div product="title" class="text-parcelas">à vista ou {{ installments }}x de {{ installment_value | money }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="product11_arrow left w-slider-arrow-left"><img loading="lazy" src="{{ 'arrow-left.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+              <div class="product11_arrow w-slider-arrow-right"><img loading="lazy" src="{{ 'arrow-right.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+              <div class="product11_slide-nav w-slider-nav w-slider-nav-invert w-round"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% schema %}
+{
+  "name": "Home Combos Especiais",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Combos Especiais"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Conjuntos exclusivos com desconto especial para um visual completo e harmonioso"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Combos Especiais"
+    }
+  ]
+}
+{% endschema %}

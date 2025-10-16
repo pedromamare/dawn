@@ -1,0 +1,240 @@
+<div data-animation="default" class="navbar w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="b7c96306-6a00-b883-2f21-a8179f2cd49a" role="banner" data-duration="400">
+  <div class="navbar_container">
+    <a href="/" class="nav_brand w-nav-brand">
+      {% if section.settings.header_logo %}
+        <img src="{{ section.settings.header_logo | img_url: 'master' }}" loading="lazy" alt="{{ section.settings.header_logo.alt | escape }}" class="nav_logo">
+      {% else %}
+        <img src="{{ 'client-first-logo-white.svg' | asset_url }}" loading="lazy" alt="" class="nav_logo">
+      {% endif %}
+    </a>
+    <nav role="navigation" class="navbar10_menu w-nav-menu">
+      <div class="navbar10_menu-left">
+        {% if section.settings.main_menu != blank %}
+          {% for link in section.settings.main_menu.links %}
+            {% if link.links != blank %}
+              <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle">
+                  <div>{{ link.title }}</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  {% for child_link in link.links %}
+                    <a href="{{ child_link.url }}" class="drop-link w-dropdown-link">{{ child_link.title }}</a>
+                  {% endfor %}
+                </nav>
+              </div>
+            {% else %}
+              <a href="{{ link.url }}" class="navbar11_link w-nav-link">{{ link.title }}</a>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% comment %} Fallback for hardcoded menu if no menu is selected {% endcomment %}
+          <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+            <div class="dropdown-toggle w-dropdown-toggle">
+              <div class="text-block-4">Anéis</div>
+            </div>
+            <nav class="dropdown-list w-dropdown-list">
+              <a href="/collections/aneis-solitarios" class="drop-link w-dropdown-link">Solitários</a>
+              <a href="/collections/aneis-aliancas" class="drop-link w-dropdown-link">Alianças</a>
+              <a href="/collections/aneis-cocktail" class="drop-link w-dropdown-link">Cocktail</a>
+              <a href="/collections/aneis-conjunto" class="drop-link w-dropdown-link">Conjunto</a>
+              <a href="/collections/aneis" class="drop-link w-dropdown-link">Ver todos</a>
+            </nav>
+          </div>
+          <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+            <div class="dropdown-toggle w-dropdown-toggle">
+              <div>Brincos</div>
+            </div>
+            <nav class="dropdown-list w-dropdown-list">
+              <a href="/collections/brincos-argolas" class="drop-link w-dropdown-link">Argolas</a>
+              <a href="/collections/brincos-studs" class="drop-link w-dropdown-link">Studs</a>
+              <a href="/collections/brincos-pendentes" class="drop-link w-dropdown-link">Pendentes</a>
+              <a href="/collections/brincos-ear-cuff" class="drop-link w-dropdown-link">Ear Cuff</a>
+              <a href="/collections/brincos" class="drop-link w-dropdown-link">Ver todos</a>
+            </nav>
+          </div>
+          <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+            <div class="dropdown-toggle w-dropdown-toggle">
+              <div>Colares</div>
+            </div>
+            <nav class="dropdown-list w-dropdown-list">
+              <a href="/collections/colares-correntes" class="drop-link w-dropdown-link">Correntes</a>
+              <a href="/collections/colares-pingentes" class="drop-link w-dropdown-link">Pingentes</a>
+              <a href="/collections/colares-chokers" class="drop-link w-dropdown-link">Chokers</a>
+              <a href="/collections/colares-longos" class="drop-link w-dropdown-link">Longos</a>
+              <a href="/collections/colares" class="drop-link w-dropdown-link">Ver todos</a>
+            </nav>
+          </div>
+          <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+            <div class="dropdown-toggle w-dropdown-toggle">
+              <div>Pulseiras</div>
+            </div>
+            <nav class="dropdown-list w-dropdown-list">
+              <a href="/collections/pulseiras-tennis" class="drop-link w-dropdown-link">Tennis</a>
+              <a href="/collections/pulseiras-charm" class="drop-link w-dropdown-link">Charm</a>
+              <a href="/collections/pulseiras-rigidas" class="drop-link w-dropdown-link">Rígidas</a>
+              <a href="/collections/pulseiras-corrente" class="drop-link w-dropdown-link">Corrente</a>
+              <a href="/collections/pulseiras" class="drop-link w-dropdown-link">Ver todos</a>
+            </nav>
+          </div>
+          <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+            <div class="dropdown-toggle w-dropdown-toggle">
+              <div>Acessórios</div>
+            </div>
+            <nav class="dropdown-list w-dropdown-list">
+              <a href="/collections/acessorios-relogios" class="drop-link w-dropdown-link">Relógios</a>
+              <a href="/collections/acessorios-oculos" class="drop-link w-dropdown-link">Óculos</a>
+              <a href="/collections/acessorios-broches" class="drop-link w-dropdown-link">Broches</a>
+              <a href="/collections/acessorios" class="drop-link w-dropdown-link">Ver todos</a>
+            </nav>
+          </div>
+          <a href="/collections/combos" class="navbar11_link w-nav-link">Combos</a>
+          <a href="/collections/outlet" class="navbar11_link w-nav-link">Outlet</a>
+        {% endif %}
+      </div>
+      <div class="navbar10_menu-right">
+        <div class="search-wrapper-2">
+          <div data-delay="500" data-hover="false" class="dropdown-search w-dropdown">
+            <div class="search-toggle-2 w-dropdown-toggle">
+              <div class="search-icon">
+                <div data-is-ix2-target="1" class="lottie-animation-11" data-w-id="b7c96306-6a00-b883-2f21-a8179f2cd4f4" data-animation-type="lottie" data-src="https://cdn.prod.website-files.com/68d5b4f9f82b8312854aec86/68d5b4faf82b8312854aeebe_search-ffffff-easey.json" data-loop="0" data-direction="1" data-autoplay="0" data-renderer="svg" data-default-duration="2.5208333333333335" data-duration="2.5208333333333335"></div>
+              </div>
+            </div>
+            <nav class="dropdown-search-list w-dropdown-list">
+              <div class="search-base">
+                <form action="{{ routes.search_url }}" method="get" class="search-3 w-form">
+                  <input class="search-input-4 w-input" maxlength="256" name="q" placeholder="{{ section.settings.search_placeholder }}" type="search" id="search" required="">
+                  <input type="submit" class="search-button-2 w-button" value="">
+                </form>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="display-inlineflex">
+      <a href="{{ section.settings.login_link_url | default: '/account/login' }}" class="button is-login w-inline-block">
+        <img src="{{ 'user-2.svg' | asset_url }}" loading="lazy" alt="" class="icon-login">
+        <div class="txt-icons-nav">{{ section.settings.login_link_text }}</div>
+      </a>
+      <smootify-cart data-open="on-add" class="smootify_mini-cart">
+        <div data-delay="0" data-hover="false" class="mini-cart_dropdown w-dropdown">
+          <div class="mini-cart_button w-dropdown-toggle">
+            <img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="" class="icon-login">
+            <div cart="count" class="cart-count">{{ cart.item_count }}</div>
+            <div class="txt-icons-nav">{{ section.settings.cart_link_text }}</div>
+          </div>
+          <nav class="mini-cart_dropdown-list w-dropdown-list">
+            <div class="margin-0-2 w-form">
+              <form action="/cart" method="post" novalidate class="w-form">
+                <div class="mini-cart_items">
+                  {% if cart.item_count > 0 %}
+                    {% for item in cart.items %}
+                      <div class="mini-cart_item-wrapper">
+                        <a href="{{ item.url }}" class="mini-cart_image-wrapper">
+                          <button type="submit" name="update" class="button-2 is-remove" data-action="remove" data-item-id="{{ item.id }}">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.46967 5.46967C5.76256 5.17678 6.23744 5.17678 6.53033 5.46967L12 10.9393L17.4697 5.46967C17.7626 5.17678 18.2374 5.17678 18.5303 5.46967C18.8232 5.76256 18.8232 6.23744 18.5303 6.53033L13.0607 12L18.5303 17.4697C18.8232 17.7626 18.8232 18.2374 18.5303 18.5303C18.2374 18.8232 17.7626 18.8232 17.4697 18.5303L12 13.0607L6.53033 18.5303C6.23744 18.8232 5.76256 18.8232 5.46967 18.5303C5.17678 18.2374 5.17678 17.7626 5.46967 17.4697L10.9393 12L5.46967 6.53033C5.17678 6.23744 5.17678 5.76256 5.46967 5.46967Z" fill="currentColor"></path>
+                            </svg>
+                          </button>
+                          <img src="{{ item.image | img_url: 'small' }}" class="cart_item-image" alt="{{ item.image.alt | escape }}" loading="lazy">
+                        </a>
+                        <div class="mini-cart_item-data">
+                          <a href="{{ item.url }}" class="mini-cart_item-title">{{ item.product.title }}</a>
+                          <div class="display-inlineflex gap-tiny">
+                            <div class="text-size-small">Quantidade</div>
+                            <div>:</div>
+                            <div class="text-size-small">{{ item.quantity }}</div>
+                          </div>
+                          <div class="produto-precos">
+                            <div>
+                              <div class="text-size-small"><strong>{{ item.final_price | money }}</strong></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="empty-cart-label">Your cart is empty. Let's change that!</div>
+                  {% endif %}
+                </div>
+                <div class="mini-cart_footer">
+                  <div class="display-flex-5 space-between">
+                    <div>Total</div>
+                    <div class="text-size-large"><strong>{{ cart.total_price | money }}</strong></div>
+                  </div>
+                  <a href="{{ routes.cart_url }}" class="button-2 is-secondary max-width-full w-button">IR PARA O CARRINHO</a>
+                  <div class="spacer-12 _0-5rem"></div>
+                  <input type="submit" class="button-2 max-width-full w-button" value="FINALIZAR COMPRA">
+                </div>
+              </form>
+              <div class="mini-cart_success w-form-done">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="mini-cart_icon big">
+                  <path d="M0 0h24v24H0zm18.31 6l-2.76 5z" fill="none"></path>
+                  <path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z" fill="currentColor"></path>
+                </svg>
+                <div class="spacer-13"></div>
+                <div class="empty-cart-label">Your cart is empty. Let's change that!</div>
+                <div class="spacer-13"></div>
+                <a href="/" class="button-2 is-secondary w-button">Back to Shop</a>
+              </div>
+              <div class="mini-cart_error-message w-form-fail">
+                <div class="mini-cart_error-label">Oops! Something went wrong while submitting the form.</div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </smootify-cart>
+      <div class="navbar10_menu-button w-nav-button">
+        <div class="menu-icon-2">
+          <div class="menu-icon_line-top"></div>
+          <div class="menu-icon_line-middle">
+            <div class="menu-icon_line-middle-inner"></div>
+          </div>
+          <div class="menu-icon_line-bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header Riocapria",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "header_logo",
+      "label": "Header Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "login_link_text",
+      "label": "Login Link Text",
+      "default": "Entrar"
+    },
+    {
+      "type": "url",
+      "id": "login_link_url",
+      "label": "Login Link URL"
+    },
+    {
+      "type": "text",
+      "id": "cart_link_text",
+      "label": "Cart Link Text",
+      "default": "Carrinho"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder Text",
+      "default": "Pesquisar"
+    }
+  ]
+}
+{% endschema %}

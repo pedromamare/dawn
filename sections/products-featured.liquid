@@ -1,0 +1,108 @@
+{% comment %}
+  Products Featured
+  Seção de produtos em destaque com slider
+{% endcomment %}
+
+<section class="section_produtos">
+  <div class="padding-global">
+    <div class="padding-section-small">
+      <div class="product11_heading-wrapper">
+        <div class="product11_heading align-center">
+          <div class="margin-bottom-2 margin-xsmall">
+            <h2>{{ section.settings.title | default: 'Produtos em Destaque' }}</h2>
+          </div>
+          <p class="text-card-produtos">{{ section.settings.subtitle | default: 'Descubra nossa seleção especial de joias cuidadosamente escolhidas para você' }}</p>
+        </div>
+      </div>
+
+      <div data-delay="700"
+           data-animation="slide"
+           class="product11_component w-slider"
+           data-autoplay="false"
+           data-easing="ease"
+           data-hide-arrows="false"
+           data-disable-swipe="false"
+           data-autoplay-limit="0"
+           data-nav-spacing="3"
+           data-duration="500"
+           data-infinite="false">
+
+        <div class="product11_mask w-slider-mask">
+          {% assign collection = collections[section.settings.collection] %}
+
+          {% if collection != blank and collection.products.size > 0 %}
+            {% for product in collection.products limit: section.settings.products_limit %}
+              <div class="product11_slide w-slide">
+                {% render 'product-card', product: product %}
+              </div>
+            {% endfor %}
+          {% else %}
+            {%- comment -%} Fallback para produtos recomendados {%- endcomment -%}
+            {% for product in collections.all.products limit: section.settings.products_limit %}
+              <div class="product11_slide w-slide">
+                {% render 'product-card', product: product %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        {%- comment -%} Slider Navigation {%- endcomment -%}
+        <div class="dark-slide-arrow left w-slider-arrow-left">
+          <div class="slider-arrow-wrapper">
+            <img loading="lazy" src="{{ 'arrow-left24x242x-5.svg' | asset_url }}" alt="Previous" class="slider-arrow-2">
+          </div>
+        </div>
+        <div class="dark-slide-arrow right w-slider-arrow-right">
+          <div class="slider-arrow-wrapper">
+            <img loading="lazy" src="{{ 'arrow-right24x242x-5.svg' | asset_url }}" alt="Next" class="slider-arrow-2">
+          </div>
+        </div>
+
+        {%- comment -%} Pagination Dots {%- endcomment -%}
+        <div class="w-slider-nav w-slider-nav-invert w-round"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produtos em Destaque",
+  "tag": "section",
+  "class": "section-products-featured",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Produtos em Destaque"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Descubra nossa seleção especial de joias cuidadosamente escolhidas para você"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Coleção",
+      "info": "Selecione a coleção de produtos a exibir"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Número de Produtos",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Produtos em Destaque"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+{% comment %}
+  Seletor de tamanhos numéricos (12-21)
+  Baseado em detalhes-do-produto-01.html e detalhes-do-produto-02.html
+
+  Uso:
+  {% render 'variant-selector-numeric',
+    product: product,
+    option_name: 'Tamanho'
+  %}
+{% endcomment %}
+
+{% liquid
+  assign option_index = nil
+  for option in product.options_with_values
+    if option.name == option_name
+      assign option_index = forloop.index0
+      break
+    endif
+  endfor
+%}
+
+{% if option_index != nil %}
+  <div class="option-component divisao-itens">
+    <div product="title" class="text-style-allcaps text-color-primary">{{ option_name }}</div>
+
+    <div class="filters1_list is-checkbox2">
+      {% for value in product.options_by_name[option_name].values %}
+        {% liquid
+          assign is_available = false
+          assign matching_variant = nil
+
+          for variant in product.variants
+            if option_index == 0 and variant.option1 == value
+              assign matching_variant = variant
+            elsif option_index == 1 and variant.option2 == value
+              assign matching_variant = variant
+            elsif option_index == 2 and variant.option3 == value
+              assign matching_variant = variant
+            endif
+
+            if matching_variant != nil
+              if matching_variant.available
+                assign is_available = true
+              endif
+              break
+            endif
+          endfor
+        %}
+
+        <div
+          class="select_iten {% unless is_available %}desativado{% endunless %}"
+          data-option-index="{{ option_index }}"
+          data-option-value="{{ value }}"
+          {% if matching_variant %}
+            data-variant-id="{{ matching_variant.id }}"
+          {% endif %}
+        >
+          <div swatch="title" class="filters_form-checkbox-label">{{ value }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

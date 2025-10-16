@@ -1,0 +1,150 @@
+{% comment %}
+  Seção: Product Accordion Details
+  Accordion com Descrição, Informações Adicionais, Envio e Devolução
+{% endcomment %}
+
+<section class="product-details-accordion padding-global">
+  <div class="container-large">
+    <div class="padding-section-small">
+      <div class="product-header9_accordion-wrapper">
+
+        {%- if product.description != blank -%}
+        <div class="product-header9_accordion">
+          <div data-accordion-trigger class="product-header9_heading">
+            <div class="text-size-large text-weight-semibold">Descrição</div>
+            <div class="product-header9_accordion-icon">
+              <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 6L12 18M6 12L18 12" stroke="CurrentColor" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div style="height:0px" class="product-header9_details">
+            <div class="padding-top padding-small">
+              <div class="text-rich-text w-richtext">
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+
+        <div class="product-header9_accordion">
+          <div data-accordion-trigger class="product-header9_heading">
+            <div class="text-size-large text-weight-semibold">Informações Adicionais</div>
+            <div class="product-header9_accordion-icon">
+              <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 6L12 18M6 12L18 12" stroke="CurrentColor" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div style="height:0px" class="product-header9_details">
+            <div class="padding-top padding-small">
+              <div class="text-rich-text w-richtext">
+                {% if product.metafields.custom.additional_info %}
+                  {{ product.metafields.custom.additional_info }}
+                {% else %}
+                  <ul>
+                    <li><strong>Material:</strong> {{ product.metafields.custom.material | default: "Ouro 18k" }}</li>
+                    <li><strong>Peso:</strong> {{ product.metafields.custom.weight | default: "N/A" }}</li>
+                    <li><strong>Garantia:</strong> Garantia vitalícia RIOCAPRIA</li>
+                    <li><strong>Certificação:</strong> Produto certificado</li>
+                  </ul>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-header9_accordion">
+          <div data-accordion-trigger class="product-header9_heading">
+            <div class="text-size-large text-weight-semibold">Envio e Devolução</div>
+            <div class="product-header9_accordion-icon">
+              <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 6L12 18M6 12L18 12" stroke="CurrentColor" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div style="height:0px" class="product-header9_details">
+            <div class="padding-top padding-small">
+              <div class="text-rich-text w-richtext">
+                <ul>
+                  <li><strong>Frete Grátis</strong> para compras acima de R$ 299,99</li>
+                  <li><strong>Prazo de entrega:</strong> 5 a 10 dias úteis</li>
+                  <li><strong>Troca grátis</strong> em até 30 dias</li>
+                  <li><strong>Devolução:</strong> Aceita em até 7 dias corridos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-header9_accordion">
+          <div data-accordion-trigger class="product-header9_heading">
+            <div class="text-size-large text-weight-semibold">Cuidados</div>
+            <div class="product-header9_accordion-icon">
+              <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 6L12 18M6 12L18 12" stroke="CurrentColor" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div style="height:0px" class="product-header9_details">
+            <div class="padding-top padding-small">
+              <div class="text-rich-text w-richtext">
+                <ul>
+                  <li>Evite contato com produtos químicos, perfumes e cremes</li>
+                  <li>Retire suas joias antes de atividades físicas</li>
+                  <li>Guarde em local seco e arejado</li>
+                  <li>Limpe com flanela macia</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Accordion functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const accordionTriggers = document.querySelectorAll('[data-accordion-trigger]');
+
+    accordionTriggers.forEach(trigger => {
+      trigger.addEventListener('click', function() {
+        const accordion = this.parentElement;
+        const details = accordion.querySelector('.product-header9_details');
+        const icon = this.querySelector('.product-header9_accordion-icon svg');
+
+        // Toggle height
+        if (details.style.height === '0px' || details.style.height === '') {
+          details.style.height = details.scrollHeight + 'px';
+          icon.style.transform = 'rotate(45deg)';
+        } else {
+          details.style.height = '0px';
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Accordion Details",
+  "tag": "section",
+  "class": "product-accordion-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Mostra accordion com descrição, informações adicionais, envio e cuidados do produto."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Accordion Details"
+    }
+  ]
+}
+{% endschema %}

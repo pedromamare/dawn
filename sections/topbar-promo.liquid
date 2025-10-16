@@ -1,0 +1,43 @@
+{% comment %}
+  Topbar Promocional Riocapria
+  Barra superior com promoção/mensagem
+{% endcomment %}
+
+<a
+  id="notification"
+  href="{{ section.settings.promo_link | default: '#' }}"
+  class="topbar-promo w-inline-block"
+  {% if section.settings.promo_link == blank %}onclick="return false;"{% endif %}
+>
+  <div class="top-bar-promo">
+    <div class="promo-content">
+      <div class="text-block-2">
+        {{ section.settings.promo_text | default: 'Frete Grátis acima de R$299,99 | Desconto extra: 5%OFF no PIX' }}
+      </div>
+    </div>
+  </div>
+</a>
+
+{% schema %}
+{
+  "name": "Topbar Promocional",
+  "settings": [
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Texto promocional",
+      "default": "Frete Grátis acima de R$299,99 | Desconto extra: 5%OFF no PIX"
+    },
+    {
+      "type": "url",
+      "id": "promo_link",
+      "label": "Link da promoção"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Topbar Promocional"
+    }
+  ]
+}
+{% endschema %}

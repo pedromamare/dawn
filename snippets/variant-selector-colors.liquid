@@ -1,0 +1,106 @@
+{% comment %}
+  Seletor de cores com imagem e nome
+  Baseado em detalhes-do-produto-01.html e detalhes-do-produto-02.html
+  Para produtos com variações de cor/pedra
+
+  Uso:
+  {% render 'variant-selector-colors',
+    product: product,
+    option_name: 'Cor'
+  %}
+
+  IMPORTANTE:
+  - Cada variante de cor deve ter uma imagem de swatch associada
+  - As imagens devem estar nomeadas de forma consistente
+  - Use metafields para mapear cores → imagens se necessário
+{% endcomment %}
+
+{% liquid
+  assign option_index = nil
+  for option in product.options_with_values
+    if option.name == option_name
+      assign option_index = forloop.index0
+      break
+    endif
+  endfor
+%}
+
+{% if option_index != nil %}
+  <div class="option-component">
+    <div product="title" class="text-style-allcaps text-color-primary">{{ option_name }}</div>
+
+    <div class="variant-button-row">
+      {% for value in product.options_by_name[option_name].values %}
+        {% liquid
+          assign is_available = false
+          assign matching_variant = nil
+          assign is_first = false
+          assign variant_image = nil
+
+          if forloop.first
+            assign is_first = true
+          endif
+
+          for variant in product.variants
+            assign variant_value = nil
+
+            if option_index == 0
+              assign variant_value = variant.option1
+            elsif option_index == 1
+              assign variant_value = variant.option2
+            elsif option_index == 2
+              assign variant_value = variant.option3
+            endif
+
+            if variant_value == value
+              assign matching_variant = variant
+              if variant.available
+                assign is_available = true
+              endif
+
+              comment
+                Tenta usar a imagem da variante
+              endcomment
+              if variant.featured_image
+                assign variant_image = variant.featured_image
+              endif
+
+              break
+            endif
+          endfor
+
+          comment
+            Fallback: usar thumbnail pequeno da imagem da variante
+            ou uma imagem de swatch genérica
+          endcomment
+
+          if variant_image == nil
+            assign swatch_filename = value | handleize | append: '.avif'
+            assign swatch_url = swatch_filename | asset_url
+          else
+            assign swatch_url = variant_image | image_url: width: 100
+          endif
+        %}
+
+        <div
+          option="bg-color"
+          class="variant-button {% unless is_available %}is-disabled{% endunless %} {% if is_first %}is-active{% endif %}"
+          data-option-index="{{ option_index }}"
+          data-option-value="{{ value }}"
+          {% if matching_variant %}
+            data-variant-id="{{ matching_variant.id }}"
+            data-variant-available="{{ matching_variant.available }}"
+          {% endif %}
+        >
+          <img
+            loading="lazy"
+            src="{{ swatch_url }}"
+            alt="{{ value }}"
+            class="img-icon-produtos"
+          >
+          <div option="title">{{ value }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

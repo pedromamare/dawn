@@ -1,0 +1,67 @@
+<div class="section_instagram"><img src="{{ 'curvas02.svg' | asset_url }}" loading="lazy" alt="" class="curvas12">
+        <div class="container-large">
+          <div class="padding-global">
+            <div class="instagram-infos">
+              <div class="riocapria-insta">{% if section.settings.logo != blank %}<img loading="eager" src="{{ section.settings.logo | image_url: width: 100 }}" alt="" class="logo-instagram">{% endif %}
+                <div class="flex align-center gap-column-8px">
+                  <div class="heading-style-h3 text-color-brand003">{{ section.settings.username }}</div>
+                </div>
+              </div>
+              <a bind="9f357e00-61e5-8409-c2ef-09dbe9b69d7e" href="{{ section.settings.button_link }}" target="_blank" class="button is-outline w-button">{{ section.settings.button_text }}</a>
+            </div>
+            <div class="grid-instagram">
+              {% for block in section.blocks %}
+                <img id="w-node-_9f357e00-61e5-8409-c2ef-09dbe9b69d83-2bf9746f" sizes="(max-width: 1720px) 100vw, 1720px" alt="" src="{{ block.settings.image | image_url: width: 500 }}" loading="lazy" class="image-42 _01-post">
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% schema %}
+{
+  "name": "Home Instagram",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Instagram Logo"
+    },
+    {
+      "type": "text",
+      "id": "username",
+      "label": "Username",
+      "default": "@riocapria"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Seguir"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Instagram"
+    }
+  ]
+}
+{% endschema %}

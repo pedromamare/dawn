@@ -1,0 +1,113 @@
+<section class="section_institucional">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="institucional-video-content">
+              <div class="video-institucional-container">
+                <div class="hero__content-wrapper">
+                  <div class="titulo-video">
+                    <h1 data-w-id="305ed515-a2a5-a437-abbe-cea4afd27d8c" style="opacity:0" class="heading-style-h1 text-color-alternate">{{ section.settings.title }}</h1>
+                    <h1 data-w-id="72772615-e28a-9850-d35b-7c12d45bfe78" style="opacity:0" class="heading-style-h1 text-color-gradiente">{{ section.settings.subtitle }}</h1>
+                  </div>
+                  <p data-w-id="305ed515-a2a5-a437-abbe-cea4afd27d8e" style="opacity:0" class="text-size-large text-color-alternate text-weight-light">{{ section.settings.text }}</p>
+                </div>
+              </div>
+              <div class="background-video-wrapper">
+                <div class="image-overlay"></div>
+                <div data-poster-url="{{ section.settings.video_poster | image_url: width: 1920 }}" data-video-urls="{{ section.settings.video_url }}" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-8 w-background-video w-background-video-atom"><video autoplay="" loop="" style="background-image:url({{ section.settings.video_poster | image_url: width: 1920 }})" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+                    <source src="{{ section.settings.video_url }}" data-wf-ignore="true">
+                  </video></div>
+              </div>
+            </div>
+            <div class="padding-vertical-medium">
+              <div class="content-institucional">
+                <h2 class="heading-style-h1 text-color-secondary text-weight-light">{{ section.settings.bottom_title }}<br></h2>
+                <h2 class="heading-style-h3 text-weight-light">{{ section.settings.bottom_subtitle }}</h2>
+                <div id="w-node-_7f58382d-b13b-81a5-57ff-c3c84e8c8614-2bf9746f" class="div-block-4">
+                  <p>{{ section.settings.bottom_text_1 }}</p>
+                  <p>{{ section.settings.bottom_text_2 }}<br></p>
+                  <div class="button-group">
+                    <a href="{{ section.settings.button_link }}" class="button is-outline">{{ section.settings.button_text }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% schema %}
+{
+  "name": "Home Institucional",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sofisticação com essência"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "tropical"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Acessórios femininos que unem frescor, elegância internacional e o espírito livre."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Video URL",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Video Poster"
+    },
+    {
+      "type": "text",
+      "id": "bottom_title",
+      "label": "Bottom Title",
+      "default": "Um estilo que ultrapassa fronteiras"
+    },
+    {
+      "type": "text",
+      "id": "bottom_subtitle",
+      "label": "Bottom Subtitle",
+      "default": "Criamos peças que respiram modernidade, frescor e elegância contemporânea. Cada design transmite proximidade e versatilidade, conectando mulheres ao redor do mundo."
+    },
+    {
+      "type": "text",
+      "id": "bottom_text_1",
+      "label": "Bottom Text 1",
+      "default": "Cada peça é criada para traduzir a união entre sofisticação e liberdade: uma estética feminina que respira modernidade, frescor e estilo cosmopolita."
+    },
+    {
+      "type": "text",
+      "id": "bottom_text_2",
+      "label": "Bottom Text 2",
+      "default": "Inspiradas em formas fluidas e movimento contínuo, nossas joias evocam um verão eterno, leve e sofisticado. Tons quentes e contrastes tropicais refletem energia, vitalidade e a essência de um lifestyle que ultrapassa fronteiras."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Continuar lendo"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Institucional"
+    }
+  ]
+}
+{% endschema %}

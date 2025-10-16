@@ -1,0 +1,35 @@
+/**
+ * Riocapria Override CSS
+ * Ajustes para manter a fidelidade ao design Webflow
+ */
+
+/* Ajusta o font-size base para match com Webflow */
+html {
+  font-size: 100% !important; /* 16px padrão */
+}
+
+/* Ajusta o body para não usar grid da Shopify */
+body {
+  display: block !important;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Sora, sans-serif;
+  color: #333;
+}
+
+/* Remove paddings/margins extras das sections da Shopify */
+.shopify-section {
+  margin: 0;
+  padding: 0;
+}
+
+/* Garante que o main content não tenha limitações */
+#MainContent {
+  max-width: none;
+  padding: 0;
+}
+
+/* Remove estilos de gradiente da Shopify que podem conflitar */
+.gradient {
+  background: none !important;
+}

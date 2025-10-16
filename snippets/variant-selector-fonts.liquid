@@ -1,0 +1,104 @@
+{% comment %}
+  Seletor de tipos de fonte com imagens
+  Baseado em detalhes-do-produto-01.html e detalhes-do-produto-02.html
+  Para produtos personalizáveis com escolha de tipografia
+
+  Uso:
+  {% render 'variant-selector-fonts',
+    product: product,
+    option_name: 'Tipo de letra',
+    show_message: true,
+    custom_message: 'Prazo de 5 dias úteis para peças personalizadas'
+  %}
+
+  IMPORTANTE: As imagens das fontes devem estar em:
+  - 01-fonts.avif
+  - 02-fonts.avif
+  - 03-fonts.avif
+  - 04-fonts.avif
+  - 05-fonts.avif
+{% endcomment %}
+
+{% liquid
+  assign option_index = nil
+  for option in product.options_with_values
+    if option.name == option_name
+      assign option_index = forloop.index0
+      break
+    endif
+  endfor
+%}
+
+{% if option_index != nil %}
+  <div class="option-component divisao-itens">
+    <div product="title" class="text-style-allcaps text-color-primary">{{ option_name }}</div>
+
+    <div class="variant-button-row">
+      {% for value in product.options_by_name[option_name].values %}
+        {% liquid
+          assign is_available = false
+          assign matching_variant = nil
+          assign is_first = false
+
+          if forloop.first
+            assign is_first = true
+          endif
+
+          for variant in product.variants
+            assign variant_value = nil
+
+            if option_index == 0
+              assign variant_value = variant.option1
+            elsif option_index == 1
+              assign variant_value = variant.option2
+            elsif option_index == 2
+              assign variant_value = variant.option3
+            endif
+
+            if variant_value == value
+              assign matching_variant = variant
+              if variant.available
+                assign is_available = true
+              endif
+              break
+            endif
+          endfor
+
+          comment
+            Mapear valores para números de imagem de fonte
+            Você pode customizar este mapeamento baseado nos seus produtos
+          endcomment
+
+          assign font_number = forloop.index
+          if font_number > 5
+            assign font_number = 5
+          endif
+
+          assign font_image = font_number | prepend: '0' | append: '-fonts.avif'
+        %}
+
+        <div
+          option="bg-color"
+          class="letras-itens {% unless is_available %}is-disabled{% endunless %} {% if is_first %}is-active{% endif %}"
+          data-option-index="{{ option_index }}"
+          data-option-value="{{ value }}"
+          {% if matching_variant %}
+            data-variant-id="{{ matching_variant.id }}"
+            data-variant-available="{{ matching_variant.available }}"
+          {% endif %}
+        >
+          <img
+            loading="lazy"
+            src="{{ font_image | asset_url }}"
+            alt="{{ value }}"
+            class="letras-img"
+          >
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if show_message and custom_message %}
+      <div class="text-size-tiny text-color-brand2">{{ custom_message }}<br></div>
+    {% endif %}
+  </div>
+{% endif %}

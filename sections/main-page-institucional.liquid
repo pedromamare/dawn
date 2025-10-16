@@ -1,0 +1,75 @@
+<div class="hero-institucional">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="hero-content-institucional">
+              <h1 class="heading-style-h1 text-color-alternate">{{ page.title }}</h1>
+            </div>
+          </div>
+        </div>
+        <div class="hero-background-institucional"><img src="{{ section.settings.hero_image | image_url: width: 1920 }}" loading="lazy" alt="" class="hero-background-img">
+          <div class="image-overlay is-hero-institucional"></div>
+        </div>
+      </div>
+      <section class="section_institucional-content">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="institucional-grid">
+                <div id="w-node-_3c932a71-8854-3326-7827-b0381729fe7b-c1e38b7b" class="content-institucional-left">
+                  <div class="margin-bottom-2 margin-small">
+                    <h2 class="heading-style-h2">{{ section.settings.title }}</h2>
+                  </div>
+                  <div class="text-rich-text w-richtext">
+                    {{ page.content }}
+                  </div>
+                </div>
+                <div id="w-node-_3c932a71-8854-3326-7827-b0381729fe8a-c1e38b7b" class="institucional-img-grid">
+                  <div id="w-node-_3c932a71-8854-3326-7827-b0381729fe8b-c1e38b7b" class="institucional-img-wrapper is-01"><img src="{{ section.settings.image_1 | image_url: width: 500 }}" loading="lazy" alt="" class="institucional-img"></div>
+                  <div id="w-node-_3c9A2A71-8854-3326-7827-B0381729FE8D-c1e38b7b" class="institucional-img-wrapper is-02"><img src="{{ section.settings.image_2 | image_url: width: 500 }}" loading="lazy" alt="" class="institucional-img"></div>
+                  <div id="w-node-_3c9A2A71-8854-3326-7827-B0381729FE8F-c1e38b7b" class="institucional-img-wrapper is-03"><img src="{{ section.settings.image_3 | image_url: width: 500 }}" loading="lazy" alt="" class="institucional-img"></div>
+                  <div id="w-node-_3c9A2A71-8854-3326-7827-B0381729FE91-c1e38b7b" class="institucional-img-wrapper is-04"><img src="{{ section.settings.image_4 | image_url: width: 500 }}" loading="lazy" alt="" class="institucional-img"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% schema %}
+{
+  "name": "Main Page Institucional",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Um estilo que ultrapassa fronteiras"
+    },
+    {
+        "type": "image_picker",
+        "id": "image_1",
+        "label": "Image 1"
+    },
+    {
+        "type": "image_picker",
+        "id": "image_2",
+        "label": "Image 2"
+    },
+    {
+        "type": "image_picker",
+        "id": "image_3",
+        "label": "Image 3"
+    },
+    {
+        "type": "image_picker",
+        "id": "image_4",
+        "label": "Image 4"
+    }
+  ]
+}
+{% endschema %}

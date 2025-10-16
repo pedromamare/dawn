@@ -1,0 +1,119 @@
+<section class="section_categorias">
+        <div class="padding-global">
+          <div class="padding-section-medium">
+            <div class="margin-bottom-2 margin-medium">
+              <div class="text-align-center">
+                <div class="max-width-large-2 align-center">
+                  <div class="margin-bottom-2 margin-small">
+                    <h2>{{ section.settings.title }}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="home8-customers_component">
+              {% for block in section.blocks %}
+              <a href="{{ block.settings.link }}" class="categorias-iten w-inline-block" {{ block.shopify_attributes }}>
+                <img src="{{ block.settings.image | image_url: width: 300 }}" loading="lazy" alt="{{ block.settings.title }}" class="icon-categorias">
+                <p class="text-categorias">{{ block.settings.title }}</p>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% schema %}
+{
+  "name": "Home Categories Grid",
+  "tag": "section",
+  "class": "section-categories-grid",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Pesquise por Categorias"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagem da Categoria"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nome da Categoria",
+          "default": "Categoria"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link da Categoria"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Categories Grid",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Anéis"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Brincos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Colares"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Pulseiras"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Conjuntos"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Acessórios"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Relógios"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Chokers"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

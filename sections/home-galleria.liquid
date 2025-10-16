@@ -1,0 +1,100 @@
+<section class="section_galleria">
+        <div class="padding-global">
+          <div class="galeria_banners-component">
+            {% for block in section.blocks %}
+            <div class="galeria_image-wrapper-large">
+              <div class="galeria_banners-content">
+                <h2 class="heading-style-h1 text-color-alternate">{{ block.settings.title }}</h2>
+                <p class="paragraph-2">{{ block.settings.subtitle }}</p>
+                <div class="button-group">
+                  <a href="{{ block.settings.link }}" class="button is-alternative">VER PRODUTOS</a>
+                </div>
+              </div>
+              <div class="filtro-banners-destaque"></div><img sizes="(max-width: 1201px) 100vw, 1201px" src="{{ block.settings.image | image_url: width: 1200 }}" loading="lazy" class="gallery9_image">
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+{% schema %}
+{
+  "name": "Home Galleria",
+  "tag": "section",
+  "class": "section-galleria",
+  "max_blocks": 6,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagem"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Título do Banner"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtítulo",
+          "default": "Descrição do banner"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Galleria",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Brincos Elegantes",
+            "subtitle": "Descubra nossa coleção de brincos que complementam perfeitamente qualquer look"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Anéis de Luxo",
+            "subtitle": ""
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Colares Deslumbrantes",
+            "subtitle": ""
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Pulseiras Modernas",
+            "subtitle": ""
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Outlet",
+            "subtitle": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

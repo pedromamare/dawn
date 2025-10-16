@@ -1,0 +1,88 @@
+{% comment %}
+  Mini Cart Dropdown
+  Carrinho dropdown com AJAX
+{% endcomment %}
+
+<div class="cart-dropdown-wrapper">
+  <div class="cart-dropdown w-dropdown">
+    <div class="cart-dropdown-toggle w-dropdown-toggle">
+      <div class="cart-icon-wrapper">
+        <img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="Carrinho" class="cart-icon">
+        <div class="cart-count" id="cart-count">{{ cart.item_count }}</div>
+      </div>
+      <div class="txt-icons-nav">Carrinho</div>
+    </div>
+
+    <nav class="cart-dropdown-list w-dropdown-list">
+      <div class="cart-dropdown-content">
+        <div class="cart-header">
+          <h3 class="cart-title">Meu Carrinho</h3>
+        </div>
+
+        <div class="cart-items" id="mini-cart-items">
+          {% if cart.item_count > 0 %}
+            {% for item in cart.items %}
+              <div class="cart-item" data-variant-id="{{ item.variant_id }}" data-line="{{ forloop.index }}">
+                <div class="cart-item-image">
+                  {% if item.image %}
+                    <img src="{{ item.image | image_url: width: 100 }}"
+                         alt="{{ item.title }}"
+                         loading="lazy"
+                         width="80">
+                  {% else %}
+                    <div class="cart-item-no-image"></div>
+                  {% endif %}
+                </div>
+
+                <div class="cart-item-details">
+                  <div class="cart-item-title">{{ item.product.title }}</div>
+                  {% if item.variant.title != 'Default Title' %}
+                    <div class="cart-item-variant">{{ item.variant.title }}</div>
+                  {% endif %}
+
+                  <div class="cart-item-price-qty">
+                    <div class="cart-item-quantity">
+                      <button type="button" class="qty-btn qty-minus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | minus: 1 }}">−</button>
+                      <input type="number" class="qty-input" value="{{ item.quantity }}" min="1" readonly>
+                      <button type="button" class="qty-btn qty-plus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | plus: 1 }}">+</button>
+                    </div>
+                    <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+                  </div>
+                </div>
+
+                <button type="button" class="cart-item-remove" data-line="{{ forloop.index }}" aria-label="Remover item">
+                  <img src="{{ 'x-close.svg' | asset_url }}" alt="Remover" loading="lazy" width="16">
+                </button>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="cart-empty">
+              <p>Seu carrinho está vazio</p>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if cart.item_count > 0 %}
+          <div class="cart-footer">
+            <div class="cart-subtotal">
+              <div class="cart-subtotal-label">Subtotal:</div>
+              <div class="cart-subtotal-price" id="cart-subtotal">{{ cart.total_price | money }}</div>
+            </div>
+
+            <a href="{{ routes.cart_url }}" class="button is-secondary w-button">Ver Carrinho</a>
+            <a href="/checkout" class="button is-primary w-button">Finalizar Compra</a>
+          </div>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+  // Inicializar contagem do carrinho ao carregar
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof RiocapriaCart !== 'undefined') {
+      RiocapriaCart.updateCartCount();
+    }
+  });
+</script>

@@ -1,0 +1,323 @@
+{% comment %}
+  Seção: Product Combo Bundle
+  Permite criar combos de produtos com desconto
+  Os produtos do combo são definidos via metafield do produto
+{% endcomment %}
+
+{%- liquid
+  assign combo_products = product.metafields.custom.combo_products.value
+  assign has_combo_products = false
+
+  if combo_products.size > 0
+    assign has_combo_products = true
+  endif
+-%}
+
+{%- if has_combo_products -%}
+<section class="section-combo">
+  <img src="{{ 'curvas02.svg' | asset_url }}" loading="lazy" alt="" class="curvas12">
+
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-small">
+
+        <div class="titulo-combo">
+          <div class="margin-bottom-2 margin-xsmall">
+            <h2 class="heading-style-h2">{{ section.settings.heading }}</h2>
+          </div>
+          {% if section.settings.description != blank %}
+            <div class="margin-bottom-2 margin-xsmall">
+              <p class="text-size-large">{{ section.settings.description }}</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="content-combo">
+          {%- comment -%} Produto Principal - Imagem ou Vídeo {%- endcomment -%}
+          <div class="produto-principal">
+            <div class="produto-principal-video">
+              {%- if product.featured_media -%}
+                {%- if product.featured_media.media_type == 'video' -%}
+                  {{ product.featured_media | video_tag: image_size: '1024x', autoplay: true, loop: true, muted: true, controls: false }}
+                {%- else -%}
+                  <img src="{{ product.featured_media | image_url: width: 1024 }}" loading="lazy" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- comment -%} Container dos Produtos do Combo {%- endcomment -%}
+          <div class="combo-container">
+            <div class="combo-component">
+
+              {%- comment -%} Produto Principal Selecionado {%- endcomment -%}
+              <div class="select-product-content">
+                <div class="select-product-info">
+                  <img src="{{ 'check-box.svg' | asset_url }}" loading="lazy" alt="" class="icon-check is-select-product">
+                  <div class="text-style-allcaps text-color-alternate">Produto Principal selecionado</div>
+                </div>
+                <a href="{{ product.url }}" class="card-product-combo is-small-card product-select w-inline-block">
+                  <div class="img-minicard-wrapper">
+                    {%- if product.featured_image -%}
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" loading="lazy" alt="{{ product.title }}" class="image-39">
+                    {%- endif -%}
+                  </div>
+                  <div class="product-card-top-combo">
+                    <div class="product-card-info-combo">
+                      <div class="info-card-top">
+                        <div class="text-card-produtos is-small">{{ product.title }}</div>
+                      </div>
+                      <div class="product-header1_price-wrapper-copy is-vertical">
+                        <div class="text-weight-semibold">{{ product.price | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              {%- comment -%} Título "Adicione ao Combo" {%- endcomment -%}
+              <div class="div-block-25">
+                <div class="text-style-allcaps text-color-secondary">Adicione ao Combo</div>
+              </div>
+
+              {%- comment -%} Lista de Produtos para Adicionar ao Combo {%- endcomment -%}
+              {%- for combo_product in combo_products -%}
+                {%- if combo_product != blank -%}
+                  <a href="javascript:void(0)"
+                     class="card-product-combo is-small-card w-inline-block combo-product-card"
+                     data-combo-item
+                     data-product-id="{{ combo_product.id }}"
+                     data-variant-id="{{ combo_product.selected_or_first_available_variant.id }}"
+                     data-price="{{ combo_product.price }}"
+                     data-price-float="{{ combo_product.price | divided_by: 100.0 }}">
+                    <div class="check-icon-wrapper">
+                      <img src="{{ 'check-box.svg' | asset_url }}" loading="lazy" alt="" class="icon-check">
+                    </div>
+                    <div class="img-minicard-wrapper">
+                      {%- if combo_product.featured_image -%}
+                        <img src="{{ combo_product.featured_image | image_url: width: 400 }}" loading="lazy" alt="{{ combo_product.title }}" class="image-39">
+                      {%- endif -%}
+                    </div>
+                    <div class="product-card-top-combo">
+                      <div class="product-card-info-combo">
+                        <div class="info-card-top">
+                          <div class="text-card-produtos is-small">{{ combo_product.title }}</div>
+                        </div>
+                        <div class="product-header1_price-wrapper-copy is-vertical">
+                          <div class="text-weight-semibold">{{ combo_product.price | money }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- comment -%} Resumo de Preços e Botão {%- endcomment -%}
+              <div class="price-combo">
+                <div class="cart_summary">
+                  <div class="cart_subtotal-row">
+                    <div>Preço individual:</div>
+                    <div class="cart-subtotal combo-subtotal">{{ product.price | money }}</div>
+                  </div>
+                  <div class="cart_discounts-and-total">
+                    <div class="discount-code-iten">
+                      <div>Desconto combo ({{ section.settings.discount_percentage }}%):</div>
+                      <div class="order-discount-cod-amount combo-discount">-R$ 0,00</div>
+                    </div>
+                  </div>
+                  <div class="cart_total-row">
+                    <div>Total do combo:</div>
+                    <div class="cart_summary_total combo-total">{{ product.price | money }}</div>
+                  </div>
+                </div>
+
+                <button type="button" class="button-carrinho w-inline-block" id="add-combo-to-cart">
+                  <div class="icon-sacola-wrapper">
+                    <img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="" class="icon-sacola">
+                  </div>
+                  <div class="rt-hover-in-text">Adicionar Combo ao Carrinho</div>
+                </button>
+
+                <div class="combo-message" style="display: none; margin-top: 1rem; color: var(--brand--coral); text-align: center; font-size: 0.875rem;">
+                  Selecione pelo menos 1 produto adicional para criar seu combo
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.combo-product-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.combo-product-card .check-icon-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.combo-product-card.selected .check-icon-wrapper {
+  opacity: 1;
+}
+
+.combo-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const productCards = document.querySelectorAll('.combo-product-card');
+  const addButton = document.getElementById('add-combo-to-cart');
+  const subtotalEl = document.querySelector('.combo-subtotal');
+  const discountEl = document.querySelector('.combo-discount');
+  const totalEl = document.querySelector('.combo-total');
+  const messageEl = document.querySelector('.combo-message');
+  const discountPercentage = {{ section.settings.discount_percentage }} / 100;
+
+  // Preço do produto principal
+  const mainProductPrice = {{ product.price }};
+
+  function formatMoney(cents) {
+    return 'R$ ' + (cents / 100).toFixed(2).replace('.', ',');
+  }
+
+  function updateComboPrice() {
+    const selectedCards = document.querySelectorAll('.combo-product-card.selected');
+    const selectedItems = [];
+    let subtotal = mainProductPrice; // Sempre inclui o produto principal
+
+    // Adiciona produto principal
+    selectedItems.push({
+      variantId: {{ product.selected_or_first_available_variant.id }},
+      quantity: 1
+    });
+
+    // Adiciona produtos selecionados
+    selectedCards.forEach(card => {
+      const price = parseInt(card.dataset.price);
+      selectedItems.push({
+        variantId: card.dataset.variantId,
+        quantity: 1
+      });
+      subtotal += price;
+    });
+
+    const discountAmount = subtotal * discountPercentage;
+    const total = subtotal - discountAmount;
+
+    subtotalEl.textContent = formatMoney(subtotal);
+    discountEl.textContent = '-' + formatMoney(discountAmount);
+    totalEl.textContent = formatMoney(total);
+
+    // Enable button only if at least 1 additional product selected
+    if (selectedCards.length >= 1) {
+      addButton.disabled = false;
+      addButton.style.opacity = '1';
+      addButton.style.cursor = 'pointer';
+      messageEl.style.display = 'none';
+    } else {
+      addButton.disabled = false; // Permite adicionar só o produto principal
+      addButton.style.opacity = '1';
+      addButton.style.cursor = 'pointer';
+      messageEl.style.display = 'block';
+    }
+
+    return selectedItems;
+  }
+
+  // Toggle selection on click
+  productCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.classList.toggle('selected');
+      updateComboPrice();
+    });
+  });
+
+  addButton.addEventListener('click', function() {
+    if (this.disabled) return;
+
+    const selectedItems = updateComboPrice();
+
+    // Add all items to cart
+    const formData = {
+      items: selectedItems
+    };
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Show success message or redirect to cart
+      window.location.href = '/cart';
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('Erro ao adicionar combo ao carrinho');
+    });
+  });
+
+  // Initial update
+  updateComboPrice();
+});
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Combo Bundle",
+  "tag": "section",
+  "class": "combo-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Os produtos do combo são definidos no campo personalizado 'combo_products' do produto. Use o metafield do tipo 'Lista de produtos' para selecionar os produtos que farão parte do combo."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Monte seu combo"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Combine suas joias favoritas e economize até 15% no combo completo"
+    },
+    {
+      "type": "range",
+      "id": "discount_percentage",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "label": "Discount Percentage",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Combo Bundle"
+    }
+  ]
+}
+{% endschema %}

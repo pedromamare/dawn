@@ -1,0 +1,76 @@
+<header class="section_home-header">
+  <div data-delay="4000" data-animation="cross" class="basic-slider w-slider" data-autoplay="true" data-easing="ease-out-quad" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="1" data-nav-spacing="6" data-duration="700" data-infinite="true">
+    <div class="basic-mask w-slider-mask">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="banner-header w-slide">
+            <a href="{{ block.settings.slide_url }}" class="w-inline-block">
+              {% if block.settings.desktop_image != blank %}
+                <img src="{{ block.settings.desktop_image | img_url: 'master' }}" loading="lazy" alt="{{ block.settings.desktop_image.alt | escape }}" class="banner-desktop hide-tablet">
+              {% endif %}
+              {% if block.settings.mobile_image != blank %}
+                <img src="{{ block.settings.mobile_image | img_url: 'master' }}" loading="lazy" alt="{{ block.settings.mobile_image.alt | escape }}" class="banner-mobile hide-desktop">
+              {% else %}
+                <img src="{{ block.settings.desktop_image | img_url: 'master' }}" loading="lazy" alt="{{ block.settings.desktop_image.alt | escape }}" class="banner-mobile hide-desktop">
+              {% endif %}
+            </a>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="dark-slide-arrow left w-slider-arrow-left">
+      <div class="slider-arrow-wrapper"><img loading="lazy" src="{{ 'arrow-left.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+    </div>
+    <div class="dark-slide-arrow right w-slider-arrow-right">
+      <div class="slider-arrow-wrapper"><img loading="lazy" src="{{ 'arrow-right.svg' | asset_url }}" alt="" class="slider-arrow-2"></div>
+    </div>
+    <div class="slide-nav tablet-mobile-slide-nav w-slider-nav w-slider-nav-invert w-round"></div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Home Hero Slider",
+  "max_blocks": 5,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "slide_url",
+          "label": "Slide Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Hero Slider",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
