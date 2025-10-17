@@ -1,27 +1,39 @@
 {% comment %}
-  Section: Riocapria Collection Products - FUNCIONAL
+  Section: Riocapria Search Results - FUNCIONAL
   Filtros dinâmicos + Ordenação + Paginação integrados com Shopify
 {% endcomment %}
 
 {%- liquid
   assign products_per_page = section.settings.products_per_page | default: 12
-  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign sort_by = search.sort_by | default: search.default_sort_by
 -%}
 
-{%- paginate collection.products by products_per_page -%}
+{%- paginate search.results by products_per_page -%}
 
 <main class="main-wrapper">
   <section class="section_listing1 background-color-gray">
     <div class="padding-global">
       <div class="div-block-7">
         <div class="max-width-large-2">
-          <div swatch="title" class="titulo-produtos-lista text-color-primary">{{ collection.title }}</div>
+          <div swatch="title" class="titulo-produtos-lista text-color-primary">
+            {% if search.performed %}
+              Resultados para "{{ search.terms }}"
+            {% else %}
+              Buscar Produtos
+            {% endif %}
+          </div>
         </div>
         <div class="filters1_tags-wrapper">
-          {% if collection.description != blank %}
-            <p class="text-size-medium">{{ collection.description }}<br></p>
+          {% if search.performed %}
+            <p class="text-size-medium">
+              {% if search.results_count == 0 %}
+                Nenhum resultado encontrado para sua busca.<br>
+              {% else %}
+                Encontramos {{ search.results_count }} resultado{% if search.results_count > 1 %}s{% endif %} para sua busca.<br>
+              {% endif %}
+            </p>
           {% endif %}
-          <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count">{{ collection.products_count }}</span><br></p>
+          <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count">{{ search.results_count }}</span><br></p>
         </div>
       </div>
 
@@ -32,14 +44,14 @@
             <div id="w-node-_60575cb0-71b8-df62-c1b3-37dfdcf4cd63-5f3c681c" class="filters1_form-header">
               <div class="filters1_heading">Filtros</div>
               <div class="div-block-9">
-                <a href="/collections/all" class="text-size-small color-brand" id="clear-filters">Limpar</a>
+                <a href="/search" class="text-size-small color-brand" id="clear-filters">Limpar</a>
               </div>
             </div>
 
             <div class="filters1_filter-group-list">
               <!-- FILTROS ATIVOS -->
               {%- assign active_filters = false -%}
-              {%- for filter in collection.filters -%}
+              {%- for filter in search.filters -%}
                 {%- if filter.active_values.size > 0 -%}
                   {%- assign active_filters = true -%}
                 {%- endif -%}
@@ -49,7 +61,7 @@
               <div class="filters1_filter-group">
                 <div class="filters1_results-wrapper">
                   <div class="display-flex-5 is-vertical">
-                    {%- for filter in collection.filters -%}
+                    {%- for filter in search.filters -%}
                       {%- for value in filter.active_values -%}
                         <button type="button" filter="active" class="filters5_tag" data-filter-remove="{{ value.url_to_remove }}">
                           <div filter="active-label" class="filter-result-label">{{ value.label }}</div>
@@ -90,7 +102,7 @@
                           {%- unless excluded_collection_ids contains coll_id_string -%}
                             {%- assign product_count = coll.all_products_count | default: 0 -%}
                             <div class="filters1_item">
-                              <a href="{{ coll.url }}" class="filters1_form-radio1-label category-link {% if collection.handle == coll.handle %}is-active-category{% endif %}">
+                              <a href="{{ coll.url }}" class="filters1_form-radio1-label category-link">
                                 {{ coll.title }}
                                 <span class="category-count">({{ product_count }})</span>
                               </a>
@@ -104,10 +116,10 @@
               </div>
               {%- endif -%}
 
-              <!-- FILTROS DINÂMICOS DO SHOPIFY (Opcional - requer configuração no admin) -->
-              {%- if collection.filters.size > 0 -%}
+              <!-- FILTROS DINÂMICOS DO SHOPIFY -->
+              {%- if search.filters.size > 0 -%}
               <form id="FacetFiltersForm">
-                {%- for filter in collection.filters -%}
+                {%- for filter in search.filters -%}
                   <div class="filters1_filter-group">
                     <div>
                       <div data-w-id="filter-{{ filter.label | handle }}" class="filters1_filter-group-heading" style="cursor: pointer;">
@@ -197,7 +209,8 @@
             <!-- HEADER COM ORDENAÇÃO -->
             <div class="filters1_feed-header">
               <div class="sort-dropdown">
-                <form method="get" action="{{ collection.url }}" id="SortForm">
+                <form method="get" action="/search" id="SortForm">
+                  <input type="hidden" name="q" value="{{ search.terms }}">
                   <div data-delay="0" data-hover="false" class="dropdown1_component w-dropdown">
                     <div class="dropdown1_toggle w-dropdown-toggle" id="w-dropdown-toggle-7" aria-controls="w-dropdown-list-7" aria-haspopup="menu" aria-expanded="false" role="button" tabindex="0">
                       <div id="sort-by-label">Ordenar por</div>
@@ -208,7 +221,7 @@
                       </div>
                     </div>
                     <nav class="dropdown1_dropdown-list is-right w-dropdown-list" id="w-dropdown-list-7" aria-labelledby="w-dropdown-toggle-7">
-                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="manual" tabindex="0">Relevância</a>
+                      <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="relevance" tabindex="0">Relevância</a>
                       <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="best-selling" tabindex="0">Mais vendidos</a>
                       <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="price-ascending" tabindex="0">Menor preço</a>
                       <a href="#" class="dropdown1_dropdown-link w-dropdown-link sort-option" data-sort="price-descending" tabindex="0">Maior preço</a>
@@ -223,62 +236,65 @@
 
             <!-- GRID DE PRODUTOS -->
             <div class="w-layout-grid _3columns-grid-large" id="product-grid">
-              {%- for product in collection.products -%}
-              <a bind="16b67dd1-2aca-8b2f-e5d8-8a2a224c1e0e" href="{{ product.url | within: collection }}" class="product-card w-inline-block">
-                <div class="card-image-wrapper">
-                  <div class="card-img x-large">
-                    <div class="background-product">
-                      {%- if product.compare_at_price > product.price -%}
-                        {%- assign discount_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
-                        <div product="title" class="tag-promo">{{ discount_percent }}% OFF</div>
-                      {%- endif -%}
-                      <div product="title" class="button-cards">Ver Detalhes</div>
-                      <img src="{{ product.featured_image | image_url: width: 1201 }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.featured_image | image_url: width: 500 }} 500w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1080 }} 1080w, {{ product.featured_image | image_url: width: 1201 }} 1201w" class="image-card one">
-                      {%- if product.images.size > 1 -%}
-                        <img src="{{ product.images[1] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[1].alt | escape }}" sizes="100vw" srcset="{{ product.images[1] | image_url: width: 500 }} 500w, {{ product.images[1] | image_url: width: 800 }} 800w, {{ product.images[1] | image_url: width: 1080 }} 1080w, {{ product.images[1] | image_url: width: 1201 }} 1201w" class="image-card two">
-                      {%- endif -%}
-                      {%- if product.images.size > 2 -%}
-                        <img src="{{ product.images[2] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[2].alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.images[2] | image_url: width: 500 }} 500w, {{ product.images[2] | image_url: width: 800 }} 800w, {{ product.images[2] | image_url: width: 1080 }} 1080w, {{ product.images[2] | image_url: width: 1201 }} 1201w" class="image-card three">
-                      {%- endif -%}
+              {%- for item in search.results -%}
+                {%- if item.object_type == 'product' -%}
+                  {%- assign product = item -%}
+                  <a bind="16b67dd1-2aca-8b2f-e5d8-8a2a224c1e0e" href="{{ product.url }}" class="product-card w-inline-block">
+                    <div class="card-image-wrapper">
+                      <div class="card-img x-large">
+                        <div class="background-product">
+                          {%- if product.compare_at_price > product.price -%}
+                            {%- assign discount_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                            <div product="title" class="tag-promo">{{ discount_percent }}% OFF</div>
+                          {%- endif -%}
+                          <div product="title" class="button-cards">Ver Detalhes</div>
+                          <img src="{{ product.featured_image | image_url: width: 1201 }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.featured_image | image_url: width: 500 }} 500w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1080 }} 1080w, {{ product.featured_image | image_url: width: 1201 }} 1201w" class="image-card one">
+                          {%- if product.images.size > 1 -%}
+                            <img src="{{ product.images[1] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[1].alt | escape }}" sizes="100vw" srcset="{{ product.images[1] | image_url: width: 500 }} 500w, {{ product.images[1] | image_url: width: 800 }} 800w, {{ product.images[1] | image_url: width: 1080 }} 1080w, {{ product.images[1] | image_url: width: 1201 }} 1201w" class="image-card two">
+                          {%- endif -%}
+                          {%- if product.images.size > 2 -%}
+                            <img src="{{ product.images[2] | image_url: width: 1201 }}" loading="lazy" alt="{{ product.images[2].alt | escape }}" sizes="(max-width: 1201px) 100vw, 1201px" srcset="{{ product.images[2] | image_url: width: 500 }} 500w, {{ product.images[2] | image_url: width: 800 }} 800w, {{ product.images[2] | image_url: width: 1080 }} 1080w, {{ product.images[2] | image_url: width: 1201 }} 1201w" class="image-card three">
+                          {%- endif -%}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="card-info">
-                  <div id="w-node-_16b67dd1-2aca-8b2f-e5d8-8a2a224c1e1a-224c1e0e" class="product-card-top">
-                    <div class="product-card-info">
-                      <div class="product-header2_rating-wrapper align-center">
-                        {%- for i in (1..5) -%}
-                          <div class="product-header2_rating-icon">
-                            <div class="icon-embed-xxsmall w-embed">
-                              <svg width="100%" height="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.201432 8.35425C0.0324796 8.23123 -0.0397528 8.01452 0.021606 7.81473L0.101529 7.56496C0.159961 7.36756 0.335635 7.22781 0.541103 7.21527L6.92493 6.70573L9.37256 0.821007C9.45466 0.614853 9.66074 0.485543 9.88206 0.501294H10.1418C10.3505 0.496866 10.539 0.62523 10.6114 0.821007L13.069 6.70573L19.4528 7.21527C19.6583 7.22781 19.8339 7.36756 19.8924 7.56496L19.9723 7.81473C20.0403 8.00821 19.9805 8.22355 19.8224 8.35425L15.0071 12.4905L16.4857 18.695C16.5344 18.8936 16.4596 19.1021 16.2959 19.2245L16.0061 19.3843C15.8371 19.4986 15.6157 19.4986 15.4467 19.3843L10.0119 16.0873L4.54723 19.4143C4.37823 19.5286 4.15676 19.5286 3.98777 19.4143L3.76798 19.2645C3.60419 19.142 3.52945 18.9335 3.57816 18.7349L5.01677 12.4905L0.201432 8.35425Z" fill="CurrentColor"></path>
-                              </svg>
-                            </div>
+                    <div class="card-info">
+                      <div id="w-node-_16b67dd1-2aca-8b2f-e5d8-8a2a224c1e1a-224c1e0e" class="product-card-top">
+                        <div class="product-card-info">
+                          <div class="product-header2_rating-wrapper align-center">
+                            {%- for i in (1..5) -%}
+                              <div class="product-header2_rating-icon">
+                                <div class="icon-embed-xxsmall w-embed">
+                                  <svg width="100%" height="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.201432 8.35425C0.0324796 8.23123 -0.0397528 8.01452 0.021606 7.81473L0.101529 7.56496C0.159961 7.36756 0.335635 7.22781 0.541103 7.21527L6.92493 6.70573L9.37256 0.821007C9.45466 0.614853 9.66074 0.485543 9.88206 0.501294H10.1418C10.3505 0.496866 10.539 0.62523 10.6114 0.821007L13.069 6.70573L19.4528 7.21527C19.6583 7.22781 19.8339 7.36756 19.8924 7.56496L19.9723 7.81473C20.0403 8.00821 19.9805 8.22355 19.8224 8.35425L15.0071 12.4905L16.4857 18.695C16.5344 18.8936 16.4596 19.1021 16.2959 19.2245L16.0061 19.3843C15.8371 19.4986 15.6157 19.4986 15.4467 19.3843L10.0119 16.0873L4.54723 19.4143C4.37823 19.5286 4.15676 19.5286 3.98777 19.4143L3.76798 19.2645C3.60419 19.142 3.52945 18.9335 3.57816 18.7349L5.01677 12.4905L0.201432 8.35425Z" fill="CurrentColor"></path>
+                                  </svg>
+                                </div>
+                              </div>
+                            {%- endfor -%}
                           </div>
-                        {%- endfor -%}
-                      </div>
-                      <div product="title" class="text-card-produtos">{{ product.title }}</div>
-                      <div class="product-header1_price-wrapper is-vertical">
-                        {%- if product.compare_at_price > product.price -%}
-                          <div product="title" class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
-                        {%- endif -%}
-                        <div product="title" class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
-                        <div product="title" class="text-parcelas">à vista ou 5x de {{ product.price | divided_by: 5 | money }}</div>
+                          <div product="title" class="text-card-produtos">{{ product.title }}</div>
+                          <div class="product-header1_price-wrapper is-vertical">
+                            {%- if product.compare_at_price > product.price -%}
+                              <div product="title" class="text-preco-antigo">{{ product.compare_at_price | money }}</div>
+                            {%- endif -%}
+                            <div product="title" class="text-size-medium text-weight-semibold">{{ product.price | money }}</div>
+                            <div product="title" class="text-parcelas">à vista ou 5x de {{ product.price | divided_by: 5 | money }}</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </a>
+                  </a>
+                {%- endif -%}
               {%- else -%}
                 <div class="no-results">
-                  <p>Nenhum produto encontrado com os filtros selecionados.</p>
+                  <p>Nenhum produto encontrado{% if search.terms %} para "{{ search.terms }}"{% endif %}.</p>
                 </div>
               {%- endfor -%}
             </div>
 
             <!-- PAGINAÇÃO -->
             <div filter="empty-state" class="filters1_empty">
-              <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count-bottom">{{ collection.products_count }}</span><br></p>
+              <p class="text-size-small text-color-tertiary">Produtos encontrados: <span id="product-count-bottom">{{ search.results_count }}</span><br></p>
               {%- if paginate.pages > 1 -%}
               <div class="div-block-8">
                 {%- if paginate.previous -%}
@@ -466,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
       sortInput.value = sortValue;
       sortLabel.textContent = this.textContent;
 
-      // Manter filtros atuais
+      // Manter query atual e filtros
       const currentUrl = new URL(window.location.href);
       currentUrl.searchParams.set('sort_by', sortValue);
 
@@ -498,8 +514,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% schema %}
 {
-  "name": "Riocapria Collection",
-  "class": "section-collection-riocapria",
+  "name": "Riocapria Search Results",
+  "class": "section-search-riocapria",
   "settings": [
     {
       "type": "range",

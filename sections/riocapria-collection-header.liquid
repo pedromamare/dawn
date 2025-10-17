@@ -1,0 +1,41 @@
+{% comment %}
+  Section: Riocapria Collection Header (placeholder)
+  Atualmente desabilitada no template collection.json
+{% endcomment %}
+
+<div class="collection-header-riocapria">
+  {% if section.settings.show_collection_description and collection.description != blank %}
+    <div class="max-width-large-2">
+      <div class="collection-description">{{ collection.description }}</div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_collection_image and collection.image %}
+    <div class="collection-banner-image">
+      <img src="{{ collection.image | image_url: width: 1920 }}"
+           alt="{{ collection.title }}"
+           loading="lazy">
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Header",
+  "class": "section-collection-header-riocapria",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "Show collection image",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

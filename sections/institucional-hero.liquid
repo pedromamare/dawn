@@ -1,0 +1,62 @@
+<header class="about-us-hero">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="div-block-20">
+        <div class="width-extra-large">
+          <h1 class="big-h1 text-color-brand">{{ section.settings.title | default: 'Sofisticação com essência tropical.' }}</h1>
+        </div>
+        <div id="w-node-fb4a2432-d931-c1cc-9af0-e1527bb5aae9-c0b89e29" class="width-medium">
+          <div class="text-size-large text-color-secondary">{{ section.settings.subtitle | default: 'Acessórios femininos que unem <strong>frescor</strong>, <strong>elegância internacional</strong> e o <strong>espírito livre</strong>.' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image-grid">
+    <div class="hero-image-wrapper">
+      <div class="hero-image end">
+        <div class="hero-image-background"></div>
+      </div>
+    </div>
+    <div class="hero-image-wrapper">
+      <div class="hero-image end">
+        <div class="hero-image-background two"></div>
+      </div>
+    </div>
+    <div class="hero-image-wrapper">
+      <div class="hero-image end">
+        <div class="hero-image-background three"></div>
+      </div>
+    </div>
+    <div class="hero-image-wrapper">
+      <div class="hero-image end">
+        <div class="hero-image-background four"></div>
+      </div>
+    </div>
+  </div>
+  <div id="scroll" data-w-id="fb4a2432-d931-c1cc-9af0-e1527bb5aafb" class="scroll-trigger"></div>
+</header>
+
+{% schema %}
+{
+  "name": "Institucional Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Sofisticação com essência tropical."
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "<p>Acessórios femininos que unem <strong>frescor</strong>, <strong>elegância internacional</strong> e o <strong>espírito livre</strong>.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Institucional Hero"
+    }
+  ]
+}
+{% endschema %}

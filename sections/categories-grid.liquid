@@ -1,7 +1,14 @@
 {% comment %}
-  Categories Grid
-  Grid de categorias com imagens
+  Categories Grid - DINÂMICO
+  Grid de categorias puxando collections automaticamente
+  Exclui collections: 283391754311, 283391819847, 283376156743
 {% endcomment %}
+
+{%- liquid
+  assign excluded_collection_ids = '283391754311,283391819847,283376156743' | split: ','
+  assign max_collections = section.settings.max_collections | default: 8
+  assign collections_to_show = collections | where: 'all_products_count' | sort: 'all_products_count' | reverse
+-%}
 
 <section class="section_categorias">
   <div class="padding-global">
@@ -17,20 +24,46 @@
       </div>
 
       <div class="home8-customers_component">
-        {% for block in section.blocks %}
-          <a href="{{ block.settings.link }}" class="categorias-iten w-inline-block" {{ block.shopify_attributes }}>
-            {% if block.settings.image != blank %}
-              <img src="{{ block.settings.image | image_url: width: 577 }}"
-                   loading="lazy"
-                   alt="{{ block.settings.title }}"
-                   sizes="(max-width: 577px) 100vw, 577px"
-                   srcset="{{ block.settings.image | image_url: width: 500 }} 500w,
-                           {{ block.settings.image | image_url: width: 577 }} 577w"
-                   class="icon-categorias">
-            {% endif %}
-            <p class="text-categorias">{{ block.settings.title }}</p>
-          </a>
-        {% endfor %}
+        {%- assign count = 0 -%}
+        {%- for coll in collections_to_show -%}
+          {%- if count >= max_collections -%}
+            {%- break -%}
+          {%- endif -%}
+
+          {%- assign coll_id_string = coll.id | append: '' -%}
+          {%- unless excluded_collection_ids contains coll_id_string -%}
+            {%- if coll.all_products_count > 0 -%}
+              <a href="{{ coll.url }}" class="categorias-iten w-inline-block">
+                {%- liquid
+                  assign collection_image = null
+                  if coll.image
+                    assign collection_image = coll.image
+                  elsif coll.featured_image
+                    assign collection_image = coll.featured_image
+                  elsif coll.products.first.featured_image
+                    assign collection_image = coll.products.first.featured_image
+                  endif
+                -%}
+
+                {%- if collection_image -%}
+                  <img src="{{ collection_image | image_url: width: 577 }}"
+                       loading="lazy"
+                       alt="{{ coll.title }}"
+                       sizes="(max-width: 577px) 100vw, 577px"
+                       srcset="{{ collection_image | image_url: width: 500 }} 500w,
+                               {{ collection_image | image_url: width: 577 }} 577w"
+                       class="icon-categorias">
+                {%- else -%}
+                  <div class="icon-categorias placeholder-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #999;">{{ coll.title | slice: 0, 1 }}</span>
+                  </div>
+                {%- endif -%}
+                <p class="text-categorias">{{ coll.title }}</p>
+              </a>
+              {%- assign count = count | plus: 1 -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
       </div>
     </div>
   </div>
@@ -47,85 +80,24 @@
       "id": "title",
       "label": "Título",
       "default": "Pesquise por Categorias"
-    }
-  ],
-  "blocks": [
+    },
     {
-      "type": "category",
-      "name": "Categoria",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Imagem"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Nome da Categoria",
-          "default": "Categoria"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
+      "type": "range",
+      "id": "max_collections",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Número máximo de categorias"
+    },
+    {
+      "type": "paragraph",
+      "content": "As categorias são carregadas automaticamente das collections da loja, ordenadas por número de produtos. Collections vazias ou excluídas não aparecem."
     }
   ],
   "presets": [
     {
-      "name": "Grid de Categorias",
-      "blocks": [
-        {
-          "type": "category",
-          "settings": {
-            "title": "Anéis"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Brincos"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Colares"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Pulseiras"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Acessórios"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Combos"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Relógios"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Chokers"
-          }
-        }
-      ]
+      "name": "Grid de Categorias"
     }
   ]
 }

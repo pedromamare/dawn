@@ -3,7 +3,9 @@
           <div class="w-layout-grid features_list">
             {% for block in section.blocks %}
             <div id="w-node-_9170edae-6646-4751-ef96-a38ca2c959e3-2bf9746f" class="features_item">
+              {% if block.settings.icon %}
               <div class="layout282_item-icon-wrapper"><img src="{{ block.settings.icon | image_url: width: 64 }}" loading="lazy" alt="" class="image"></div>
+              {% endif %}
               <div class="layout282_item-text-wrapper">
                 <div class="text-size-medium-21">{{ block.settings.text }}</div>
               </div>

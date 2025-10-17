@@ -10,7 +10,10 @@
                   <a href="{{ block.settings.link }}" class="button is-alternative">VER PRODUTOS</a>
                 </div>
               </div>
-              <div class="filtro-banners-destaque"></div><img sizes="(max-width: 1201px) 100vw, 1201px" src="{{ block.settings.image | image_url: width: 1200 }}" loading="lazy" class="gallery9_image">
+              <div class="filtro-banners-destaque"></div>
+              {% if block.settings.image %}
+              <img sizes="(max-width: 1201px) 100vw, 1201px" src="{{ block.settings.image | image_url: width: 1200 }}" loading="lazy" class="gallery9_image">
+              {% endif %}
             </div>
             {% endfor %}
           </div>

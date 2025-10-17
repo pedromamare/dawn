@@ -1,0 +1,50 @@
+{% comment %}
+  Section: Legal Header
+  Descrição: Header para páginas legais (Política de Privacidade, Termos de Uso, etc)
+{% endcomment %}
+
+<header class="section_legal2-header">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-medium-2">
+        <div class="margin-bottom-2 margin-small">
+          <h1>{{ section.settings.page_title }}</h1>
+        </div>
+        <p class="text-size-small text-color-alternate">
+          {{ section.settings.effective_date_label }} {{ section.settings.effective_date }}
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Legal Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "page_title",
+      "label": "Título da Página",
+      "default": "Política de Privacidade"
+    },
+    {
+      "type": "text",
+      "id": "effective_date_label",
+      "label": "Label da Data",
+      "default": "Effective date:"
+    },
+    {
+      "type": "text",
+      "id": "effective_date",
+      "label": "Data Efetiva",
+      "default": "April 3, 2025"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legal Header"
+    }
+  ]
+}
+{% endschema %}

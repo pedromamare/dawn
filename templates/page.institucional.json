@@ -9,12 +9,52 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page-institucional",
+    "institucional_hero": {
+      "type": "institucional-hero",
+      "settings": {}
+    },
+    "institucional_content": {
+      "type": "institucional-content",
+      "settings": {}
+    },
+    "institucional_action": {
+      "type": "institucional-action",
+      "settings": {}
+    },
+    "institucional_benefits": {
+      "type": "institucional-benefits",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {}
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {}
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {}
+        }
+      },
+      "block_order": ["benefit_1", "benefit_2", "benefit_3"],
+      "settings": {}
+    },
+    "institucional_cta": {
+      "type": "institucional-cta",
+      "settings": {}
+    },
+    "institucional_video": {
+      "type": "institucional-video",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "institucional_hero",
+    "institucional_content",
+    "institucional_action",
+    "institucional_benefits",
+    "institucional_cta",
+    "institucional_video"
   ]
 }

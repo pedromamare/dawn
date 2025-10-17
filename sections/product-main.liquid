@@ -146,12 +146,13 @@
                       assign use_button_style = false
 
                       # Detectar tipo de opção pelo nome
-                      if option_name contains 'letra' or option_name contains 'letter' or option_name contains 'inicial'
+                      # IMPORTANTE: Verificar 'tipo de letra' ANTES de 'letra' sozinho
+                      if option_name contains 'tipo de letra' or option_name contains 'fonte' or option_name contains 'font' or option_name contains 'estilo'
+                        assign is_font_option = true
+                      elsif option_name contains 'letra' or option_name contains 'letter' or option_name contains 'inicial'
                         assign is_letter_option = true
                       elsif option_name contains 'cor' or option_name contains 'color' or option_name contains 'pedra' or option_name contains 'stone'
                         assign is_color_option = true
-                      elsif option_name contains 'fonte' or option_name contains 'font' or option_name contains 'estilo'
-                        assign is_font_option = true
                       elsif option_name contains 'tamanho' or option_name contains 'size' or option_name contains 'aro'
                         # Verificar se o primeiro valor é numérico
                         assign first_value = option.values.first
@@ -311,7 +312,12 @@
 function changeMainImage(imageUrl, element) {
   const mainImage = document.getElementById('main-product-image');
   if (mainImage) {
+    // Update src
     mainImage.src = imageUrl;
+
+    // Update srcset para diferentes tamanhos
+    const smallImageUrl = imageUrl.replace('width=1201', 'width=500');
+    mainImage.srcset = `${smallImageUrl} 500w, ${imageUrl} 1201w`;
 
     // Update active thumbnail
     document.querySelectorAll('.product-header5_image-wrapper').forEach(el => {

@@ -12,6 +12,169 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Riocapria Theme Customization - Register Form */
+  .customer.register {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .customer.register h1 {
+    color: var(--brand--coral, #fd3558);
+    font-family: var(--font-family--heading, Sora, sans-serif);
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .customer.register h2 {
+    color: var(--neutral--black, #1b1914);
+    font-family: var(--font-family--heading, Sora, sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .customer.register ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+
+  .customer.register ul li {
+    padding: 12px 16px;
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    color: #991b1b;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .customer.register ul li a {
+    color: #991b1b;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .customer.register ul li a:hover {
+    color: #7f1d1d;
+  }
+
+  .customer.register .field {
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .customer.register .field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--neutral--black, #1b1914);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .customer.register .field input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--brand--areia002, #ebe6db);
+    border-radius: 8px;
+    font-family: var(--font-family--body, Sora, sans-serif);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: #fff;
+  }
+
+  .customer.register .field input:focus {
+    outline: none;
+    border-color: var(--brand--coral, #fd3558);
+    box-shadow: 0 0 0 4px rgba(253, 53, 88, 0.1);
+  }
+
+  .customer.register .field input[aria-invalid="true"] {
+    border-color: #fecaca;
+    background: #fef2f2;
+  }
+
+  .customer.register .field input::placeholder {
+    color: #a0a0a0;
+    opacity: 0.7;
+  }
+
+  .customer.register button {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, var(--brand--coral, #fd3558) 0%, var(--brand--magenta, #d31f57) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-family--body, Sora, sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(253, 53, 88, 0.25);
+  }
+
+  .customer.register button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(253, 53, 88, 0.35);
+  }
+
+  .customer.register button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(253, 53, 88, 0.25);
+  }
+
+  .customer.register .form__message {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    color: #991b1b;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .customer.register .form__message .svg-wrapper {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 749px) {
+    .customer.register {
+      padding: 32px 24px;
+      margin: 16px;
+      border-radius: 8px;
+    }
+
+    .customer.register h1 {
+      font-size: 1.875rem;
+    }
+
+    .customer.register button {
+      padding: 14px 20px;
+    }
+  }
 {%- endstyle -%}
 
 <div class="customer register section-{{ section.id }}-padding">

@@ -1,0 +1,133 @@
+{% comment %}
+  Topbar promocional com mensagem de frete grátis e desconto PIX
+
+  Uso:
+  {% render 'topbar-promo' %}
+
+  Ou com texto customizado:
+  {% render 'topbar-promo', text: 'Seu texto aqui', link: '/collections/outlet', link_text: 'Ver promoção' %}
+{% endcomment %}
+
+<div class="topbar-promo">
+  <div class="topbar-promo__content">
+    <div class="topbar-promo__text">
+      {% if text != blank %}
+        {{ text }}
+      {% else %}
+        <span class="promo-highlight">Frete Grátis</span> acima de R$299,99 | Desconto extra: <span class="promo-highlight">5%OFF no PIX</span>
+      {% endif %}
+    </div>
+
+    {% if link != blank %}
+      <a href="{{ link }}" class="topbar-promo__link">
+        {% if link_text != blank %}
+          {{ link_text }}
+        {% else %}
+          Ver mais
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .topbar-promo {
+    background: linear-gradient(90deg,
+      var(--brand--coral, #fd3558) 0%,
+      var(--brand--pink, #f8138d) 50%,
+      var(--brand--magenta, #d31f57) 100%
+    );
+    color: var(--neutral--white, #fff);
+    padding: 0.625rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  .topbar-promo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    animation: topbar-shine 3s ease-in-out infinite;
+  }
+
+  @keyframes topbar-shine {
+    0% {
+      left: -100%;
+    }
+    50%, 100% {
+      left: 100%;
+    }
+  }
+
+  .topbar-promo__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topbar-promo__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .promo-highlight {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .topbar-promo__link {
+    color: var(--neutral--white, #fff);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+    font-weight: 600;
+  }
+
+  .topbar-promo__link:hover {
+    opacity: 0.85;
+  }
+
+  @media screen and (max-width: 749px) {
+    .topbar-promo {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .topbar-promo__content {
+      gap: 0.5rem;
+    }
+
+    .topbar-promo__text {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .topbar-promo__text {
+      display: block;
+      text-align: center;
+    }
+
+    .promo-highlight {
+      display: inline;
+    }
+  }
+</style>

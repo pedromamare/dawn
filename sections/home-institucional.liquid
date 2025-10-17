@@ -13,9 +13,11 @@
               </div>
               <div class="background-video-wrapper">
                 <div class="image-overlay"></div>
-                <div data-poster-url="{{ section.settings.video_poster | image_url: width: 1920 }}" data-video-urls="{{ section.settings.video_url }}" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-8 w-background-video w-background-video-atom"><video autoplay="" loop="" style="background-image:url({{ section.settings.video_poster | image_url: width: 1920 }})" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
-                    <source src="{{ section.settings.video_url }}" data-wf-ignore="true">
-                  </video></div>
+                <div class="background-video-8 w-background-video w-background-video-atom">
+                  <video autoplay loop muted playsinline data-object-fit="cover">
+                    <source src="{{ 'video1.mp4' | asset_url }}" type="video/mp4">
+                  </video>
+                </div>
               </div>
             </div>
             <div class="padding-vertical-medium">
@@ -56,17 +58,6 @@
       "id": "text",
       "label": "Text",
       "default": "Acessórios femininos que unem frescor, elegância internacional e o espírito livre."
-    },
-    {
-      "type": "video_url",
-      "id": "video_url",
-      "label": "Video URL",
-      "accept": ["youtube", "vimeo"]
-    },
-    {
-      "type": "image_picker",
-      "id": "video_poster",
-      "label": "Video Poster"
     },
     {
       "type": "text",

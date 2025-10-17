@@ -1,0 +1,121 @@
+<section class="section_institucional">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="institucional-video-content">
+        <div class="video-institucional-container">
+          <div class="hero__content-wrapper">
+            <div class="titulo-video">
+              <h1 data-w-id="8bbb412c-9204-5d40-5ebb-4ff2254beff4" style="opacity:0" class="heading-style-h1 text-color-alternate">{{ section.settings.title_1 | default: 'Sofisticação com essência' }}</h1>
+              <h1 data-w-id="8bbb412c-9204-5d40-5ebb-4ff2254beff6" style="opacity:0" class="heading-style-h1 text-color-gradiente">{{ section.settings.title_2 | default: 'tropical' }}</h1>
+            </div>
+            <p data-w-id="8bbb412c-9204-5d40-5ebb-4ff2254beff8" style="opacity:0" class="text-size-large text-color-alternate text-weight-light">{{ section.settings.subtitle | default: 'Acessórios femininos que unem frescor, elegância internacional e o espírito livre.' }}</p>
+          </div>
+        </div>
+        <div class="background-video-wrapper">
+          <div class="image-overlay"></div>
+          {% if section.settings.video_url %}
+            <div class="background-video-8 w-background-video w-background-video-atom">
+              <video autoplay loop muted playsinline data-wf-ignore="true" data-object-fit="cover">
+                <source src="{{ section.settings.video_url }}" type="video/mp4">
+              </video>
+            </div>
+          {% else %}
+            <div data-poster-url="videos/video1-poster-00001.jpg" data-video-urls="videos/video1-transcode.mp4,videos/video1-transcode.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-8 w-background-video w-background-video-atom">
+              <video id="8bbb412c-9204-5d40-5ebb-4ff2254beffc-video" autoplay loop muted playsinline data-wf-ignore="true" data-object-fit="cover">
+                <source src="videos/video1-transcode.mp4" data-wf-ignore="true">
+                <source src="videos/video1-transcode.webm" data-wf-ignore="true">
+              </video>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="padding-vertical-medium">
+        <div class="content-institucional">
+          <h2 class="heading-style-h1 text-color-secondary text-weight-light">{{ section.settings.content_title | default: 'Um estilo que ultrapassa fronteiras‍' }}</h2>
+          <h2 class="heading-style-h3 text-weight-light">{{ section.settings.content_subtitle | default: 'Criamos peças que respiram modernidade, frescor e elegância contemporânea.' }}</h2>
+          <div id="w-node-_8bbb412c-9204-5d40-5ebb-4ff2254bf006-c0b89e29" class="div-block-4">
+            <p>{{ section.settings.content_text_1 | default: 'Cada peça é criada para traduzir a união entre sofisticação e liberdade.' }}</p>
+            <p>{{ section.settings.content_text_2 | default: 'Inspiradas em formas fluidas e movimento contínuo, nossas joias evocam um verão eterno, leve e sofisticado.' }}<br></p>
+            {% if section.settings.button_text %}
+              <div class="button-group">
+                <a href="{{ section.settings.button_url | default: '#' }}" class="button is-outline">{{ section.settings.button_text }}</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-w-id="ac5b28b5-c350-f3b7-9339-55c00e0af186" data-is-ix2-target="1" class="lottie-bg-orange" data-animation-type="lottie" data-src="documents/lottieflow-background-14-ff4f37-easey.json" data-loop="0" data-direction="1" data-autoplay="0" data-renderer="svg" data-default-duration="0" data-duration="8"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Institucional Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Título 1",
+      "default": "Sofisticação com essência"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Título 2",
+      "default": "tropical"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Acessórios femininos que unem frescor, elegância internacional e o espírito livre."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "URL do Vídeo",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "text",
+      "id": "content_title",
+      "label": "Título do Conteúdo",
+      "default": "Um estilo que ultrapassa fronteiras‍"
+    },
+    {
+      "type": "textarea",
+      "id": "content_subtitle",
+      "label": "Subtítulo do Conteúdo",
+      "default": "Criamos peças que respiram modernidade, frescor e elegância contemporânea."
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_1",
+      "label": "Texto 1",
+      "default": "Cada peça é criada para traduzir a união entre sofisticação e liberdade."
+    },
+    {
+      "type": "textarea",
+      "id": "content_text_2",
+      "label": "Texto 2",
+      "default": "Inspiradas em formas fluidas e movimento contínuo, nossas joias evocam um verão eterno."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto do Botão"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "URL do Botão"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Institucional Video"
+    }
+  ]
+}
+{% endschema %}

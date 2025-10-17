@@ -1,0 +1,37 @@
+{{ 'component-search-header.css' | asset_url | stylesheet_tag }}
+
+<div class="search-header-wrapper container-riocapria">
+  <div class="search-header">
+    <h1 class="search-header__title">
+      {% if search.performed %}
+        {% if search.results_count == 0 %}
+          {{ 'templates.search.no_results' | t: terms: search.terms }}
+        {% else %}
+          {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+        {% endif %}
+      {% else %}
+        {{ 'templates.search.title' | t }}
+      {% endif %}
+    </h1>
+
+    {% if section.settings.show_search_description and search.performed == false %}
+      <div class="search-header__description">
+        <p>{{ 'templates.search.description' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search Header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_search_description",
+      "label": "Show search description",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

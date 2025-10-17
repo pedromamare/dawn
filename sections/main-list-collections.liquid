@@ -24,24 +24,32 @@
     endif
   -%}
   {%- paginate collections by paginate_by -%}
+    {%- liquid
+      assign excluded_collection_ids = '283391754311,283391819847,283376156743' | split: ','
+    -%}
     <ul
       class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
       role="list"
     >
       {%- for collection in collections -%}
-        <li
-          class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {% render 'card-collection',
-            card_collection: collection,
-            media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
-          %}
-        </li>
+        {%- assign coll_id_string = collection.id | append: '' -%}
+        {%- unless excluded_collection_ids contains coll_id_string -%}
+          {%- if collection.featured_image -%}
+            <li
+              class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              {% render 'card-collection',
+                card_collection: collection,
+                media_aspect_ratio: section.settings.image_ratio,
+                columns: 3
+              %}
+            </li>
+          {%- endif -%}
+        {%- endunless -%}
       {%- endfor -%}
     </ul>
     {% render 'pagination', paginate: paginate %}

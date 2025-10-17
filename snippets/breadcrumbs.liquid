@@ -1,0 +1,142 @@
+{% comment %}
+  Breadcrumbs com detecção automática de collection pai
+  Usa convenção de nomenclatura: "categoria-subcategoria"
+  Exemplo: "aneis-solitarios" detecta "aneis" como pai
+{% endcomment %}
+
+<nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+  <div class="page-width">
+    <a href="{{ routes.root_url }}" class="breadcrumb-item">
+      Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+
+    {% if template contains 'collection' and collection %}
+      {% comment %} Detectar collection pai pela convenção de nomenclatura {% endcomment %}
+      {% assign handle_parts = collection.handle | split: '-' %}
+
+      {% if handle_parts.size > 1 %}
+        {% comment %} Se handle tem hífen (ex: aneis-solitarios) {% endcomment %}
+        {% assign parent_handle = handle_parts.first %}
+        {% assign parent_collection = collections[parent_handle] %}
+
+        {% if parent_collection %}
+          <a href="{{ parent_collection.url }}" class="breadcrumb-item">
+            {{ parent_collection.title }}
+          </a>
+          <span class="breadcrumb-separator">/</span>
+        {% endif %}
+      {% endif %}
+
+      <span class="breadcrumb-item breadcrumb-current">{{ collection.title }}</span>
+
+    {% elsif template contains 'product' and product %}
+      {% comment %} Breadcrumb para páginas de produto {% endcomment %}
+      {% if collection %}
+        {% comment %} Se veio de uma collection, mostrar hierarquia {% endcomment %}
+        {% assign handle_parts = collection.handle | split: '-' %}
+
+        {% if handle_parts.size > 1 %}
+          {% assign parent_handle = handle_parts.first %}
+          {% assign parent_collection = collections[parent_handle] %}
+
+          {% if parent_collection %}
+            <a href="{{ parent_collection.url }}" class="breadcrumb-item">
+              {{ parent_collection.title }}
+            </a>
+            <span class="breadcrumb-separator">/</span>
+          {% endif %}
+        {% endif %}
+
+        <a href="{{ collection.url }}" class="breadcrumb-item">
+          {{ collection.title }}
+        </a>
+        <span class="breadcrumb-separator">/</span>
+      {% elsif product.collections.size > 0 %}
+        {% comment %} Se não veio de collection, usar a primeira collection do produto {% endcomment %}
+        {% assign first_collection = product.collections.first %}
+        {% assign handle_parts = first_collection.handle | split: '-' %}
+
+        {% if handle_parts.size > 1 %}
+          {% assign parent_handle = handle_parts.first %}
+          {% assign parent_collection = collections[parent_handle] %}
+
+          {% if parent_collection %}
+            <a href="{{ parent_collection.url }}" class="breadcrumb-item">
+              {{ parent_collection.title }}
+            </a>
+            <span class="breadcrumb-separator">/</span>
+          {% endif %}
+        {% endif %}
+
+        <a href="{{ first_collection.url }}" class="breadcrumb-item">
+          {{ first_collection.title }}
+        </a>
+        <span class="breadcrumb-separator">/</span>
+      {% endif %}
+
+      <span class="breadcrumb-item breadcrumb-current">{{ product.title }}</span>
+
+    {% elsif template contains 'page' and page %}
+      <span class="breadcrumb-item breadcrumb-current">{{ page.title }}</span>
+
+    {% elsif template == 'cart' %}
+      <span class="breadcrumb-item breadcrumb-current">Carrinho</span>
+
+    {% elsif template == 'search' %}
+      <span class="breadcrumb-item breadcrumb-current">Busca</span>
+
+    {% elsif template == 'blog' or template contains 'article' %}
+      {% if blog %}
+        <a href="{{ blog.url }}" class="breadcrumb-item">{{ blog.title }}</a>
+        <span class="breadcrumb-separator">/</span>
+      {% endif %}
+      {% if article %}
+        <span class="breadcrumb-item breadcrumb-current">{{ article.title }}</span>
+      {% endif %}
+    {% endif %}
+  </div>
+</nav>
+
+<style>
+  .breadcrumbs {
+    padding: 1rem 0;
+    background-color: var(--brand--areia001, #fff7e6);
+    font-size: 0.875rem;
+  }
+
+  .breadcrumbs .page-width {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .breadcrumb-item {
+    color: var(--neutral--neutral, #666);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-item:hover:not(.breadcrumb-current) {
+    color: var(--brand--coral, #fd3558);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-current {
+    color: var(--neutral--black, #1b1914);
+    font-weight: 500;
+  }
+
+  .breadcrumb-separator {
+    color: var(--neutral--neutral, #666);
+    user-select: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .breadcrumbs {
+      padding: 0.75rem 0;
+      font-size: 0.8125rem;
+    }
+  }
+</style>

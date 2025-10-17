@@ -1,0 +1,53 @@
+<section class="section_cta5">
+  <div data-w-id="6f30cf71-02f4-a967-a11e-5aca6d05bd40" data-is-ix2-target="1" class="lottie-magenta" data-animation-type="lottie" data-src="documents/lottieflow-background-14-d31f57-easey.json" data-loop="0" data-direction="1" data-autoplay="0" data-renderer="svg" data-default-duration="0" data-duration="8"></div>
+  <div class="cta5_component">
+    <div class="cta5_content-wrapper">
+      <h2 class="text-color-alternate">{{ section.settings.title | default: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }}</h2>
+      <p class="text-color-alternate">{{ section.settings.text_1 | default: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.' }}</p>
+      <p class="text-color-alternate">{{ section.settings.text_2 | default: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.' }}</p>
+    </div>
+    <div class="cta5_image-wrapper">
+      {% if section.settings.image %}
+        {{ section.settings.image | image_url: width: 1720 | image_tag: class: 'cta5_image', loading: 'lazy', sizes: '(max-width: 1720px) 100vw, 1720px' }}
+      {% else %}
+        <img sizes="(max-width: 1720px) 100vw, 1720px" src="{{ 'imgs-efeito03_1.avif' | asset_url }}" alt="" loading="lazy" class="cta5_image">
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Institucional CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "type": "textarea",
+      "id": "text_1",
+      "label": "Texto 1",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "type": "textarea",
+      "id": "text_2",
+      "label": "Texto 2",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagem"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Institucional CTA"
+    }
+  ]
+}
+{% endschema %}

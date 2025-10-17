@@ -1,28 +1,36 @@
 {% comment %}
-  Mini Cart Dropdown
-  Carrinho dropdown com AJAX
+  Mini Cart Dropdown - Riocapria
+  Carrinho dropdown com AJAX e funcionalidade completa
 {% endcomment %}
 
 <div class="cart-dropdown-wrapper">
   <div class="cart-dropdown w-dropdown">
-    <div class="cart-dropdown-toggle w-dropdown-toggle">
+    <button type="button" class="cart-dropdown-toggle w-dropdown-toggle" aria-label="Abrir carrinho" aria-expanded="false">
       <div class="cart-icon-wrapper">
         <img src="{{ 'shoppping-bag.svg' | asset_url }}" loading="lazy" alt="Carrinho" class="cart-icon">
-        <div class="cart-count" id="cart-count">{{ cart.item_count }}</div>
+        <div class="cart-count" id="cart-count" data-cart-count>{{ cart.item_count }}</div>
       </div>
       <div class="txt-icons-nav">Carrinho</div>
-    </div>
+    </button>
 
-    <nav class="cart-dropdown-list w-dropdown-list">
+    <nav class="cart-dropdown-list w-dropdown-list" role="dialog" aria-label="Carrinho de compras">
       <div class="cart-dropdown-content">
         <div class="cart-header">
-          <h3 class="cart-title">Meu Carrinho</h3>
+          <h3 class="cart-title">
+            Meu Carrinho
+            <span class="cart-count-badge" data-cart-count>{{ cart.item_count }}</span>
+          </h3>
+          <button type="button" class="cart-close-btn" aria-label="Fechar carrinho">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
 
-        <div class="cart-items" id="mini-cart-items">
+        <div class="cart-items" id="mini-cart-items" data-cart-items>
           {% if cart.item_count > 0 %}
             {% for item in cart.items %}
-              <div class="cart-item" data-variant-id="{{ item.variant_id }}" data-line="{{ forloop.index }}">
+              <div class="cart-item" data-variant-id="{{ item.variant_id }}" data-line="{{ forloop.index }}" data-key="{{ item.key }}">
                 <div class="cart-item-image">
                   {% if item.image %}
                     <img src="{{ item.image | image_url: width: 100 }}"
@@ -42,22 +50,28 @@
 
                   <div class="cart-item-price-qty">
                     <div class="cart-item-quantity">
-                      <button type="button" class="qty-btn qty-minus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | minus: 1 }}">−</button>
+                      <button type="button" class="qty-btn qty-minus" data-line="{{ forloop.index }}" data-key="{{ item.key }}" data-quantity="{{ item.quantity | minus: 1 }}" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
                       <input type="number" class="qty-input" value="{{ item.quantity }}" min="1" readonly>
-                      <button type="button" class="qty-btn qty-plus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | plus: 1 }}">+</button>
+                      <button type="button" class="qty-btn qty-plus" data-line="{{ forloop.index }}" data-key="{{ item.key }}" data-quantity="{{ item.quantity | plus: 1 }}">+</button>
                     </div>
                     <div class="cart-item-price">{{ item.final_line_price | money }}</div>
                   </div>
                 </div>
 
-                <button type="button" class="cart-item-remove" data-line="{{ forloop.index }}" aria-label="Remover item">
-                  <img src="{{ 'x-close.svg' | asset_url }}" alt="Remover" loading="lazy" width="16">
+                <button type="button" class="cart-item-remove" data-line="{{ forloop.index }}" data-key="{{ item.key }}" aria-label="Remover {{ item.product.title }}">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                 </button>
               </div>
             {% endfor %}
           {% else %}
             <div class="cart-empty">
+              <svg class="cart-empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <path d="M9 2L7 6M17 2l2 4M3 6h18M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
               <p>Seu carrinho está vazio</p>
+              <a href="/collections/all" class="button is-primary">Continuar Comprando</a>
             </div>
           {% endif %}
         </div>
@@ -66,11 +80,14 @@
           <div class="cart-footer">
             <div class="cart-subtotal">
               <div class="cart-subtotal-label">Subtotal:</div>
-              <div class="cart-subtotal-price" id="cart-subtotal">{{ cart.total_price | money }}</div>
+              <div class="cart-subtotal-price" id="cart-subtotal" data-cart-subtotal>{{ cart.total_price | money }}</div>
             </div>
+            <p class="cart-note">Frete e impostos calculados no checkout</p>
 
-            <a href="{{ routes.cart_url }}" class="button is-secondary w-button">Ver Carrinho</a>
-            <a href="/checkout" class="button is-primary w-button">Finalizar Compra</a>
+            <div class="cart-actions">
+              <a href="{{ routes.cart_url }}" class="button is-secondary w-button">Ver Carrinho</a>
+              <a href="/checkout" class="button is-primary w-button">Finalizar Compra</a>
+            </div>
           </div>
         {% endif %}
       </div>
@@ -78,11 +95,232 @@
   </div>
 </div>
 
+<style>
+  .cart-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 0.5rem;
+    background: var(--brand--areia001, #fff7e6);
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--brand--coral, #fd3558);
+    margin-left: 0.5rem;
+  }
+
+  .cart-close-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--neutral--neutral, #666);
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cart-close-btn:hover {
+    color: var(--brand--coral, #fd3558);
+  }
+
+  .cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .cart-empty-icon {
+    color: var(--brand--areia003, #a29579);
+    opacity: 0.5;
+  }
+
+  .cart-empty p {
+    font-size: 1.125rem;
+    color: var(--neutral--neutral, #666);
+    margin: 0;
+  }
+
+  .cart-note {
+    font-size: 0.8125rem;
+    color: var(--neutral--neutral, #666);
+    margin: 0.5rem 0 1rem 0;
+    text-align: center;
+  }
+
+  .cart-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cart-item-remove svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+</style>
+
 <script>
-  // Inicializar contagem do carrinho ao carregar
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof RiocapriaCart !== 'undefined') {
-      RiocapriaCart.updateCartCount();
+  // Mini Cart AJAX functionality
+  class RiocapriaMiniCart {
+    constructor() {
+      this.cartToggle = document.querySelector('.cart-dropdown-toggle');
+      this.cartDropdown = document.querySelector('.cart-dropdown-list');
+      this.cartClose = document.querySelector('.cart-close-btn');
+      this.cartItemsContainer = document.querySelector('#mini-cart-items');
+
+      this.init();
     }
-  });
+
+    init() {
+      // Toggle cart
+      if (this.cartToggle) {
+        this.cartToggle.addEventListener('click', () => this.toggleCart());
+      }
+
+      // Close cart
+      if (this.cartClose) {
+        this.cartClose.addEventListener('click', () => this.closeCart());
+      }
+
+      // Quantity buttons
+      this.attachQuantityListeners();
+
+      // Remove buttons
+      this.attachRemoveListeners();
+
+      // Listen for custom cart events
+      document.addEventListener('cart:updated', () => this.refreshCart());
+    }
+
+    toggleCart() {
+      const isOpen = this.cartDropdown.classList.contains('w--open');
+      if (isOpen) {
+        this.closeCart();
+      } else {
+        this.openCart();
+      }
+    }
+
+    openCart() {
+      this.cartDropdown.classList.add('w--open');
+      this.cartToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    closeCart() {
+      this.cartDropdown.classList.remove('w--open');
+      this.cartToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    attachQuantityListeners() {
+      document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => this.updateQuantity(e));
+      });
+    }
+
+    attachRemoveListeners() {
+      document.querySelectorAll('.cart-item-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => this.removeItem(e));
+      });
+    }
+
+    async updateQuantity(e) {
+      const button = e.target;
+      const key = button.dataset.key;
+      const quantity = parseInt(button.dataset.quantity);
+
+      if (quantity < 1) return;
+
+      button.disabled = true;
+
+      try {
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: key, quantity: quantity })
+        });
+
+        if (response.ok) {
+          await this.refreshCart();
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async removeItem(e) {
+      const button = e.target.closest('.cart-item-remove');
+      const key = button.dataset.key;
+
+      button.disabled = true;
+
+      try {
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: key, quantity: 0 })
+        });
+
+        if (response.ok) {
+          await this.refreshCart();
+        }
+      } catch (error) {
+        console.error('Error removing item:', error);
+      }
+    }
+
+    async refreshCart() {
+      try {
+        const response = await fetch('/cart.js');
+        const cart = await response.json();
+
+        // Update counts
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+        });
+
+        // Update subtotal
+        const subtotalEl = document.querySelector('[data-cart-subtotal]');
+        if (subtotalEl) {
+          subtotalEl.textContent = this.formatMoney(cart.total_price);
+        }
+
+        // Refresh cart items
+        const sectionResponse = await fetch('/?sections=mini-cart-dropdown');
+        const sections = await sectionResponse.json();
+
+        // Re-render cart items
+        location.reload(); // Simplified - in production, update DOM without reload
+      } catch (error) {
+        console.error('Error refreshing cart:', error);
+      }
+    }
+
+    formatMoney(cents) {
+      return 'R$ ' + (cents / 100).toFixed(2).replace('.', ',');
+    }
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.riocapriaMiniCart = new RiocapriaMiniCart();
+    });
+  } else {
+    window.riocapriaMiniCart = new RiocapriaMiniCart();
+  }
 </script>

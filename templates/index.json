@@ -64,76 +64,10 @@
     },
     "home_categories_grid": {
       "type": "home-categories-grid",
-      "blocks": {
-        "category_1": {
-          "type": "category",
-          "settings": {
-            "title": "Anéis",
-            "link": "shopify://collections/aneis"
-          }
-        },
-        "category_2": {
-          "type": "category",
-          "settings": {
-            "title": "Brincos",
-            "link": "shopify://collections/brincos"
-          }
-        },
-        "category_3": {
-          "type": "category",
-          "settings": {
-            "title": "Colares",
-            "link": "shopify://collections/colares"
-          }
-        },
-        "category_4": {
-          "type": "category",
-          "settings": {
-            "title": "Pulseiras",
-            "link": "shopify://collections/pulseiras"
-          }
-        },
-        "category_5": {
-          "type": "category",
-          "settings": {
-            "title": "Conjuntos",
-            "link": "shopify://collections/conjuntos"
-          }
-        },
-        "category_6": {
-          "type": "category",
-          "settings": {
-            "title": "Acessórios",
-            "link": "shopify://collections/acessorios"
-          }
-        },
-        "category_7": {
-          "type": "category",
-          "settings": {
-            "title": "Relógios",
-            "link": "shopify://collections/relogios"
-          }
-        },
-        "category_8": {
-          "type": "category",
-          "settings": {
-            "title": "Chokers",
-            "link": "shopify://collections/chokers"
-          }
-        }
-      },
-      "block_order": [
-        "category_1",
-        "category_2",
-        "category_3",
-        "category_4",
-        "category_5",
-        "category_6",
-        "category_7",
-        "category_8"
-      ],
       "settings": {
-        "title": "Pesquise por Categorias"
+        "title": "Pesquise por Categorias",
+        "max_collections": 8,
+        "sort_by": "products_count"
       }
     },
     "home_combos_especiais": {
@@ -224,20 +158,11 @@
         "title": "Sofisticação com essência",
         "subtitle": "tropical",
         "text": "Acessórios femininos que unem frescor, elegância internacional e o espírito livre.",
-        "video_url": "",
         "bottom_title": "Um estilo que ultrapassa fronteiras",
         "bottom_subtitle": "Criamos peças que respiram modernidade, frescor e elegância contemporânea. Cada design transmite proximidade e versatilidade, conectando mulheres ao redor do mundo.",
         "bottom_text_1": "Cada peça é criada para traduzir a união entre sofisticação e liberdade: uma estética feminina que respira modernidade, frescor e estilo cosmopolita.",
         "bottom_text_2": "Inspiradas em formas fluidas e movimento contínuo, nossas joias evocam um verão eterno, leve e sofisticado. Tons quentes e contrastes tropicais refletem energia, vitalidade e a essência de um lifestyle que ultrapassa fronteiras.",
         "button_text": "Continuar lendo",
-        "button_link": ""
-      }
-    },
-    "home_instagram": {
-      "type": "home-instagram",
-      "settings": {
-        "username": "@riocapria",
-        "button_text": "Seguir",
         "button_link": ""
       }
     }
@@ -251,7 +176,6 @@
     "home_outlet",
     "home_galleria",
     "home_acessorios",
-    "home_institucional",
-    "home_instagram"
+    "home_institucional"
   ]
 }

@@ -121,6 +121,16 @@
                       {%- endfor -%}
                       <!-- FIM SELETORES DE VARIANTES -->
 
+                      <!-- DEBUG: TESTE FORÇADO - Remova após diagnosticar -->
+                      {% comment %}
+                      {% render 'variant-selector-fonts',
+                        product: product,
+                        option_name: 'Tipo de letra',
+                        show_message: true,
+                        custom_message: 'TESTE FORÇADO - Se isso aparecer, o snippet funciona'
+                      %}
+                      {% endcomment %}
+
                       <!-- Dados JSON do Produto para JavaScript -->
                       <script type="application/json" data-product-json>
                         {{ product | json }}

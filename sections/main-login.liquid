@@ -12,6 +12,230 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Riocapria Theme Customization - Login/Register Forms */
+  .customer.login {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .customer.login h1 {
+    color: var(--brand--coral, #fd3558);
+    font-family: var(--font-family--heading, Sora, sans-serif);
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .customer.login h2 {
+    color: var(--neutral--black, #1b1914);
+    font-family: var(--font-family--heading, Sora, sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .customer.login h3 {
+    color: var(--neutral--black, #1b1914);
+    font-family: var(--font-family--heading, Sora, sans-serif);
+    font-size: 1rem;
+  }
+
+  .customer.login > div > p {
+    color: var(--neutral--neutral, #666);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .customer.login .field {
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .customer.login .field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--neutral--black, #1b1914);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .customer.login .field input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--brand--areia002, #ebe6db);
+    border-radius: 8px;
+    font-family: var(--font-family--body, Sora, sans-serif);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: #fff;
+  }
+
+  .customer.login .field input:focus {
+    outline: none;
+    border-color: var(--brand--coral, #fd3558);
+    box-shadow: 0 0 0 4px rgba(253, 53, 88, 0.1);
+  }
+
+  .customer.login .field input::placeholder {
+    color: #a0a0a0;
+    opacity: 0.7;
+  }
+
+  .customer.login button {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, var(--brand--coral, #fd3558) 0%, var(--brand--magenta, #d31f57) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-family--body, Sora, sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(253, 53, 88, 0.25);
+  }
+
+  .customer.login button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(253, 53, 88, 0.35);
+  }
+
+  .customer.login button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(253, 53, 88, 0.25);
+  }
+
+  .customer.login a {
+    color: var(--brand--coral, #fd3558);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: block;
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .customer.login a:hover {
+    color: var(--brand--magenta, #d31f57);
+    text-decoration: underline;
+  }
+
+  .customer.login .form__message {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .customer.login h2.form__message,
+  .customer.login h3.form__message {
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    color: #991b1b;
+  }
+
+  .customer.login h3.form__message {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    color: #166534;
+  }
+
+  .customer.login .form__message .svg-wrapper {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .customer.login hr {
+    margin: 2.5rem 0;
+    border: none;
+    border-top: 2px solid var(--brand--areia002, #ebe6db);
+  }
+
+  .customer.login #recover {
+    display: none;
+  }
+
+  .customer.login #recover:target {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .customer.login #recover:target ~ #login {
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Guest Login Section */
+  .customer.login > div:last-child {
+    margin-top: 2rem;
+  }
+
+  .customer.login > div:last-child h2 {
+    text-align: center;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .customer.login > div:last-child button {
+    background: transparent;
+    border: 2px solid var(--brand--coral, #fd3558);
+    color: var(--brand--coral, #fd3558);
+    box-shadow: none;
+  }
+
+  .customer.login > div:last-child button:hover {
+    background: var(--brand--coral, #fd3558);
+    color: white;
+    box-shadow: 0 4px 12px rgba(253, 53, 88, 0.25);
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 749px) {
+    .customer.login {
+      padding: 32px 24px;
+      margin: 16px;
+      border-radius: 8px;
+    }
+
+    .customer.login h1 {
+      font-size: 1.875rem;
+    }
+
+    .customer.login button {
+      padding: 14px 20px;
+    }
+  }
 {%- endstyle -%}
 
 {%- if section.settings.enable_shop_login_button == false -%}

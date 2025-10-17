@@ -17,7 +17,7 @@
           "settings": {
             "link_text": "Política de Privacidade",
             "link_url": "/pages/politica-de-privacidade",
-            "is_current": true,
+            "is_current": false,
             "show_sublinks": false
           }
         },
@@ -25,8 +25,8 @@
           "type": "sidebar_link",
           "settings": {
             "link_text": "Termos de Uso",
-            "link_url": "#",
-            "is_current": false,
+            "link_url": "/pages/termos-de-uso",
+            "is_current": true,
             "show_sublinks": false
           }
         }

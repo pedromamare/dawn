@@ -1,0 +1,34 @@
+<div class="action-section">
+  <div class="div-block-19">
+    <div class="action-background">
+      <div class="overlay gradient"></div>
+    </div>
+    <div class="div-block-18">
+      <h2 animate="true" class="heading-style-h1 text-color-brand text-style-balance">{{ section.settings.title | default: 'Joias que capturam a essência do verão sofisticado' }}</h2>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Institucional Action",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Joias que capturam a essência do verão sofisticado"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Imagem de Fundo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Institucional Action"
+    }
+  ]
+}
+{% endschema %}

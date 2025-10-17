@@ -11,30 +11,33 @@
     custom_message: 'Prazo de 5 dias úteis para peças personalizadas'
   %}
 
-  IMPORTANTE: As imagens das fontes devem estar em:
-  - 01-fonts.avif
-  - 02-fonts.avif
-  - 03-fonts.avif
-  - 04-fonts.avif
-  - 05-fonts.avif
+  IMPORTANTE: Mapeamento de valores para imagens:
+  - Moderna → 01-fonts.avif
+  - Sem Serifa → 02-fonts.avif
+  - Antiga → 03-fonts.avif
+  - Caligráfica → 04-fonts.avif
+  - Decorativa → 05-fonts.avif
 {% endcomment %}
 
 {% liquid
   assign option_index = nil
+  assign option_found = nil
+
   for option in product.options_with_values
     if option.name == option_name
       assign option_index = forloop.index0
+      assign option_found = option
       break
     endif
   endfor
 %}
 
-{% if option_index != nil %}
+{% if option_found != nil %}
   <div class="option-component divisao-itens">
     <div product="title" class="text-style-allcaps text-color-primary">{{ option_name }}</div>
 
     <div class="variant-button-row">
-      {% for value in product.options_by_name[option_name].values %}
+      {% for value in option_found.values %}
         {% liquid
           assign is_available = false
           assign matching_variant = nil
@@ -64,33 +67,51 @@
             endif
           endfor
 
-          comment
-            Mapear valores para números de imagem de fonte
-            Você pode customizar este mapeamento baseado nos seus produtos
-          endcomment
+          # Mapear valores das fontes para números de imagem
+          # Moderna → 01-fonts.avif
+          # Sem Serifa → 02-fonts.avif
+          # Antiga → 03-fonts.avif
+          # Caligráfica → 04-fonts.avif
+          # Decorativa → 05-fonts.avif
 
-          assign font_number = forloop.index
-          if font_number > 5
-            assign font_number = 5
+          assign font_image_name = ''
+          assign value_lower = value | downcase
+
+          if value_lower contains 'moderna' or value_lower contains 'modern'
+            assign font_image_name = '01-fonts.avif'
+          elsif value_lower contains 'sem serifa' or value_lower contains 'sans serif' or value_lower contains 'serifa'
+            assign font_image_name = '02-fonts.avif'
+          elsif value_lower contains 'antiga' or value_lower contains 'old' or value_lower contains 'vintage'
+            assign font_image_name = '03-fonts.avif'
+          elsif value_lower contains 'caligr' or value_lower contains 'script' or value_lower contains 'cursive'
+            assign font_image_name = '04-fonts.avif'
+          elsif value_lower contains 'decorativa' or value_lower contains 'decorative' or value_lower contains 'display'
+            assign font_image_name = '05-fonts.avif'
+          else
+            # Fallback: usa ordem do loop
+            assign font_number = forloop.index
+            if font_number > 5
+              assign font_number = 5
+            endif
+            assign font_image_name = '0' | append: font_number | append: '-fonts.avif'
           endif
-
-          assign font_image = font_number | prepend: '0' | append: '-fonts.avif'
         %}
 
         <div
           option="bg-color"
           class="letras-itens {% unless is_available %}is-disabled{% endunless %} {% if is_first %}is-active{% endif %}"
           data-option-index="{{ option_index }}"
-          data-option-value="{{ value }}"
+          data-option-value="{{ value | escape }}"
           {% if matching_variant %}
             data-variant-id="{{ matching_variant.id }}"
             data-variant-available="{{ matching_variant.available }}"
           {% endif %}
+          onclick="selectVariantOption(this)"
         >
           <img
             loading="lazy"
-            src="{{ font_image | asset_url }}"
-            alt="{{ value }}"
+            src="{{ font_image_name | asset_url }}"
+            alt="{{ value | escape }}"
             class="letras-img"
           >
         </div>

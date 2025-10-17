@@ -1,0 +1,33 @@
+/* Search Header Styles */
+.search-header-wrapper {
+  padding: 2rem 0 1rem;
+}
+
+.search-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-header__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--neutral--black, #1b1914);
+  margin-bottom: 1rem;
+}
+
+.search-header__description {
+  font-size: 1rem;
+  color: var(--neutral--neutral, #666);
+  line-height: 1.5;
+}
+
+@media screen and (max-width: 768px) {
+  .search-header__title {
+    font-size: 1.5rem;
+  }
+
+  .search-header-wrapper {
+    padding: 1rem 0 0.5rem;
+  }
+}

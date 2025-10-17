@@ -99,22 +99,54 @@
               </div>
               <div class="margin-bottom-2 margin-small">
                 <div class="metodo-pag-group">
-                  <div class="compra-seg-iten"><img src="{{ 'selo_lojaprotegida.gif' | asset_url }}" loading="lazy" alt="" class="icon-pag"></div>
+                  {% if section.settings.security_badge_1 %}
+                    <div class="compra-seg-iten"><img src="{{ section.settings.security_badge_1 | img_url: 'master' }}" loading="lazy" alt="Security Badge" class="icon-pag"></div>
+                  {% endif %}
+                  {% if section.settings.security_badge_2 %}
+                    <div class="compra-seg-iten"><img src="{{ section.settings.security_badge_2 | img_url: 'master' }}" loading="lazy" alt="Security Badge" class="icon-pag"></div>
+                  {% endif %}
+                  {% if section.settings.security_badge_3 %}
+                    <div class="compra-seg-iten"><img src="{{ section.settings.security_badge_3 | img_url: 'master' }}" loading="lazy" alt="Security Badge" class="icon-pag"></div>
+                  {% endif %}
                 </div>
               </div>
             </div>
             <div class="horario-text">
               <div class="titulo-footer">{{ section.settings.social_media_heading }}<br></div>
+              {% if section.settings.facebook_url != blank %}
+                <a href="{{ section.settings.facebook_url }}" target="_blank" class="footer1_social-link w-inline-block">
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0828 5.65684 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9305 5.93012 14.2146 5.93012C15.3088 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1922C13.95 8.60261 13.5625 9.37822 13.5625 10.1739V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3432 21.2452 22 17.083 22 12.0611Z" fill="CurrentColor"></path></svg></div>
+                  <div>{{ section.settings.facebook_link_text }}</div>
+                </a>
+              {% endif %}
               {% if section.settings.instagram_url != blank %}
                 <a href="{{ section.settings.instagram_url }}" target="_blank" class="footer1_social-link w-inline-block">
-                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12.0611C22 6.50451 17.5229 2 12 2C6.47715 2 2 6.50451 2 12.0611C2 17.0828 5.65684 21.2452 10.4375 22V14.9694H7.89844V12.0611H10.4375V9.84452C10.4375 7.32296 11.9305 5.93012 14.2146 5.93012C15.3088 5.93012 16.4531 6.12663 16.4531 6.12663V8.60261H15.1922C13.95 8.60261 13.5625 9.37822 13.5625 10.1739V12.0611H16.3359L15.8926 14.9694H13.5625V22C18.3432 21.2452 22 17.083 22 12.0611Z" fill="CurrentColor"></path></svg></div>
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 3H8C5.23858 3 3 5.23858 3 8V16C3 18.7614 5.23858 21 8 21H16C18.7614 21 21 18.7614 21 16V8C21 5.23858 18.7614 3 16 3ZM19.25 16C19.2445 17.7926 17.7926 19.2445 16 19.25H8C6.20735 19.2445 4.75549 17.7926 4.75 16V8C4.75549 6.20735 6.20735 4.75549 8 4.75H16C17.7926 4.75549 19.2445 6.20735 19.25 8V16ZM16.75 8.25C17.3023 8.25 17.75 7.80228 17.75 7.25C17.75 6.69772 17.3023 6.25 16.75 6.25C16.1977 6.25 15.75 6.69772 15.75 7.25C15.75 7.80228 16.1977 8.25 16.75 8.25ZM12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5027 10.8057 16.0294 9.65957 15.1849 8.81508C14.3404 7.97059 13.1943 7.49734 12 7.5ZM9.25 12C9.25 13.5188 10.4812 14.75 12 14.75C13.5188 14.75 14.75 13.5188 14.75 12C14.75 10.4812 13.5188 9.25 12 9.25C10.4812 9.25 9.25 10.4812 9.25 12Z" fill="CurrentColor"></path></svg></div>
                   <div>{{ section.settings.instagram_link_text }}</div>
                 </a>
               {% endif %}
-              {% if section.settings.facebook_url != blank %}
-                <a href="{{ section.settings.facebook_url }}" target="_blank" class="footer1_social-link w-inline-block">
-                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 3H8C5.23858 3 3 5.23858 3 8V16C3 18.7614 5.23858 21 8 21H16C18.7614 21 21 18.7614 21 16V8C21 5.23858 18.7614 3 16 3ZM19.25 16C19.2445 17.7926 17.7926 19.2445 16 19.25H8C6.20735 19.2445 4.75549 17.7926 4.75 16V8C4.75549 6.20735 6.20735 4.75549 8 4.75H16C17.7926 4.75549 19.2445 6.20735 19.25 8V16ZM16.75 8.25C17.3023 8.25 17.75 7.80228 17.75 7.25C17.75 6.69772 17.3023 6.25 16.75 6.25C16.1977 6.25 15.75 6.69772 15.75 7.25C15.75 7.80228 16.1977 8.25 16.75 8.25ZM12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5027 10.8057 16.0294 9.65957 15.1849 8.81508C14.3404 7.97059 13.1943 7.49734 12 7.5ZM9.25 12C9.25 13.5188 10.4812 14.75 12 14.75C13.5188 14.75 14.75 13.5188 14.75 12C14.75 10.4812 13.5188 9.25 12 9.25C10.4812 9.25 9.25 10.4812 9.25 12Z" fill="CurrentColor"></path></svg></div>
-                  <div>{{ section.settings.facebook_link_text }}</div>
+              {% if section.settings.youtube_url != blank %}
+                <a href="{{ section.settings.youtube_url }}" target="_blank" class="footer1_social-link w-inline-block">
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="CurrentColor"></path></svg></div>
+                  <div>{{ section.settings.youtube_link_text }}</div>
+                </a>
+              {% endif %}
+              {% if section.settings.tiktok_url != blank %}
+                <a href="{{ section.settings.tiktok_url }}" target="_blank" class="footer1_social-link w-inline-block">
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" fill="CurrentColor"></path></svg></div>
+                  <div>{{ section.settings.tiktok_link_text }}</div>
+                </a>
+              {% endif %}
+              {% if section.settings.pinterest_url != blank %}
+                <a href="{{ section.settings.pinterest_url }}" target="_blank" class="footer1_social-link w-inline-block">
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" fill="CurrentColor"></path></svg></div>
+                  <div>{{ section.settings.pinterest_link_text }}</div>
+                </a>
+              {% endif %}
+              {% if section.settings.twitter_url != blank %}
+                <a href="{{ section.settings.twitter_url }}" target="_blank" class="footer1_social-link w-inline-block">
+                  <div class="icon-embed-xsmall-2 w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="CurrentColor"></path></svg></div>
+                  <div>{{ section.settings.twitter_link_text }}</div>
                 </a>
               {% endif %}
             </div>
@@ -127,7 +159,11 @@
             {% if section.settings.made_by_url != blank %}
               <a href="{{ section.settings.made_by_url }}" target="_blank" class="estudio-dev-link w-inline-block">
                 <div class="footer_copyright">{{ section.settings.made_by_text }}</div>
-                <img loading="lazy" src="{{ 'logo-rafael-markz.svg' | asset_url }}" alt="" class="image-18">
+                {% if section.settings.made_by_logo %}
+                  <img loading="lazy" src="{{ section.settings.made_by_logo | img_url: 'master' }}" alt="Made by logo" class="image-18">
+                {% else %}
+                  <img loading="lazy" src="{{ 'logo-rafael-markz.svg' | asset_url }}" alt="" class="image-18">
+                {% endif %}
               </a>
             {% endif %}
           </div>
@@ -183,7 +219,17 @@
       "type": "text",
       "id": "newsletter_success_message",
       "label": "Newsletter Success Message",
-      "default": "Thank you! Your submission has been received!"
+      "default": "Obrigado! Seu cadastro foi recebido com sucesso!"
+    },
+    {
+      "type": "header",
+      "content": "Footer Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo",
+      "info": "Se não selecionar, será usado o logo padrão"
     },
     {
       "type": "header",
@@ -204,7 +250,8 @@
     {
       "type": "text",
       "id": "email_address",
-      "label": "Email Address"
+      "label": "Email Address",
+      "default": "contato@riocapria.com.br"
     },
     {
       "type": "text",
@@ -264,7 +311,30 @@
     },
     {
       "type": "header",
-      "content": "Access Links"
+      "content": "Security Badges"
+    },
+    {
+      "type": "paragraph",
+      "content": "Adicione selos de segurança (SSL, Site Seguro, etc.)"
+    },
+    {
+      "type": "image_picker",
+      "id": "security_badge_1",
+      "label": "Security Badge 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "security_badge_2",
+      "label": "Security Badge 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "security_badge_3",
+      "label": "Security Badge 3"
+    },
+    {
+      "type": "header",
+      "content": "Footer Menu"
     },
     {
       "type": "text",
@@ -290,19 +360,8 @@
     },
     {
       "type": "url",
-      "id": "instagram_url",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "url",
       "id": "facebook_url",
       "label": "Facebook URL"
-    },
-    {
-      "type": "text",
-      "id": "instagram_link_text",
-      "label": "Instagram Link Text",
-      "default": "Instagram"
     },
     {
       "type": "text",
@@ -311,8 +370,63 @@
       "default": "Facebook"
     },
     {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "instagram_link_text",
+      "label": "Instagram Link Text",
+      "default": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "text",
+      "id": "youtube_link_text",
+      "label": "YouTube Link Text",
+      "default": "YouTube"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "tiktok_link_text",
+      "label": "TikTok Link Text",
+      "default": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "text",
+      "id": "pinterest_link_text",
+      "label": "Pinterest Link Text",
+      "default": "Pinterest"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter/X URL"
+    },
+    {
+      "type": "text",
+      "id": "twitter_link_text",
+      "label": "Twitter/X Link Text",
+      "default": "Twitter"
+    },
+    {
       "type": "header",
-      "content": "Copyright"
+      "content": "Copyright Section"
     },
     {
       "type": "text",
@@ -332,14 +446,21 @@
       "label": "Made By URL"
     },
     {
+      "type": "image_picker",
+      "id": "made_by_logo",
+      "label": "Made By Logo",
+      "info": "Logo do desenvolvedor/agência"
+    },
+    {
       "type": "header",
-      "content": "WhatsApp Button"
+      "content": "WhatsApp Floating Button"
     },
     {
       "type": "text",
       "id": "whatsapp_url",
-      "label": "WhatsApp Number (only numbers)",
-      "info": "Enter only numbers, e.g., 5562990000000"
+      "label": "WhatsApp Number",
+      "info": "Digite apenas números, ex: 5562990000000",
+      "placeholder": "5562990000000"
     }
   ]
 }

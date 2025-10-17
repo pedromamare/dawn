@@ -31,6 +31,8 @@
   endif
 -%}
 
+{%- comment -%}Não renderiza o card se a collection não tiver featured_image{%- endcomment -%}
+{%- if card_collection.featured_image or card_collection == blank -%}
 <div class="card-wrapper animate-arrow {% if wrapper_class and wrapper_class != 'none' %}{{ wrapper_class }}{% else %}collection-card-wrapper{% endif %}">
   <div
     class="
@@ -167,3 +169,4 @@
     {%- endif -%}
   </div>
 </div>
+{%- endif -%}

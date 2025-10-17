@@ -1,22 +1,7 @@
 {% comment %}
-  Section: Main Page Politica
-  Descrição: Página de Política de Privacidade com header, sidebar e conteúdo
+  Section: Legal Content
+  Descrição: Conteúdo principal para páginas legais com sidebar de navegação
 {% endcomment %}
-
-<header class="section_legal2-header">
-  <div class="padding-global">
-    <div class="container-large">
-      <div class="padding-section-medium-2">
-        <div class="margin-bottom-2 margin-small">
-          <h1>{{ page.title }}</h1>
-        </div>
-        <p class="text-size-small text-color-alternate">
-          {{ section.settings.effective_date_label }} {{ section.settings.effective_date }}
-        </p>
-      </div>
-    </div>
-  </div>
-</header>
 
 <section id="politica-privacidade" class="section_politica-privacidade">
   <div class="padding-global">
@@ -46,15 +31,6 @@
                         <div fs-toc-element="link">{{ block.settings.link_text }}</div>
                       </a>
                       <div fs-toc-element="ix-trigger" class="legal2-content_h-trigger"></div>
-
-                      {%- comment -%} Sublinks (h3) {%- endcomment -%}
-                      {% if block.settings.show_sublinks %}
-                        <div class="legal2-content_link-wrapper is-h3">
-                          <a href="{{ block.settings.sublink_url }}" class="legal2-content_link is-h3 w-inline-block">
-                            <div fs-toc-element="link" class="text-block-7">{{ block.settings.sublink_text }}</div>
-                          </a>
-                        </div>
-                      {% endif %}
                     </div>
                   {% endif %}
                 {% endfor %}
@@ -66,7 +42,7 @@
           {%- comment -%} Conteúdo principal {%- endcomment -%}
           <div id="w-node-_21cbb8a1-2562-6bd9-de77-683d708c42cd-29199e5b" class="max-width-large">
             <div fs-toc-element="contents" class="text-rich-text-2 w-richtext">
-              {{ page.content }}
+              {{ section.settings.page_content }}
             </div>
           </div>
 
@@ -78,25 +54,19 @@
 
 {% schema %}
 {
-  "name": "Página de Política",
+  "name": "Legal Content",
   "settings": [
-    {
-      "type": "text",
-      "id": "effective_date_label",
-      "label": "Label da Data",
-      "default": "Data efetiva:"
-    },
-    {
-      "type": "text",
-      "id": "effective_date",
-      "label": "Data Efetiva",
-      "default": "11 de Outubro de 2025"
-    },
     {
       "type": "text",
       "id": "sidebar_title",
       "label": "Título da Sidebar",
       "default": "Legal"
+    },
+    {
+      "type": "richtext",
+      "id": "page_content",
+      "label": "Conteúdo da Página",
+      "default": "<h2>Heading 2</h2><p>Conteúdo da política de privacidade aqui...</p>"
     }
   ],
   "blocks": [
@@ -120,30 +90,30 @@
           "id": "is_current",
           "label": "Página Atual",
           "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_sublinks",
-          "label": "Mostrar Sublink",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "sublink_text",
-          "label": "Texto do Sublink",
-          "info": "Apenas se 'Mostrar Sublink' estiver ativo"
-        },
-        {
-          "type": "url",
-          "id": "sublink_url",
-          "label": "URL do Sublink"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Página de Política"
+      "name": "Legal Content",
+      "blocks": [
+        {
+          "type": "sidebar_link",
+          "settings": {
+            "link_text": "Política de Privacidade",
+            "link_url": "/pages/politica-de-privacidade",
+            "is_current": true
+          }
+        },
+        {
+          "type": "sidebar_link",
+          "settings": {
+            "link_text": "Termos de Uso",
+            "link_url": "/pages/termos-de-uso"
+          }
+        }
+      ]
     }
   ]
 }

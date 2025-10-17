@@ -1,0 +1,98 @@
+<section id="Benefits" class="section_home-benefits">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="home-benefits_title">
+        <div class="text-align-center text-color-white">
+          <p animate="true" class="heading-style-h4 text-color-alternate">{{ section.settings.subtitle | default: 'Acreditamos que nossas joias, com suas formas fluidas, capturam a essência de um verão eterno e sofisticado. Com cores quentes e contrastes tropicais, elas refletem uma energia vibrante e um estilo de vida sem limites.' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="home-benefits_component">
+    <div data-w-id="af8c7903-ef2c-5a7d-d2c8-6b8dd7966be5" data-is-ix2-target="1" class="home-benefits_lottie" data-animation-type="lottie" data-src="https://cdn.prod.website-files.com/68d6a099b9a3dd74da6de665/68d6a09bb9a3dd74da6de72c_Benefits.json" data-loop="0" data-direction="1" data-autoplay="0" data-renderer="canvas" data-duration="0"></div>
+    <div class="home-benefits_items-wrapper">
+      {% for block in section.blocks %}
+        <div id="w-node-af8c7903-ef2c-5a7d-d2c8-6b8dd7966be7-c0b89e29" class="home-benefits_item is-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <div class="home-benefits_item-line-wrapper">
+            {% if forloop.index == 1 or forloop.index == 3 %}
+              <div data-w-id="af8c7903-ef2c-5a7d-d2c8-6b8dd7966be9" style="height:0rem" class="home-benefits_item-line"></div>
+            {% endif %}
+            <div class="home-benefits_item-line-icon{% if forloop.index == 2 %} is-2{% endif %} w-embed">
+              {{ block.settings.icon_svg }}
+            </div>
+            {% if forloop.index == 2 %}
+              <div data-w-id="af8c7903-ef2c-5a7d-d2c8-6b8dd7966bf2" style="height:0rem" class="home-benefits_item-line is-2"></div>
+            {% endif %}
+          </div>
+          <div class="home-benefits_item-text text-weight-semibold">{{ block.settings.title }}<br></div>
+          <div class="home-benefits_item-text">{{ block.settings.subtitle }}<br></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Institucional Benefits",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Acreditamos que nossas joias, com suas formas fluidas, capturam a essência de um verão eterno e sofisticado."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefício",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Ícone SVG"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtítulo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Institucional Benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Verão Eterno",
+            "subtitle": "Leve e sofisticado"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Formas Fluidas",
+            "subtitle": "Movimento contínuo"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Lifestyle Global",
+            "subtitle": "Ultrapassa fronteiras"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

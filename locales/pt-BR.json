@@ -235,20 +235,21 @@
   },
   "templates": {
     "search": {
-      "no_results": "Não foram encontrados resultados para “{{ terms }}”. Verifique a ortografia ou use uma palavra ou frase diferente.",
+      "no_results": "Não foram encontrados resultados para \"{{ terms }}\". Verifique a ortografia ou use uma palavra ou frase diferente.",
       "results_with_count": {
         "one": "{{ count }} resultado",
         "other": "{{ count }} resultados",
         "many": "{{ count }} resultados"
       },
       "title": "Resultados da pesquisa",
+      "description": "Digite o nome do produto que você procura. Encontre joias, anéis, brincos, colares e muito mais.",
       "page": "Página",
       "products": "Produtos",
       "search_for": "Pesquisar \"{{ terms }}\"",
       "results_with_count_and_term": {
-        "one": "{{ count }} resultado encontrado para “{{ terms }}”",
-        "other": "{{ count }} resultados encontrados para “{{ terms }}”",
-        "many": "{{ count }} resultados encontrados para “{{ terms }}”"
+        "one": "{{ count }} resultado encontrado para \"{{ terms }}\"",
+        "other": "{{ count }} resultados encontrados para \"{{ terms }}\"",
+        "many": "{{ count }} resultados encontrados para \"{{ terms }}\""
       },
       "results_pages_with_count": {
         "one": "{{ count }} página",
